@@ -1,0 +1,71 @@
+export function SubscriptionFlexi() {
+  return (
+    <svg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'>
+      <path
+        d='M10.9803 14.745L12.2352 5.33325H19.7646L21.0195 14.745M5.33325 17.2548H5.9607M26.6666 17.2548H26.0391M26.0391 17.2548V19.7646H24.7842V26.6666M26.0391 17.2548H5.9607M5.9607 17.2548V19.7646H7.84306V26.6666M11.6078 19.7646H15.9999M20.3921 19.7646H15.9999M15.9999 19.7646V23.2156M15.9999 25.4117V23.2156M15.9999 23.2156L13.4901 25.4117M15.9999 23.2156L18.5097 25.4117'
+        stroke='#484848'
+        strokeWidth='1.5'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+      <circle
+        cx='19.7647'
+        cy='26.0391'
+        r='0.75'
+        fill='#484848'
+        stroke='#484848'
+        strokeWidth='1.0098'
+      />
+      <circle cx='16' cy='26.0391' r='0.75' fill='#484848' stroke='#484848' strokeWidth='1.0098' />
+      <circle
+        cx='12.2351'
+        cy='26.0391'
+        r='0.75'
+        fill='#484848'
+        stroke='#484848'
+        strokeWidth='1.0098'
+      />
+      <circle
+        cx='14.1174'
+        cy='9.09791'
+        r='0.627451'
+        fill='#484848'
+        stroke='#484848'
+        strokeWidth='0.5'
+      />
+      <circle
+        cx='14.1174'
+        cy='14.1177'
+        r='0.627451'
+        fill='#484848'
+        stroke='#484848'
+        strokeWidth='0.5'
+      />
+      <circle
+        cx='17.8823'
+        cy='9.09791'
+        r='0.627451'
+        fill='#484848'
+        stroke='#484848'
+        strokeWidth='0.5'
+      />
+      <circle
+        cx='17.8823'
+        cy='14.1177'
+        r='0.627451'
+        fill='#484848'
+        stroke='#484848'
+        strokeWidth='0.5'
+      />
+      <ellipse
+        cx='16'
+        cy='11.6077'
+        rx='0.627451'
+        ry='0.627451'
+        fill='#484848'
+        stroke='#484848'
+        strokeWidth='0.5'
+      />
+    </svg>
+  );
+}

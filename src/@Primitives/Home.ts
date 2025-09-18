@@ -1,0 +1,3 @@
+const TEST_CONSTANT = 'SRC/HOME/TEST_CONSTANT';
+
+export { TEST_CONSTANT };

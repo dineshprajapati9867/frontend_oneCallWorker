@@ -1,0 +1,63 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "baseUrl": "src",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext",
+      "es5",
+      "es6",
+      "es2015",
+      "es2017",
+      "es2020"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "paths": {
+      "@Primitives/*": ["@Primitives/*"],
+      "@Primitives": ["@Primitives"],
+      "@Icons/*": ["@Assets/@Icons/*"],
+      "@Icons": ["@Assets/@Icons"],
+      "@Assets/*": ["@Assets/*"],
+      "@Assets": ["@Assets"],
+      "@Utils/*": ["@Utils/*"],
+      "@Utils": ["@Utils"],
+      "@Views/*": ["@Views/*"],
+      "@Views": ["@Views"],
+      "@Components/*": ["@Components/*"],
+      "@Components": ["@Components"],
+      "@AdminComponents/*": ["@Components/Admin/*"],
+      "@AdminComponents": ["@Components/Admin"],
+      "@AdminPrimitives/*": ["@Primitives/Admin/*"],
+      "@AdminPrimitives": ["@Primitives/Admin"],
+      "@Hooks/*": ["@Hooks/*"],
+      "@Hooks": ["@Hooks"],
+      "@Types/*": ["@Types/*"],
+      "@Types": ["@Types"],
+      "@Constants/*": ["@Constants/*"],
+      "@Constants": ["@Constants"]
+    }
+  },
+  "include": [
+    "src/**/*",
+    "src/**/*.tsx",
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build"
+  ]
+}
