@@ -43,6 +43,7 @@ declare module '@mui/material/styles' {
       gradientBackgroundColor: string;
     };
     misc: {
+      veryPaleBlue:string
       selectedBlue: string;
       deleteRed: string;
       statusBlue: string;
@@ -189,6 +190,7 @@ declare module '@mui/material/styles' {
       gradientBackgroundColor?: string;
     };
     misc?: {
+      veryPaleBlue:string,
       selectedBlue?: string;
       deleteRed?: string;
       statusBlue?: string;
@@ -389,7 +391,8 @@ export const theme = createTheme({
               color: '#343434',
               border: 'none',
               '&:hover': {
-                color: '#EB4C60',
+                //color: '#EB4C60',
+                color: '#2F80ED',
                 background: 'none',
               },
               '&:disabled': {
@@ -450,7 +453,7 @@ export const theme = createTheme({
       fontSize: '16px',
       fontWeight: 500,
       lineHeight: '125%',
-      // color: '#222222',
+      color: '#222222',
     },
     // h7: {
     //   fontSize: '27px',
@@ -548,6 +551,7 @@ export const theme = createTheme({
     metalBlue: '#42526E',
     forestGreen: '#006644',
     leafGreen: '#79f2c0',
+
   },
   calendar: {
     red: '#EB4C60',
@@ -566,6 +570,7 @@ export const theme = createTheme({
     gradientBackgroundColor: '#C4C4C4',
   },
   misc: {
+    veryPaleBlue:"#E5F3FF",
     selectedBlue: '#2F80ED',
     deleteRed: '#FF0000',
     statusBlue: '#00C2FF',

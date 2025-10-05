@@ -5,7 +5,7 @@ const locationIQToken = "pk.35d838dbfa2d5ea700de750f83ef41b7";
 export const searchLocation = (search: string,limit?:number) =>
   getApi(`https://us1.locationiq.com/v1/autocomplete?key=${locationIQToken}&q=${encodeURIComponent(
     search
-  )}&limit=${limit}
+  )}&limit=${limit}&countrycodes=IN&city=mumbai&format=json
 `);
 
 // Reverse geocoding (lat/lon → address)

@@ -84,8 +84,9 @@ import { BulkUploadErrorModal } from './BulkUploadErrorModal';
 import { BrokerLayout, BrokerCompanySetup, CityButton, BrokerSpaceCard } from './Broker';
 import { WithRolePermission } from './WithRolePermission';
 import { PublicCommonLayout } from './PublicCommonLayout';
-
+import LanguageTranslate from './LanguageTranslate';
 export {
+  LanguageTranslate,
   AddonCard,
   BuildingAddonCard,
   AddonWifiCard,

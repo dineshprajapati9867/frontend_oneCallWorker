@@ -1,5 +1,4 @@
 import { Box, styled } from "@mui/material";
-import Navbar from "@Views/Navbar";
 import React from "react";
 
 interface PropsI {
@@ -17,7 +16,7 @@ const InnerLayout = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.primary.contrastText,
   width: "100%",
   [theme.breakpoints.up("lg")]: {
-    width: "85%",
+    width: "95%",
   },
 }));
 
@@ -25,7 +24,6 @@ function HomeLayout({ children }: PropsI) {
   return (
     <MainLayout>
       <InnerLayout>
-        <Navbar />
         <Box className="content-layout" >
           {children}
         </Box>

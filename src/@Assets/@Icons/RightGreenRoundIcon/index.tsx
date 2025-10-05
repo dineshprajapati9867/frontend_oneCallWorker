@@ -1,3 +1,4 @@
+import React from "react";
 interface RightGreenRoundIconProps {
   width?: string;
   height?: string;

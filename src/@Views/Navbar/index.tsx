@@ -1,22 +1,14 @@
-import * as React from "react";
-import {
-  Badge,
-  Box,
-  Button,
-  IconButton,
-  Menu,
-  MenuItem,
-  styled,
-  Typography,
-} from "@mui/material";
-import {
-  NotificationIcon,
-  NotificationLeadIcon,
-} from "@Icons/NotificationIcon";
-import { NotificationWhiteIcon } from "@Icons/NotificationWhiteIcon";
+import React, { useState } from "react";
+import { Box, Button, styled, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { ArrowDowns, ChevronArrowDown, ChevronArrowUp } from "@Icons/ArrowDown";
-
+import LanguageTranslate from "@Components/LanguageTranslate";
+import { languages } from "@Constants/Home";
+import LogIn from "@Components/LogIn/LogIn";
+import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import { useNavigate } from "react-router-dom";
+import SearchWithLocation from "@Components/SearchWithLocation";
+import SearchWithFilter from "@Components/SearchWithFilter";
+import SearchWithMic from "@Components/SearchWithMic";
 const NavbarStyle = styled(Box)(({ theme }) => ({
   height: theme.spacing(40),
   borderBottom: `1px solid ${theme.misc.borderColor}`,
@@ -26,68 +18,111 @@ const NavbarStyle = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
+  ".leftSide": {
+    display: "flex",
+    alignItems: "center",
+  },
+  ".rightSide": {
+    display: "flex",
+    alignItems: "center",
+    gap: theme.spacing(6),
+  },
   ".languages": {
     display: "flex",
     alignItem: "center",
     gap: theme.spacing(2.5),
   },
+  ".btn": {
+    fontSize: theme.spacing(7),
+    padding: theme.spacing(1, 5),
+  },
+  ".freeListing": {
+    display: "flex",
+    alignItems: "center",
+    gap: theme.spacing(1),
+    flexDirection: "column",
+
+    ".workerText": {
+      backgroundColor: theme.misc.deleteRed,
+      color: theme.graph.contrastText,
+      padding: theme.spacing(0.5, 2.5),
+      fontWeight: 600,
+      fontSize: theme.spacing(5.5),
+      marginLeft: theme.spacing(5),
+      position: "absolute",
+      top: theme.spacing(4),
+    },
+
+    ".listingText": {
+      fontWeight: 500,
+      fontSize: "14px",
+      display: "flex",
+      alignItems: "center",
+      gap: theme.spacing(0.5),
+      "&:hover": {
+        backgroundColor: theme.misc.gray,
+      },
+    },
+  },
 }));
-const languages = [
-  { code: "en", name: "English - EN" },
-  { code: "hi", name: "हिंदी - HI" },
-];
+
 export default function Navbar() {
   const { t, i18n } = useTranslation("navbar");
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-
-  // Language menu handlers
-  const handleClick = (event) => setAnchorEl(event.currentTarget);
-  const handleClose = () => setAnchorEl(null);
-  const handleLanguageChange = (languageCode) => {
-    i18n.changeLanguage(languageCode);
-    handleClose();
-  };
-
+  const navigate = useNavigate();
+  const [openLogin, setOpenLogin] = useState(false);
   // Current language display
-  const getCurrentLanguage = () => {
+  const handleGetCurrentLanguage = () => {
     const current = languages.find((lang) => lang.code === i18n.language);
     return current.code.toLocaleUpperCase();
   };
-  const handleOpen = (event) => setAnchorEl(event.currentTarget);
 
   return (
-    <NavbarStyle>
-      <h1>hii</h1>
-      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-        <Box
-          className="languages"
-          onClick={handleClick}
-          onMouseEnter={handleOpen}
-        >
-          <Typography variant="body1"> {getCurrentLanguage()}</Typography>
-
-          {open ? <ChevronArrowUp /> : <ChevronArrowDown />}
-
-          <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-            {languages.map((language) => (
-              <MenuItem
-                key={language.code}
-                onClick={() => handleLanguageChange(language.code)}
-                selected={i18n.language === language.code}
-              >
-                <Typography>{language.name}</Typography>
-              </MenuItem>
-            ))}
-          </Menu>
+    <>
+      <NavbarStyle>
+        <Box className="leftSide">
+          <h5>oneCallWorker</h5>
+          <SearchWithLocation />
+         <SearchWithMic/>
         </Box>
-        <IconButton>
-          <Badge badgeContent={1} color="error">
-            <NotificationIcon />
-          </Badge>
-        </IconButton>
-        <Button variant="contained">{t("loginSignUp")}</Button>
-      </Box>
-    </NavbarStyle>
+        <Box className="rightSide">
+          <LanguageTranslate
+            i18n={i18n}
+            handleGetCurrentLanguage={handleGetCurrentLanguage}
+          />
+          <Box className="freeListing">
+            <Typography className="workerText">WORKER</Typography>
+
+            <Button
+              onClick={() => navigate("free-listing")}
+              variant="text"
+              className="listingText"
+            >
+              <TrendingUpIcon fontSize="small" />
+              <Typography variant="body1" className="text">
+                Free Listing
+              </Typography>
+            </Button>
+          </Box>
+          {/* <IconButton>
+            <Badge badgeContent={1} color="error">
+              <NotificationIcon />
+            </Badge>
+          </IconButton> */}
+          <Button
+            className="btn"
+            onClick={() => {
+              setOpenLogin(true);
+            }}
+            variant="contained"
+          >
+            {t("loginSignUp")}
+          </Button>
+        </Box>
+      </NavbarStyle>
+
+      {openLogin && (
+        <LogIn open={openLogin} onClose={() => setOpenLogin(false)} />
+      )}
+    </>
   );
 }

@@ -20,7 +20,8 @@ import { TimePickerInput } from './TimePickerInput';
 import { MuiCustomDatePicker } from './CustomDatePicker/MuiDatePicker';
 import { ProgressLoader } from './ProgressLoader';
 import { DateRangePickerFilter } from './CustomDatePicker/DateRangePickerFilter';
-
+import {HorizonatDotsLoading} from './HorizontalDotsLoading/index'
+import MicAnimation from './MicAnimation';
 export {
   BasicStepper,
   Button,
@@ -44,4 +45,6 @@ export {
   MuiCustomDatePicker,
   ProgressLoader,
   DateRangePickerFilter,
+  HorizonatDotsLoading,
+  MicAnimation
 };

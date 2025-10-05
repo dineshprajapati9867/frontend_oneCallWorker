@@ -1,5 +1,7 @@
 import React from "react";
 import HomeLayout from "@Views/Layout";
+import FreeListing from "@Views/FreeListing";
+import Navbar from "@Views/Navbar";
 
 export const HomeLayouts: {
   name: string;
@@ -7,8 +9,13 @@ export const HomeLayouts: {
   Component: any;
 }[] = [
   {
-    name: "home",
-    path: "/abcd",
-    Component: HomeLayout,
+    name: "navbar",
+    path: "/",
+    Component: Navbar,
+  },
+  {
+    name: "freeListing",
+    path: "free-listing",
+    Component: FreeListing,
   },
 ];
