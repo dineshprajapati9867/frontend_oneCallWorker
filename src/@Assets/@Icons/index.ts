@@ -239,8 +239,13 @@ import BigSearchIncon from './Broker/BigSearchIncon';
 import DollorWithDownArrowIcon from './Broker/DollorWithDownArrowIcon';
 //import { Arrow360 } from './ArrowIcons';
 import { BriefCaseWithDots } from './Broker/BriefCaseWithDots';
+import GoogleIcon from './GoogleIcon/Googleicon';
+import   TranslateIcon from '@mui/icons-material/GTranslateOutlined';
+import RightArrowMui from '@mui/icons-material/KeyboardArrowRightRounded';
 
 export {
+  RightArrowMui,
+  TranslateIcon,
   BlackSmallCrossIcon,
   SmallLocationWithInsideCircle,
   WhiteBuildingInsideDotSmallBroker,
@@ -495,4 +500,5 @@ export {
   WhiteUserIcon,
   EditBlueIcon,
   GrayPlusIcon,
+  GoogleIcon
 };

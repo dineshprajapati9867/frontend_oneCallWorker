@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { reverseGeocoding, searchLocation } from "@Utils/controllers/location";
 import React, { createContext, useContext } from "react";
 interface LocationContextI {

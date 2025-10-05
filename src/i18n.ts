@@ -17,7 +17,7 @@ i18n
         navbar: navbar_hi,
       },
     },
-    lng: "hi",
+    lng: "en",
     fallbackLng: "en",
 
     interpolation: {
