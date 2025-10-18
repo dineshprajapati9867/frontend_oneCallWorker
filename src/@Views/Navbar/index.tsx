@@ -7,8 +7,8 @@ import LogIn from "@Components/LogIn/LogIn";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import { useNavigate } from "react-router-dom";
 import SearchWithLocation from "@Components/SearchWithLocation";
-import SearchWithFilter from "@Components/SearchWithFilter";
 import SearchWithMic from "@Components/SearchWithMic";
+
 const NavbarStyle = styled(Box)(({ theme }) => ({
   height: theme.spacing(40),
   borderBottom: `1px solid ${theme.misc.borderColor}`,

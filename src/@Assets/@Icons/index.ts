@@ -239,11 +239,21 @@ import BigSearchIncon from './Broker/BigSearchIncon';
 import DollorWithDownArrowIcon from './Broker/DollorWithDownArrowIcon';
 //import { Arrow360 } from './ArrowIcons';
 import { BriefCaseWithDots } from './Broker/BriefCaseWithDots';
-import GoogleIcon from './GoogleIcon/Googleicon';
 import   TranslateIcon from '@mui/icons-material/GTranslateOutlined';
 import RightArrowMui from '@mui/icons-material/KeyboardArrowRightRounded';
-
+import { InstagramColoredIcon,  GmailIcon,
+  LinkedInColoredIcon,
+  WhatsAppIcon,
+  TwitterColoredIcon,GoogleIcon } from './SocialMediaIcons';
+  import StarMuiIcon from '@mui/icons-material/Star';
+  import CallMuiIcon from "@mui/icons-material/Call";
+  import MicMuiIcon from "@mui/icons-material/MicOutlined";
+  import SearchMuiIcon from '@mui/icons-material/Search';
 export {
+  SearchMuiIcon,
+  MicMuiIcon,
+  CallMuiIcon,
+  StarMuiIcon,
   RightArrowMui,
   TranslateIcon,
   BlackSmallCrossIcon,
@@ -500,5 +510,10 @@ export {
   WhiteUserIcon,
   EditBlueIcon,
   GrayPlusIcon,
-  GoogleIcon
+  GoogleIcon,
+  GmailIcon,
+  LinkedInColoredIcon,
+  WhatsAppIcon,
+  TwitterColoredIcon,
+  InstagramColoredIcon
 };

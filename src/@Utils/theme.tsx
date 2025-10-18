@@ -25,6 +25,7 @@ declare module '@mui/material/styles' {
       metalBlue: string;
       forestGreen: string;
       leafGreen: string;
+      darkOrange:string
     };
     calendar: {
       red: string;
@@ -43,6 +44,7 @@ declare module '@mui/material/styles' {
       gradientBackgroundColor: string;
     };
     misc: {
+      verdantGreen:string,
       veryPaleBlue:string
       selectedBlue: string;
       deleteRed: string;
@@ -172,6 +174,7 @@ declare module '@mui/material/styles' {
       metalBlue: string;
       forestGreen: string;
       leafGreen: string;
+      darkOrange:string
     };
     calendar?: {
       red?: string;
@@ -190,6 +193,7 @@ declare module '@mui/material/styles' {
       gradientBackgroundColor?: string;
     };
     misc?: {
+      verdantGreen?:string;
       veryPaleBlue:string,
       selectedBlue?: string;
       deleteRed?: string;
@@ -551,7 +555,7 @@ export const theme = createTheme({
     metalBlue: '#42526E',
     forestGreen: '#006644',
     leafGreen: '#79f2c0',
-
+     darkOrange:"#fe4200"
   },
   calendar: {
     red: '#EB4C60',
@@ -570,6 +574,7 @@ export const theme = createTheme({
     gradientBackgroundColor: '#C4C4C4',
   },
   misc: {
+    verdantGreen:"#058a07",
     veryPaleBlue:"#E5F3FF",
     selectedBlue: '#2F80ED',
     deleteRed: '#FF0000',

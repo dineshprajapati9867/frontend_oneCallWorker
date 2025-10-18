@@ -30,7 +30,7 @@ root.render(
     <CustomMuiThemeProvider>
       <QueryClientProvider client={queryClient}>
         <SnackBarProvider>
-          <GoogleOAuthProvider clientId="699175373946-pg70q1ja5rip6alu1t0ks1ddqjlped20.apps.googleusercontent.com">
+          <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
           <App />
           </GoogleOAuthProvider>
           <ReactQueryDevtools position="bottom" />

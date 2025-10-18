@@ -22,6 +22,7 @@ import { ProgressLoader } from './ProgressLoader';
 import { DateRangePickerFilter } from './CustomDatePicker/DateRangePickerFilter';
 import {HorizonatDotsLoading} from './HorizontalDotsLoading/index'
 import MicAnimation from './MicAnimation';
+import VerifyAnimation from './Animation/VerifyAnimation';
 export {
   BasicStepper,
   Button,
@@ -46,5 +47,6 @@ export {
   ProgressLoader,
   DateRangePickerFilter,
   HorizonatDotsLoading,
-  MicAnimation
+  MicAnimation,
+  VerifyAnimation
 };

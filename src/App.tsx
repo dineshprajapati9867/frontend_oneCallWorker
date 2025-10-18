@@ -1,9 +1,8 @@
 import React from "react";
 import ContextContainer from "./Context";
-import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomeLayout from "@Views/Layout";
 import { HomeLayouts } from "./routes";
-import { Box } from "@mui/material";
 function App() {
   return (
     <BrowserRouter>

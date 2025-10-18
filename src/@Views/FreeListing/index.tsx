@@ -21,11 +21,14 @@ const FreeListingStyled = styled(Box)(({ theme }) => ({
     boxSizing: "border-box",
     display: "flex",
     alignItems: "center",
-    justifyContent:"space-between",
-    '.leftSide':{
-    display: "flex",
-    alignItems: "center",
+    justifyContent: "space-between",
+    ".leftSide": {
+      display: "flex",
+      alignItems: "center",
     },
+  },
+  ".createBtn": {
+    padding: theme.spacing(2, 8),
   },
   ".logo": {
     margin: theme.spacing(0, 15),
@@ -83,10 +86,12 @@ function FreeListing() {
     <FreeListingStyled>
       <nav className="navbar">
         <Box className="leftSide">
-        <Typography className="logo">oneCallWorker</Typography>
+          <Typography className="logo">oneCallWorker</Typography>
           <Button variant="text">FAQs</Button>
         </Box>
-<Button variant="contained">Create Your Profile</Button>
+        <Button className="createBtn" variant="contained">
+          Create Your Profile
+        </Button>
       </nav>
       <Box className="backHomeBox">
         <Button className="homeBtn" onClick={() => navigate(-1)} variant="text">

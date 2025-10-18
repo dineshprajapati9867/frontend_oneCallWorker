@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   entry: "./src/index.tsx",
@@ -9,7 +10,7 @@ module.exports = {
     filename: "bundle.[contenthash].js",
     clean: true,
   },
-  mode: "development", // Change to development for start command
+  mode: "development",
   module: {
     rules: [
       {
@@ -44,6 +45,7 @@ module.exports = {
     },
   },
   plugins: [
+    new Dotenv(),
     new HtmlWebpackPlugin({ template: "./public/index.html" }),
     new ForkTsCheckerWebpackPlugin({
       typescript: {
@@ -65,4 +67,4 @@ module.exports = {
     port: 3000,
     historyApiFallback: true,
   },
-};
+  }

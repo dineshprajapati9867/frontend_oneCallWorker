@@ -47,7 +47,8 @@
       "@Types/*": ["@Types/*"],
       "@Types": ["@Types"],
       "@Constants/*": ["@Constants/*"],
-      "@Constants": ["@Constants"]
+      "@Constants": ["@Constants"],
+      "@AnimationJSON":["@AnimationJSON"]
     }
   },
   "include": [

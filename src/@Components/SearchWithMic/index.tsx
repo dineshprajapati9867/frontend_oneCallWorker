@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   Box,
-  Button,
   Dialog,
   IconButton,
   Input,
@@ -9,8 +8,7 @@ import {
   styled,
   Typography,
 } from "@mui/material";
-import { CloseIcon, SearchIcon } from "@Icons";
-import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
+import { BlackSmallCrossIcon, CloseIcon, MicMuiIcon, SearchIcon, SearchMuiIcon } from "@Icons";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
@@ -65,6 +63,13 @@ const CustomInputStyled = styled(Input)(({ theme }) => ({
     borderRadius: theme.spacing(3),
     paddingTop: theme.spacing(1.5),
     cursor: "pointer",
+     backgroundColor:theme.text.darkOrange,
+     color:theme.palette.primary.contrastText
+  },
+  '.micIcon':{
+     color:theme.misc.darkBlue,
+     cursor: "pointer",
+     
   },
 }));
 
@@ -92,7 +97,16 @@ export default function SearchWithMic() {
       setOpen(true);
       resetTranscript();
       SpeechRecognition.startListening();
-    } catch (error) {}
+    } catch (error) {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        stream.getTracks().forEach((track) => track.stop());
+        setOpen(true);
+        resetTranscript();
+        SpeechRecognition.startListening();
+      } catch (err) {
+      }
+    }
   };
 
   const handleClose = () => {
@@ -127,11 +141,16 @@ export default function SearchWithMic() {
           }}
           endAdornment={
             <InputAdornment position="end">
+              {searchText&&
+              <IconButton onClick={()=>setSearchText('')}>
+                <BlackSmallCrossIcon/>
+              </IconButton>
+              }
               <IconButton onClick={handleMicClick}>
-                <MicOutlinedIcon sx={{ cursor: "pointer" }} />
+                <MicMuiIcon className="micIcon" />
               </IconButton>
               <button className="searchIcon">
-                <SearchIcon width={24} height={24} />
+                <SearchMuiIcon  width={24} height={24} />
               </button>
             </InputAdornment>
           }

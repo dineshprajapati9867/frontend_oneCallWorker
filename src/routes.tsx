@@ -1,17 +1,16 @@
 import React from "react";
-import HomeLayout from "@Views/Layout";
 import FreeListing from "@Views/FreeListing";
 import Navbar from "@Views/Navbar";
-
+import HomePage from "@Views/HomePage";
 export const HomeLayouts: {
   name: string;
   path: string;
   Component: any;
 }[] = [
   {
-    name: "navbar",
+    name: "home-page",
     path: "/",
-    Component: Navbar,
+    Component: HomePage,
   },
   {
     name: "freeListing",
