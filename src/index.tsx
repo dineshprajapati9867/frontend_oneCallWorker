@@ -33,7 +33,7 @@ root.render(
           <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
           <App />
           </GoogleOAuthProvider>
-          <ReactQueryDevtools position="bottom" />
+          {/* <ReactQueryDevtools position="bottom" /> */}
         </SnackBarProvider>
       </QueryClientProvider>
     </CustomMuiThemeProvider>

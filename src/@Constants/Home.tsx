@@ -29,8 +29,16 @@ const  FAQs = [
   },
 ];
 
-
+  const mapStyles = [
+    { label: "Satellite", value: "satellite-streets-v12" },
+    { label: "Dark", value: "dark-v11" },
+    { label: "Light", value: "light-v11" },
+    { label: "Streets", value: "streets-v12" },
+    { label: "Navigation Day", value: "navigation-day-v1" },
+    { label: "Navigation Night", value: "navigation-night-v1" },
+  ];
   export {
     languages,
-    FAQs
+    FAQs,
+    mapStyles
   }

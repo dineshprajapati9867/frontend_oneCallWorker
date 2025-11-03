@@ -1,9 +1,10 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { reverseGeocoding, searchLocation } from "@Utils/controllers/location";
+import { forwardGeocoding, reverseGeocoding, searchLocation } from "@Utils/controllers/location";
 import React, { createContext, useContext } from "react";
 interface LocationContextI {
   useGetAddress: any;
-  useReverseGeocodingToAddress:any
+  useReverseGeocodingToAddress:any;
+  useForwardGeocodingAddressToLatLon:(query:string)=>UseQueryResult | any
 }
 
 const LocationContext = createContext<LocationContextI>({} as LocationContextI);
@@ -33,9 +34,23 @@ const useLoacationData = () => {
     });
   };
 
+  
+// forward geocoding (address -> lat/lon )
+  const useForwardGeocodingAddressToLatLon = (query) => {
+    return useQuery({
+      queryKey: ["reverseGeocoding",query],
+      queryFn: () => forwardGeocoding(query),
+      gcTime: 0,
+      enabled:!!query,
+      select:(data)=>data.data
+    });
+  };
+
+
   return {
     useGetAddress,
-    useReverseGeocodingToAddress
+    useReverseGeocodingToAddress,
+    useForwardGeocodingAddressToLatLon
   };
 };
 

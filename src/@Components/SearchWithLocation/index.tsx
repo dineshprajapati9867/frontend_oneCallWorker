@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   styled,
   Box,
-  TextField,
   InputAdornment,
   Typography,
   List,
@@ -14,10 +13,16 @@ import {
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import { LocationIconGray } from "@Icons/LocationIcon";
 import { CrossIcon } from "@Icons/index";
-import { hooks } from "@Utils/index";
-import { useDebounce } from "@Utils/hooks";
 import { Loader } from "@Primitives/Loader";
+import { TextInput } from "@Primitives/index";
 
+interface PropsI {
+  handleChange: (val: string) => void;
+  value: string;
+  isLoading: boolean;
+  handleGetCurrentLatitudeAndLongitude?: () => void;
+  loactionSuggestions: any;
+}
 const SearchContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
@@ -36,57 +41,29 @@ const InputBox = styled(Box)(({ theme }) => ({
   display: "flex",
   overflow: "hidden",
   ".MuiInputBase-root": {
-    width: theme.spacing(120),
-    height: theme.spacing(20),
+    width: '100%',
+    height: '100%',
     borderRadius: "6px",
   },
 }));
 
-export default function SearchWithLocation() {
-  const {
-    coords,
-    error,
-    getLatitudeAndLongitude,
-    loading: geoLoading,
-  } = hooks.useGetLatitudeAndLongitude();
-
-  const [query, setQuery] = useState("");
-  const [detectedAddress, setDetectedAddress] = useState("");
+export default function SearchWithLocation({
+  handleChange,
+  value,
+  handleGetCurrentLatitudeAndLongitude,
+  loactionSuggestions,
+  isLoading,
+}: PropsI) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const { useGetAddress, useReverseGeocodingToAddress } = hooks.useLocations();
-  const searchDebounce = useDebounce(query, 1000);
-
-  const { data: GetAddress, isLoading: addressLoading } = useGetAddress(
-    searchDebounce,
-    10
-  );
-
-  const { data: reverseGeocoding, isLoading: reverseLoading } =
-    useReverseGeocodingToAddress(coords?.lat, coords?.lng);
-
-  // When reverse geocoding finishes, auto-fill address
-  useEffect(() => {
-    if (reverseGeocoding?.display_name) {
-      setDetectedAddress(reverseGeocoding.display_name);
-      localStorage.setItem("userLocation", JSON.stringify(reverseGeocoding));
-    }
-  }, [reverseGeocoding]);
-
-  const handleChange = (e) => {
-    setQuery(e.target.value);
-  };
-
-  const isLoading = geoLoading || addressLoading || reverseLoading;
-
   return (
     <SearchContainer>
       <InputBox>
-        <TextField
+        <TextInput
           variant="outlined"
-          placeholder="Select location"
-          value={query || detectedAddress}
-          onChange={handleChange}
+          placeholder="Choose your area"
+          label="Select Location"
+          value={value}
+          onChange={(e) => handleChange(e.target.value)}
           onClick={(e) => setAnchorEl(e.currentTarget)}
           fullWidth
           autoComplete="off"
@@ -101,11 +78,10 @@ export default function SearchWithLocation() {
                 {isLoading ? (
                   <Loader type="button" size={20} />
                 ) : (
-                  query && (
+                  value && (
                     <IconButton
                       onClick={() => {
-                        setQuery("");
-                        setDetectedAddress("");
+                        handleChange("");
                       }}
                     >
                       <CrossIcon />
@@ -138,13 +114,13 @@ export default function SearchWithLocation() {
             <ListItem
               onClick={() => {
                 if (!isLoading) {
-                  getLatitudeAndLongitude();
+                  handleGetCurrentLatitudeAndLongitude();
                 }
               }}
               sx={{
                 pointerEvents: isLoading ? "none" : "auto",
                 opacity: isLoading ? 0.6 : 1,
-                cursor:isLoading?"none":"pointer"
+                cursor: isLoading ? "none" : "pointer",
               }}
               className="listItem"
             >
@@ -156,16 +132,14 @@ export default function SearchWithLocation() {
               />
             </ListItem>
 
-            {addressLoading ? (
+            {isLoading ? (
               <Loader type="section" size={30} />
             ) : (
-              GetAddress?.map((opt) => (
+              loactionSuggestions?.map((opt) => (
                 <ListItem
                   key={opt}
                   className="listItem"
-                  onClick={() => {
-                    setQuery(opt);
-                  }}
+                  onClick={() => handleChange(opt)}
                 >
                   {" "}
                 </ListItem>
