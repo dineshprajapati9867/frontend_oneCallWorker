@@ -8,7 +8,7 @@ import {
   styled,
   Typography,
 } from "@mui/material";
-import { BlackSmallCrossIcon, CloseIcon, MicMuiIcon, SearchIcon, SearchMuiIcon } from "@Icons";
+import { BlackSmallCrossIcon, CloseIcon, MicMuiIcon, SearchMuiIcon } from "@Icons";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";

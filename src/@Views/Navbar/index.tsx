@@ -8,7 +8,7 @@ import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import { useNavigate } from "react-router-dom";
 import SearchWithLocation from "@Components/SearchWithLocation";
 import SearchWithMic from "@Components/SearchWithMic";
-
+import ocw_logo from "@Assets/Images/ocw_logo.png";
 const NavbarStyle = styled(Box)(({ theme }) => ({
   height: theme.spacing(40),
   borderBottom: `1px solid ${theme.misc.borderColor}`,
@@ -21,6 +21,9 @@ const NavbarStyle = styled(Box)(({ theme }) => ({
   ".leftSide": {
     display: "flex",
     alignItems: "center",
+  },
+  ".logoImage": {
+    width: theme.spacing(50),
   },
   ".rightSide": {
     display: "flex",
@@ -80,9 +83,9 @@ export default function Navbar() {
     <>
       <NavbarStyle>
         <Box className="leftSide">
-          <h5>oneCallWorker</h5>
-          <SearchWithLocation />
-         <SearchWithMic/>
+          <img className="logoImage" src={ocw_logo} alt="logo" />
+          {/* <SearchWithLocation /> */}
+          <SearchWithMic />
         </Box>
         <Box className="rightSide">
           <LanguageTranslate

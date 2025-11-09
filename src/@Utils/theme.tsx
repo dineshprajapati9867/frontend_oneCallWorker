@@ -26,6 +26,7 @@ declare module '@mui/material/styles' {
       forestGreen: string;
       leafGreen: string;
       darkOrange:string
+      blue?:string;
     };
     calendar: {
       red: string;
@@ -175,6 +176,7 @@ declare module '@mui/material/styles' {
       forestGreen: string;
       leafGreen: string;
       darkOrange:string
+      blue?:string
     };
     calendar?: {
       red?: string;
@@ -555,7 +557,8 @@ export const theme = createTheme({
     metalBlue: '#42526E',
     forestGreen: '#006644',
     leafGreen: '#79f2c0',
-     darkOrange:"#fe4200"
+     darkOrange:"#fe4200", 
+     blue:"#3069FE"
   },
   calendar: {
     red: '#EB4C60',

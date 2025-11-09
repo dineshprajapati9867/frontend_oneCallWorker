@@ -222,7 +222,7 @@ export function removeExtension(filename: any) {
   
   // To download doc and view
   export const handleDownloadDoc = async (key: string) => {
-    const response = await /** getAccessForDocument(key); */ ,
+    const response = await key /** getAccessForDocument(key); */ 
     const link = document.createElement('a');
     link.href = response.data.uploadUrl;
     link.target = '_blank';

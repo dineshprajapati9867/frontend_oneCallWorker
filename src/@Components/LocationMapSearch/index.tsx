@@ -233,7 +233,7 @@ const LocationMapSearch = ({ open, onClose }: PropsI) => {
     if (addressList) setLocationSuggestions(addressList);
   }, [addressList]);
   return (
-    <BasicModal open={true} close={onClose} fullScreen>
+    <BasicModal open={open} close={onClose} fullScreen>
       <MainStyle>
         <Box className="leftSide">
           <Box className="header">
@@ -328,7 +328,7 @@ const LocationMapSearch = ({ open, onClose }: PropsI) => {
           </Box>
         </Box>
         <Box className="rightSide">
-          <Box className="mapDropdown" bgcolor={"red"}>
+          <Box className="mapDropdown">
             <SearchableDropDown
               value={mapStyle}
               onChange={(e) => {
@@ -350,15 +350,15 @@ const LocationMapSearch = ({ open, onClose }: PropsI) => {
             fadeAnimation={true}
             zoomControl={false}
           >
-<TileLayer
-  url="https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}"
-  attribution="© Google"
-/>
+{/* <TileLayer
+  url={`https://apis.mapmyindia.com/advancedmaps/v1/${process.env.REACT_APP_MAPMYINDIA_KEY}/map_tile/{z}/{x}/{y}.png`}
+  attribution='© MapmyIndia Maps'
+/> */}
 
-            {/* <TileLayer
+            <TileLayer
               url={`https://api.mapbox.com/styles/v1/mapbox/${mapStyle.value}/tiles/{z}/{x}/{y}?access_token=${process.env.REACT_APP_MAP_BOX}`}
               attribution='&copy; <a href="https://www.mapbox.com/">Mapbox</a>'
-            /> */}
+            />
             <MapClickHandler setPosition={setPosition} />
             <ZoomControl position="bottomright" />
             {position && (

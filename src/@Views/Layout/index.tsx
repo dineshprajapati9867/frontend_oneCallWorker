@@ -16,7 +16,7 @@ const InnerLayout = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.primary.contrastText,
   width: "100%",
   [theme.breakpoints.up("lg")]: {
-    width: "95%",
+    width: "80%",
   },
 }));
 

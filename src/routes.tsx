@@ -1,6 +1,5 @@
 import React from "react";
 import FreeListing from "@Views/FreeListing";
-import Navbar from "@Views/Navbar";
 import HomePage from "@Views/HomePage";
 export const HomeLayouts: {
   name: string;

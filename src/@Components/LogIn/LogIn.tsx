@@ -1,4 +1,9 @@
-import { CrossBigIcon, EditBlueIcon, GoogleIcon } from "@Icons/index";
+import {
+  CrossBigIcon,
+  EditBlueIcon,
+  ErrorIcon,
+  GoogleIcon,
+} from "@Icons/index";
 import {
   Box,
   Dialog,
@@ -11,10 +16,12 @@ import {
   Divider,
   IconButton,
 } from "@mui/material";
+import { validationPatterns } from "@Utils/index";
 //import { useGoogleLogin } from "@react-oauth/google";
 import React, { useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-
+import OTPInput from "react-otp-input";
+import ocw_logo from '@Assets/Images/ocw_logo.png'
 interface PropsI {
   open: boolean;
   onClose: () => void;
@@ -26,6 +33,9 @@ const LoginStyle = styled(Box)(({ theme }) => ({
   flexDirection: "column",
   gap: theme.spacing(4),
 
+  ".logoImage": {
+    width: theme.spacing(50),
+  },
   ".header": {
     display: "flex",
     alignItems: "center",
@@ -53,8 +63,13 @@ const LoginStyle = styled(Box)(({ theme }) => ({
   },
   ".mobileInput": {
     marginTop: theme.spacing(10),
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        border: `1.2pt solid ${theme.palette.secondary.dark}`,
+      },
+    },
     ".MuiOutlinedInput-root": {
-      border: `1.2pt solid ${theme.palette.secondary.dark}`,
+      // border: `1.2pt solid ${theme.palette.secondary.dark}`,
       maxHeight: theme.spacing(26),
       borderRadius: theme.spacing(3.5),
     },
@@ -119,16 +134,21 @@ const LoginOtp = styled(Box)(({ theme }) => ({
     display: "flex",
     alignItems: "center",
     gap: theme.spacing(6),
-    marginTop: theme.spacing(12.5),
+    marginTop: theme.spacing(7.5),
   },
   ".otpBox": {
-    width: theme.spacing(28),
+    width: `${theme.spacing(28)} !important`,
     height: theme.spacing(34.5),
     textAlign: "center",
     border: `1px solid ${theme.text.darkGrey}`,
     borderRadius: theme.spacing(4),
     fontSize: theme.spacing(9),
     fontWeight: 600,
+
+    "&:focus": {
+      border: `2px solid ${theme.palette.primary.main}`,
+      outline: "none",
+    },
   },
   ".bottomText": {
     display: "flex",
@@ -154,68 +174,15 @@ const LoginOtp = styled(Box)(({ theme }) => ({
 }));
 function LogIn({ open, onClose }: PropsI) {
   const [isOtpSend, setIsOtpSend] = useState(false);
-  const { control, setValue, handleSubmit } = useForm();
-  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const { control, setValue, handleSubmit } = useForm({
+    mode: "onChange",
+  });
 
-  // const handleLogin = useGoogleLogin({
-  //   onSuccess: (data) => {
-  //     console.log("data", data);
-  //   },
-  //   onError: (err) => {
-  //     console.log("err", err);
-  //   },
-  // });
-  const onSubmit = (data) => {  
-setIsOtpSend(true)
+  const onSubmit = (data) => {
+    setIsOtpSend(true);
     console.log("data", data);
   };
 
-  /**
-   * Key board actions
-   */
-const handleKeyDown = (
-  e: React.KeyboardEvent<HTMLInputElement>,
-  index: number,
-  onChange: (value: string) => void
-) => {
-  if (e.key === "Backspace") {
-    if (e.currentTarget.value === "" && index > 0) {
-      inputRefs.current[index - 1]?.focus();
-      setValue(`otp${index - 1}`, "");      
-    } else {
-      onChange(""); 
-    }
-  } else if (e.key === "ArrowLeft" && index > 0) {
-    // e.preventDefault();
-    inputRefs.current[index - 1]?.focus();
-  } else if (e.key === "ArrowRight" && index < 5) {
-    // e.preventDefault();
-    inputRefs.current[index + 1]?.focus();
-  }
-};
-
-
-  const handleOtpChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number,
-    onChange: (value: string) => void
-  ) => {
-    const { value } = e.target;
-    if (value.length > 1) {
-      const values = value.split("");
-      values.forEach((val, i) => {
-        if (index + i < 6) {
-          const ref = inputRefs.current[index + i];
-          if (ref) ref.value = val;
-        }
-      });
-    } else {
-      onChange(value);
-      if (value && inputRefs.current[index + 1]) {
-        inputRefs.current[index + 1]?.focus();
-      }
-    }
-  };
   return (
     <Dialog
       open={open}
@@ -229,7 +196,7 @@ const handleKeyDown = (
       <LoginStyle>
         {/* Header */}
         <Box className="header">
-          <Typography variant="h5">oneCallWorker</Typography>
+          <img className="logoImage" src={ocw_logo} alt="logo"/>
           <Box>
             <Box>
               <Typography className="welcome" variant="h6">
@@ -249,7 +216,18 @@ const handleKeyDown = (
             <Controller
               name="mobile_otp"
               control={control}
-              render={({ field: { onChange, value } }) => (
+              rules={{
+                validate: (val) => {
+                  if (!validationPatterns.pattern.mobile.test(val)) {
+                    return "Please enter valid mobile number";
+                  }
+                  return undefined;
+                },
+              }}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
                 <TextField
                   fullWidth
                   value={value}
@@ -268,10 +246,21 @@ const handleKeyDown = (
                       onChange(e);
                     }
                   }}
-                  onWheel={(e) => {
-                    (e.target as HTMLInputElement).blur();
-                  }}
-                  type="number"
+                  error={!!error}
+                  helperText={
+                    error ? (
+                      <span
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 4,
+                        }}
+                      >
+                        <ErrorIcon />
+                        {error.message}
+                      </span>
+                    ) : null
+                  }
                 />
               )}
             />
@@ -321,62 +310,32 @@ const handleKeyDown = (
                 Enter the code sent to{" "}
               </Typography>
               <Typography className="number">+ 91 - 7949747494</Typography>
-              <IconButton onClick={()=>setIsOtpSend(false)}>
+              <IconButton onClick={() => setIsOtpSend(false)}>
                 <EditBlueIcon />
               </IconButton>
             </Box>
             <Box className="otp">
-              {[0,1,2,3,4,5].map((index) => (
-                <>
-                  {/* <input  key={index}  className="otpBox" placeholder="-" /> */}
-                  <Controller
-                    key={index}
-                    name={`otp${index}`}
-                    control={control}
-                    defaultValue=""
-                    rules={{
-                      required: true,
-                    }}
-                    render={({
-                      field: { onChange, value, ref, ...rest },
-                      fieldState: { error },
-                    }) => (
-                      <TextField
-                        // type='number'
-                        {...rest}
-                        inputRef={(el) => {
-                          inputRefs.current[index] = el;
-                          ref(el);
-                        }}
-                        error={!!error}
-                        value={value}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          handleOtpChange(e, index, onChange)
-                        }
-                        onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) =>
-                          handleKeyDown(e, index, onChange)
-                        }
-                        className="otpBox"
-                        placeholder="-"
-                        sx={{
-                          "& .MuiOutlinedInput-root": {
-                            height: "100%",
-                            width: "100%",
-                          },
-                        }}
-                        inputProps={{
-                          maxLength: 1,
-                          style: {
-                            textAlign: "center",
-                            fontSize: "24px",
-                            paddingLeft: "15px",
-                          },
-                        }}
-                      />
-                    )}
+              <Controller
+                name={`otp`}
+                control={control}
+                defaultValue=""
+                rules={{
+                  required: true,
+                }}
+                render={({
+                  field: { onChange, value, ref, ...rest },
+                  fieldState: { error },
+                }) => (
+                  <OTPInput
+                    onChange={onChange}
+                    value={value}
+                    numInputs={6}
+                    renderInput={(props) => <input {...props} />}
+                    containerStyle="otp"
+                    inputStyle="otpBox"
                   />
-                </>
-              ))}
+                )}
+              />
             </Box>
             <Box className="bottomText">
               <Typography className="receiveOtp">
