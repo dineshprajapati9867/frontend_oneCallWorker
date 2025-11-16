@@ -4,8 +4,9 @@ import { theme, snack } from "@Utils";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import App from "./App";
-import './i18n.ts'
-import { GoogleOAuthProvider } from '@react-oauth/google';
+import "./i18n.ts";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { IKContext } from "imagekitio-react";
 const { CustomMuiThemeProvider } = theme;
 
 const { SnackBarProvider } = snack;
@@ -30,9 +31,13 @@ root.render(
     <CustomMuiThemeProvider>
       <QueryClientProvider client={queryClient}>
         <SnackBarProvider>
-          <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
-          <App />
-          </GoogleOAuthProvider>
+          <IKContext urlEndpoint={process.env.IMAGEKIT_URL_ENDPOINT}>
+            <GoogleOAuthProvider
+              clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+            >
+              <App />
+            </GoogleOAuthProvider>
+          </IKContext>
           {/* <ReactQueryDevtools position="bottom" /> */}
         </SnackBarProvider>
       </QueryClientProvider>

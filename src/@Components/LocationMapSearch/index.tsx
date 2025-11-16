@@ -203,7 +203,7 @@ const LocationMapSearch = ({ open, onClose }: PropsI) => {
     value: "satellite-streets-v12",
   });
   const { useGetAddress, useForwardGeocodingAddressToLatLon } =
-    hooks.useLocations();
+    hooks.useMisc();
   const [loactionSuggestions, setLocationSuggestions] = useState([]);
   const searchDebounce = hooks.useDebounce(inputValue, 1000);
 

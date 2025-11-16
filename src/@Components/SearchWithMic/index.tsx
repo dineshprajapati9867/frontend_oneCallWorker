@@ -8,7 +8,12 @@ import {
   styled,
   Typography,
 } from "@mui/material";
-import { BlackSmallCrossIcon, CloseIcon, MicMuiIcon, SearchMuiIcon } from "@Icons";
+import {
+  BlackSmallCrossIcon,
+  CloseIcon,
+  MicMuiIcon,
+  SearchMuiIcon,
+} from "@Icons";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
@@ -32,7 +37,6 @@ const CustomInputStyled = styled(Input)(({ theme }) => ({
   ...theme.typography.inputValue,
   height: "100%",
   width: "100%",
-  // backgroundColor: theme.palette.secondary.light,
   border: `1px solid ${theme.misc.borderColor}`,
   borderRadius: theme.spacing(3),
   padding: theme.spacing(5, 4),
@@ -59,17 +63,15 @@ const CustomInputStyled = styled(Input)(({ theme }) => ({
     marginRight: "-2px",
   },
   ".searchIcon": {
-    border: "none",
-    borderRadius: theme.spacing(3),
-    paddingTop: theme.spacing(1.5),
+    display: "flex",
+    borderRadius: theme.spacing(2),
     cursor: "pointer",
-     backgroundColor:theme.text.darkOrange,
-     color:theme.palette.primary.contrastText
+    backgroundColor: theme.text.primary,
+    color: theme.palette.primary.contrastText,
   },
-  '.micIcon':{
-     color:theme.misc.darkBlue,
-     cursor: "pointer",
-     
+  ".micIcon": {
+    color: theme.misc.darkBlue,
+    cursor: "pointer",
   },
 }));
 
@@ -99,13 +101,14 @@ export default function SearchWithMic() {
       SpeechRecognition.startListening();
     } catch (error) {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
         stream.getTracks().forEach((track) => track.stop());
         setOpen(true);
         resetTranscript();
         SpeechRecognition.startListening();
-      } catch (err) {
-      }
+      } catch (err) {}
     }
   };
 
@@ -141,16 +144,16 @@ export default function SearchWithMic() {
           }}
           endAdornment={
             <InputAdornment position="end">
-              {searchText&&
-              <IconButton onClick={()=>setSearchText('')}>
-                <BlackSmallCrossIcon/>
-              </IconButton>
-              }
+              {searchText && (
+                <IconButton onClick={() => setSearchText("")}>
+                  <BlackSmallCrossIcon />
+                </IconButton>
+              )}
               <IconButton onClick={handleMicClick}>
                 <MicMuiIcon className="micIcon" />
               </IconButton>
               <button className="searchIcon">
-                <SearchMuiIcon  width={24} height={24} />
+                <SearchMuiIcon width={24} height={24} />
               </button>
             </InputAdornment>
           }

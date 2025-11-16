@@ -16,12 +16,13 @@ import {
   Divider,
   IconButton,
 } from "@mui/material";
-import { validationPatterns } from "@Utils/index";
-//import { useGoogleLogin } from "@react-oauth/google";
+import { hooks, validationPatterns } from "@Utils/index";
+import { useGoogleLogin, useGoogleOneTapLogin } from "@react-oauth/google";
 import React, { useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import OTPInput from "react-otp-input";
 import ocw_logo from '@Assets/Images/ocw_logo.png'
+import axios from "axios";
 interface PropsI {
   open: boolean;
   onClose: () => void;
@@ -172,17 +173,39 @@ const LoginOtp = styled(Box)(({ theme }) => ({
     maxHeight: theme.spacing(20),
   },
 }));
+
 function LogIn({ open, onClose }: PropsI) {
   const [isOtpSend, setIsOtpSend] = useState(false);
   const { control, setValue, handleSubmit } = useForm({
     mode: "onChange",
   });
-
+const  {handleLoginWithGoogle}=hooks.useAuth()
   const onSubmit = (data) => {
     setIsOtpSend(true);
-    console.log("data", data);
   };
 
+  // const handleLoginWithGoogle=()=>{
+
+  // }
+  // const handleLoginWithGoogle = useGoogleLogin({
+  //   onSuccess: async (response) => {
+  //     console.log("Google Login Success:", response);
+  
+  //     // Google se user data fetch
+  //     const userInfo = await fetch(
+  //       `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${response.access_token}`
+  //     ).then((res) => res.json());
+  
+  //     console.log("User Info:", userInfo);
+  
+  //     // TODO: userInfo ko backend pe bhejna for signup/login
+  //   },
+  //   onError: () => {
+  //     console.log("Google Login Failed");
+  //   },
+  // });
+  
+  
   return (
     <Dialog
       open={open}
@@ -296,7 +319,7 @@ function LogIn({ open, onClose }: PropsI) {
               startIcon={<GoogleIcon />}
               fullWidth
               className="googleBtn"
-              // onClick={() => handleLogin()}
+              onClick={handleLoginWithGoogle}
             >
               Google
             </Button>

@@ -1,27 +1,40 @@
-// Hook (use-auth.js)
-import React, { useContext, createContext } from 'react';
+import { useGoogleLogin } from "@react-oauth/google";
+import { googleLogin, saveGoogleUser } from "@Utils/controllers/misc";
+import { hooks } from "@Utils/index";
+import React, { useContext, createContext } from "react";
 
-
-
-
-interface PropsI{
-
+interface AuthContextI {
+  handleLoginWithGoogle: () => void;
 }
-const authContext = createContext<PropsI>({} as PropsI );
 
-
+const authContext = createContext<AuthContextI>({} as AuthContextI);
 
 export const useAuth = () => useContext(authContext);
 
+function useProvideAuth() {
+  const { setToken ,setUser} = hooks.useToken();
+  const {ShowApiErrorSnackBar}=hooks.useSnackBar()
+  const handleLoginWithGoogle = useGoogleLogin({
+    onSuccess: async (res) => {
+        const userInfo = await googleLogin(res.access_token);        
+        const savedUser = await saveGoogleUser(userInfo.data);
+        setToken(savedUser.data.jwtToken)        
+        setUser(savedUser.data.user)
+    },
+    onError: (err) => {
+      ShowApiErrorSnackBar(err)
+    },
+  });
 
-function useProvideAuth(){
-
+  return { handleLoginWithGoogle };
 }
 interface ProvideAuthI {
-    children: React.ReactNode;
-  }
+  children: React.ReactNode;
+}
 
 export function ProvideAuth({ children }: ProvideAuthI) {
   const auth = useProvideAuth();
-  return <authContext.Provider value={auth}>{children}</authContext.Provider>;
+  return (
+    <authContext.Provider value={auth}>{children}</authContext.Provider>
+  );
 }

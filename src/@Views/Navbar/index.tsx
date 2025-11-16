@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import { Box, Button, styled, Typography } from "@mui/material";
+import { Avatar, Box, Button, styled, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import LanguageTranslate from "@Components/LanguageTranslate";
 import { languages } from "@Constants/Home";
 import LogIn from "@Components/LogIn/LogIn";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import { useNavigate } from "react-router-dom";
-import SearchWithLocation from "@Components/SearchWithLocation";
 import SearchWithMic from "@Components/SearchWithMic";
 import ocw_logo from "@Assets/Images/ocw_logo.png";
+import { AvatarLabel } from "@Primitives/Admin/SearchableDropDown";
+import { hooks } from "@Utils/index";
 const NavbarStyle = styled(Box)(({ theme }) => ({
   height: theme.spacing(40),
   borderBottom: `1px solid ${theme.misc.borderColor}`,
@@ -18,6 +19,9 @@ const NavbarStyle = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
+  position: "sticky",
+  top: "0px",
+  backgroundColor: theme.palette.primary.contrastText,
   ".leftSide": {
     display: "flex",
     alignItems: "center",
@@ -73,11 +77,15 @@ export default function Navbar() {
   const { t, i18n } = useTranslation("navbar");
   const navigate = useNavigate();
   const [openLogin, setOpenLogin] = useState(false);
+  const {handleOpenProfileDrawer}=hooks.useUser()
   // Current language display
   const handleGetCurrentLanguage = () => {
     const current = languages.find((lang) => lang.code === i18n.language);
     return current.code.toLocaleUpperCase();
   };
+
+  const user = JSON.parse(localStorage.getItem("user") || "null");
+  const token = localStorage.getItem("token");
 
   return (
     <>
@@ -106,20 +114,19 @@ export default function Navbar() {
               </Typography>
             </Button>
           </Box>
-          {/* <IconButton>
-            <Badge badgeContent={1} color="error">
-              <NotificationIcon />
-            </Badge>
-          </IconButton> */}
-          <Button
-            className="btn"
-            onClick={() => {
-              setOpenLogin(true);
-            }}
-            variant="contained"
-          >
-            {t("loginSignUp")}
-          </Button>
+          {user && token ? (
+            <Avatar sx={{cursor:"pointer"}} onClick={handleOpenProfileDrawer} src={user.picture} />
+          ) : (
+            <Button
+              className="btn"
+              onClick={() => {
+                setOpenLogin(true);
+              }}
+              variant="contained"
+            >
+              {t("loginSignUp")}
+            </Button>
+          )}
         </Box>
       </NavbarStyle>
 
