@@ -4,20 +4,23 @@ import {
   StarMuiIcon,
   WhatsAppIcon,
   CallMuiIcon,
+  ChatMuiIcon
 } from "@Icons/index";
 import { Box, Button, styled, Typography } from "@mui/material";
-import VerifiedIcon from "@mui/icons-material/Verified";
-import { VerifyAnimation } from "@Primitives/index";
+// import VerifiedIcon from "@mui/icons-material/Verified";
+// import { VerifyAnimation } from "@Primitives/index";
+
 const WorkerCardStyle = styled(Box)(({ theme }) => ({
   borderRadius: theme.spacing(5),
   cursor: "pointer",
-  width: theme.spacing(160),
-  height: theme.spacing(237.5),
+  width: '100%',
+  height: theme.spacing(132.5),
   border: `1px solid ${theme.misc.borderColor}`,
   boxSizing: "border-box",
   display: "flex",
-  flexDirection: "column",
+  // flexDirection: "column",
   position: "relative",
+  padding:theme.spacing(7.5),
   ".flex": {
     display: "flex",
     alignItems: "center",
@@ -39,11 +42,10 @@ const WorkerCardStyle = styled(Box)(({ theme }) => ({
     padding: theme.spacing(10),
   },
   ".image": {
-    height: theme.spacing(150),
-    width: "100%",
-    borderRadius: theme.spacing(2),
-    borderBottomLeftRadius: "0px",
-    borderBottomRightRadius: "0px",
+    height: '100%',
+    width: theme.spacing(100),
+    borderRadius: theme.spacing(4),
+    objectFit:"cover"
   },
   ".ratingBox": {
     gap: theme.spacing(6),
@@ -80,7 +82,16 @@ const WorkerCardStyle = styled(Box)(({ theme }) => ({
     gap: theme.spacing(6),
     ".btn": {
       padding: theme.spacing(0, 8),
+      height: theme.spacing(17.5),
+      fontSize:theme.spacing(7.5),
+      fontWeight:500,
+      minWidth:theme.spacing(63)
     },
+    '.enquiryBtn':{
+      backgroundColor:theme.text.lightBlue,
+      color:theme.graph.secondary,
+      border:'none'
+    }
   },
 }));
 const WorkerCard = () => {
@@ -91,11 +102,11 @@ const WorkerCard = () => {
         alt="image"
         className="image"
       />
-      <Box className="VerifyAnimation">
+      {/* <Box className="VerifyAnimation">
         <VerifyAnimation />
-      </Box>
+      </Box> */}
       <Box className="rightSide">
-        <Typography variant="h4">Tater International Impex</Typography>
+        <Typography variant="h4">Dinesh Prajapati</Typography>
         <Box className="ratingBox flex">
           <Box className="starRatingBox">
             <Typography className="rating font15" variant="h5">
@@ -129,6 +140,13 @@ const WorkerCard = () => {
             startIcon={<WhatsAppIcon width={15} height={15} />}
           >
             WhatsApp
+          </Button>
+          <Button
+          variant="outlined"
+          startIcon={<ChatMuiIcon />}
+          className="btn enquiryBtn"
+          >
+            Send Enquiry
           </Button>
         </Box>
       </Box>

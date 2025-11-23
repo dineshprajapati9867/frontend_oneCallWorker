@@ -9,6 +9,7 @@ import { useGetLatitudeAndLongitude } from "./Custom/useGetLatitudeAndLongitude"
 import { ProvideAuth,useAuth } from "./Auth";
 import useToken from "./useToken";
 import { ProvideUser ,useUser} from "./useUser";
+import { ProvideResponsive,useResponsive } from "./useResponsive";
 export {
   useGetLatitudeAndLongitude,
   useHashRouteToggle,
@@ -22,5 +23,7 @@ export {
   useAuth,
   useToken,
   ProvideUser,
-  useUser
+  useUser,
+  useResponsive,
+  ProvideResponsive
 };

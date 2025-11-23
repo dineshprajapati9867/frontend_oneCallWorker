@@ -1,9 +1,7 @@
-import { ServiceCategoryCard } from "./Card/ServiceCategoryCard";
 import NotFoundPage from "./404Page";
 import { ActivityAttachment } from "./ActivityAttachment";
 import { AvatarWithThreeDots } from "./AvatarWithThreeDots";
 import BreadCrumbs from "./BreadCrumbs";
-import WorkerCard from "./Card/WorkerCard";
 import { CustomDropDown } from "./CustomDropDown";
 import CustomTable from "./CustomTable";
 import { CustomTextWrapper } from "./CustomTextWrapper";
@@ -19,7 +17,9 @@ import { SectionHeader } from "./SectionHeader";
 import { SinglePageCommonModal } from "./SinglePageCommonModal";
 import { StatusType } from "./StatusType";
 import { ThreeDotMenu } from "./ThreeDotMenu";
+import {ServiceCategoryCard,EnquiryCard,WorkerCard} from './Card'
 export{
+  EnquiryCard,
   ServiceCategoryCard,
   NotFoundPage,
   ActivityAttachment,

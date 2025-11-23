@@ -1,20 +1,17 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { forwardGeocoding, reverseGeocoding, searchLocation } from "@Utils/controllers/location";
-import { getAllWorkerList } from "@Utils/controllers/misc";
-import { getAllWorkerListPropI } from "@Utils/interfaces";
 import React, { createContext, useContext } from "react";
-interface MiscContextI {
+interface LocationContextI {
   useGetAddress: any;
   useReverseGeocodingToAddress:any;
-  useForwardGeocodingAddressToLatLon:(query:string)=>UseQueryResult | any;
-  useGetAllWorkerList:()=>UseQueryResult<getAllWorkerListPropI[]>
+  useForwardGeocodingAddressToLatLon:(query:string)=>UseQueryResult | any
 }
 
-const LocationContext = createContext<MiscContextI>({} as MiscContextI);
+const LocationContext = createContext<LocationContextI>({} as LocationContextI);
 
-export const useMisc = () => useContext(LocationContext);
+export const useLocations = () => useContext(LocationContext);
 
-const useMiscData = () => {
+const useLoacationData = () => {
   //  get the address
   const useGetAddress = (search: string,limit?:number) => {
     return useQuery({
@@ -49,30 +46,19 @@ const useMiscData = () => {
     });
   };
 
-/**
- *  Get All worker List imageLink and titile
- */
 
-const useGetAllWorkerList=()=>{
-  return useQuery({
-    queryKey:["allWorkerListImageAndTitle"],
-    queryFn:getAllWorkerList,
-    select:(data)=>data.data,
-  })
-}
   return {
     useGetAddress,
     useReverseGeocodingToAddress,
-    useForwardGeocodingAddressToLatLon,
-    useGetAllWorkerList
+    useForwardGeocodingAddressToLatLon
   };
 };
 
-interface ProvideMiscI {
+interface ProvideLocationI {
   children: React.ReactNode;
 }
-export function ProvideMisc({ children }: ProvideMiscI) {
-  const locationData = useMiscData();
+export function ProvideLocation({ children }: ProvideLocationI) {
+  const locationData = useLoacationData();
   return (
     <LocationContext.Provider value={locationData}>
       {children}

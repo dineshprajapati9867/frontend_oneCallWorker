@@ -1,4 +1,5 @@
 import { Box, styled } from "@mui/material";
+import Navbar from "@Views/Navbar";
 import React from "react";
 
 interface PropsI {
@@ -24,6 +25,7 @@ function HomeLayout({ children }: PropsI) {
   return (
     <MainLayout>
       <InnerLayout>
+      <Navbar/>  
         <Box className="content-layout" >
           {children}
         </Box>

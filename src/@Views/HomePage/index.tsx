@@ -3,8 +3,9 @@ import React from "react";
 import homePage from "@Assets/Images/homePage.png";
 import { Box, Button, styled, Typography } from "@mui/material";
 import { hooks } from "@Utils/index";
-import { ServiceCategoryCard } from "@Components/index";
+import { ServiceCategoryCard, WorkerCard } from "@Components/index";
 import ProfileDrawer from "@Views/User/components/ProfileDrawer";
+import { useNavigate } from "react-router-dom";
 const HomeStyle = styled(Box)(({ theme }) => ({
   padding: theme.spacing(5),
 
@@ -20,7 +21,7 @@ const HomeStyle = styled(Box)(({ theme }) => ({
       whiteSpace: "nowrap",
     },
     ".subHeading": {
-      fontSize: "1.5vmax",
+      fontSize: "1.2vmax",
       color: theme.palette.secondary.dark,
     },
     ".image": {
@@ -48,12 +49,12 @@ const HomeStyle = styled(Box)(({ theme }) => ({
   },
 }));
 function HomePage() {
-  // const { useGetAllWorkerList } = hooks.useMisc();
-  // const { data: WorkersListData } = useGetAllWorkerList();
+  const navigate=useNavigate()
+  const { useGetAllWorkerList } = hooks.useMisc();
+  const { data: WorkersListData } = useGetAllWorkerList();
   const { openProfileDrawer, handleCloseProfileDrawer } = hooks.useUser();
   return (
     <>
-      <Navbar />
       <HomeStyle>
         <Box className="main">
           <Box className="leftSide">
@@ -61,7 +62,7 @@ function HomePage() {
               Find Skilled Workers Near You
             </Typography>
             <Typography className="subHeading" variant="body1">
-              Connecting you with reliable workers for every job.
+              Finding skilled workers near you has never been this easier.{" "}
             </Typography>
             <Button size="medium" className="findBtn" variant="contained">
               Find Worker
@@ -69,16 +70,24 @@ function HomePage() {
           </Box>
           <img className="image" src={homePage} />
         </Box>
+        <WorkerCard />
         <Typography className="serviceCategories" variant="h1">
           Service Categories
         </Typography>
-        {/* <Box className="imageContainer">
+        <Box className="imageContainer">
           {WorkersListData?.map((val) => {
             return (
-              <ServiceCategoryCard title={val.title} url={val.image_kit_url} />
+              <ServiceCategoryCard
+                handleClick={() =>{
+                  navigate(`/workers/${val.title.split(" ").join("-")}`)
+                }
+                }
+                title={val.title}
+                url={val.image_kit_url}
+              />
             );
           })}
-        </Box> */}
+        </Box>
       </HomeStyle>
       {openProfileDrawer && (
         <ProfileDrawer

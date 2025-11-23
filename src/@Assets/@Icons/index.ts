@@ -249,7 +249,9 @@ import { InstagramColoredIcon,  GmailIcon,
   import CallMuiIcon from "@mui/icons-material/Call";
   import MicMuiIcon from "@mui/icons-material/MicOutlined";
   import SearchMuiIcon from '@mui/icons-material/Search';
+  import ChatMuiIcon from '@mui/icons-material/Chat';
 export {
+  ChatMuiIcon,
   SearchMuiIcon,
   MicMuiIcon,
   CallMuiIcon,

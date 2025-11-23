@@ -91,7 +91,7 @@ export default function Navbar() {
     <>
       <NavbarStyle>
         <Box className="leftSide">
-          <img className="logoImage" src={ocw_logo} alt="logo" />
+          <img onClick={()=>navigate('/')} className="logoImage" src={ocw_logo} alt="logo" />
           {/* <SearchWithLocation /> */}
           <SearchWithMic />
         </Box>

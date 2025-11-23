@@ -5,6 +5,7 @@ import { IKImage } from "imagekitio-react";
 interface PropI {
   title: string;
   url: string;
+  handleClick?:()=>void
 }
 const StyledServiceCard = styled(Box)(({ theme }) => ({
   width:" 233px",
@@ -28,9 +29,9 @@ const StyledServiceCard = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const ServiceCategoryCard = ({ title, url }: PropI) => {
+export const ServiceCategoryCard = ({ title, url ,handleClick}: PropI) => {
   return (
-    <StyledServiceCard>
+    <StyledServiceCard onClick={handleClick}>
         <IKImage  loading="lazy" src={url} alt={title} className="image-box" />
         <Typography className="service-name" variant="h6">{title}</Typography>
     </StyledServiceCard>
