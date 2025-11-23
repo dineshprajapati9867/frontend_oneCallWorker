@@ -6,6 +6,7 @@ import { hooks } from "@Utils/index";
 import { ServiceCategoryCard, WorkerCard } from "@Components/index";
 import ProfileDrawer from "@Views/User/components/ProfileDrawer";
 import { useNavigate } from "react-router-dom";
+import WorkerCardSkeleton from "@Components/Card/WorkerCardSkelton";
 const HomeStyle = styled(Box)(({ theme }) => ({
   padding: theme.spacing(5),
 
@@ -70,7 +71,6 @@ function HomePage() {
           </Box>
           <img className="image" src={homePage} />
         </Box>
-        <WorkerCard />
         <Typography className="serviceCategories" variant="h1">
           Service Categories
         </Typography>

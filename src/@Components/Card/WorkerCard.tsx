@@ -40,6 +40,7 @@ const WorkerCardStyle = styled(Box)(({ theme }) => ({
     flexDirection: "column",
     gap: theme.spacing(6),
     padding: theme.spacing(10),
+    paddingRight:'0px'
   },
   ".image": {
     height: '100%',
