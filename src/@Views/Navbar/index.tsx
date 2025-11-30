@@ -22,7 +22,7 @@ const NavbarStyle = styled(Box)(({ theme }) => ({
   position: "sticky",
   top: "0px",
   backgroundColor: theme.palette.primary.contrastText,
-  zIndex:"10000",
+  // zIndex:"10000",
   ".leftSide": {
     display: "flex",
     alignItems: "center",

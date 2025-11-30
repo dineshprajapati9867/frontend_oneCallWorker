@@ -53,7 +53,6 @@ function HomePage() {
   const navigate=useNavigate()
   const { useGetAllWorkerList } = hooks.useMisc();
   const { data: WorkersListData } = useGetAllWorkerList();
-  const { openProfileDrawer, handleCloseProfileDrawer } = hooks.useUser();
   return (
     <>
       <HomeStyle>
@@ -89,12 +88,6 @@ function HomePage() {
           })}
         </Box>
       </HomeStyle>
-      {openProfileDrawer && (
-        <ProfileDrawer
-          onClose={handleCloseProfileDrawer}
-          open={openProfileDrawer}
-        />
-      )}
     </>
   );
 }

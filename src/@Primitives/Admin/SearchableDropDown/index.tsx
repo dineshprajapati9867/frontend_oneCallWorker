@@ -7,11 +7,13 @@ import { withAsyncPaginate, AsyncPaginate } from 'react-select-async-paginate';
 import { ErrorIcon } from '@Assets/@Icons/ErrorIcon';
 import { theme } from '@Utils/theme';
 import EllipsisText from 'react-ellipsis-text';
+import { ToolTip } from '@Primitives/Tooltip';
+import { SmallInfoIcon } from '@Icons/SmallInfoIcon';
 
 interface SearchableDropDownI {
   label?: string;
   options?: {
-    id?: string;
+    id?: string | number;
     value?: string | number | boolean | any;
     label: string;
     avatar?: string;
@@ -56,7 +58,8 @@ interface SearchableDropDownI {
   isShowProfileIcon?: boolean;
   name?: string;
   noOptionsText?: string;
-
+  toolTipText?:string,
+  isTooltipIcon?:boolean,
   // New props for custom multi-value display
   hideMultiValueTags?: boolean; // Hide selected items from input field
   onRemoveValue?: (removedValue: any, remainingValues: any[]) => void; // Callback for individual item removal
@@ -138,6 +141,8 @@ export function SearchableDropDown({
   // New props
   hideMultiValueTags = false,
   onRemoveValue,
+  toolTipText,
+  isTooltipIcon
 }: SearchableDropDownI) {
   /**
    * Handle removal of individual items
@@ -374,6 +379,7 @@ export function SearchableDropDown({
   return (
     <Box width='100%'>
       {label && (
+          <Box display='flex' alignItems="center">
         <Typography
           variant='subtitle2'
           sx={{
@@ -384,6 +390,16 @@ export function SearchableDropDown({
         >
           {label}
         </Typography>
+        <Box mb={2} ml={2.5}>
+                  {isTooltipIcon && (
+                    <ToolTip title={toolTipText}>
+                      <Box>
+                        <SmallInfoIcon />
+                      </Box>
+                    </ToolTip>
+                  )}
+                </Box>
+        </Box>
       )}
       <RenderComponent
         {...props}

@@ -1,5 +1,7 @@
 import { Box, styled } from "@mui/material";
+import { hooks } from "@Utils/index";
 import Navbar from "@Views/Navbar";
+import ProfileDrawer from "@Views/User/components/ProfileDrawer";
 import React from "react";
 
 interface PropsI {
@@ -22,15 +24,23 @@ const InnerLayout = styled(Box)(({ theme }) => ({
 }));
 
 function HomeLayout({ children }: PropsI) {
+  const { openProfileDrawer, handleCloseProfileDrawer } = hooks.useUser();
+
   return (
-    <MainLayout>
-      <InnerLayout>
-      <Navbar/>  
-        <Box className="content-layout" >
-          {children}
-        </Box>
-      </InnerLayout>
-    </MainLayout>
+    <>
+      <MainLayout>
+        <InnerLayout>
+          <Navbar />
+          <Box className="content-layout">{children}</Box>
+        </InnerLayout>
+      </MainLayout>
+      {openProfileDrawer && (
+        <ProfileDrawer
+          onClose={handleCloseProfileDrawer}
+          open={openProfileDrawer}
+        />
+      )}
+    </>
   );
 }
 

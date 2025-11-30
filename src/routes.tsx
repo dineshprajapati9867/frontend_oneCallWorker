@@ -14,11 +14,6 @@ export const HomeLayouts: {
     Component: HomePage,
   },
   {
-    name: "freeListing",
-    path: "free-listing",
-    Component: FreeListing,
-  },
-  {
     name: "workerList",
     path: "workers/:type",
     Component: WorkerList,
@@ -38,5 +33,10 @@ export const PublicRoute: {
     name: "NoInternetPage",
     path: "no-internet",
     Component: NoInternetPage,
+  },
+  {
+    name: "freeListing",
+    path: "free-listing",
+    Component: FreeListing,
   },
 ];

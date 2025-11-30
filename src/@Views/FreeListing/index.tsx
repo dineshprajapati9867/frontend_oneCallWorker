@@ -12,6 +12,9 @@ import { ChevronArrowDown } from "@Icons/ArrowDown";
 import { FAQs } from "@Constants/Home";
 import { useNavigate } from "react-router-dom";
 import { RightArrowMui } from "@Icons/index";
+import ocw_logo from "@Assets/Images/ocw_logo.png";
+import CreateProfileModal from "@Views/CreateProfileModal";
+import { hooks } from "@Utils/index";
 const FreeListingStyled = styled(Box)(({ theme }) => ({
   ".navbar": {
     height: theme.spacing(40),
@@ -26,6 +29,10 @@ const FreeListingStyled = styled(Box)(({ theme }) => ({
       display: "flex",
       alignItems: "center",
     },
+  },
+  ".logoImage": {
+    width: theme.spacing(50),
+    cursor: "pointer",
   },
   ".createBtn": {
     padding: theme.spacing(2, 8),
@@ -82,46 +89,69 @@ const FreeListingStyled = styled(Box)(({ theme }) => ({
 }));
 function FreeListing() {
   const navigate = useNavigate();
+  const {
+    openCreateProfileModal,
+    handleCloseCreateProfileModal,
+    handleOpenCreateProfileModal,
+  } = hooks.useUser();
   return (
-    <FreeListingStyled>
-      <nav className="navbar">
-        <Box className="leftSide">
-          <Typography className="logo">oneCallWorker</Typography>
-          <Button variant="text">FAQs</Button>
+    <>
+      <FreeListingStyled>
+        <nav className="navbar">
+          <Box className="leftSide">
+            <img
+              onClick={() => navigate("/")}
+              className="logoImage"
+              src={ocw_logo}
+              alt="logo"
+            />
+
+            <Button variant="text">FAQs</Button>
+          </Box>
+          <Button onClick={handleOpenCreateProfileModal} className="createBtn" variant="contained">
+            Create Your Profile
+          </Button>
+        </nav>
+        <Box className="backHomeBox">
+          <Button
+            className="homeBtn"
+            onClick={() => navigate(-1)}
+            variant="text"
+          >
+            Home
+          </Button>
+          <RightArrowMui color="secondary" />
+          <Typography className="freeListing">Free Listing</Typography>
         </Box>
-        <Button className="createBtn" variant="contained">
-          Create Your Profile
-        </Button>
-      </nav>
-      <Box className="backHomeBox">
-        <Button className="homeBtn" onClick={() => navigate(-1)} variant="text">
-          Home
-        </Button>
-        <RightArrowMui color="secondary" />
-        <Typography className="freeListing">Free Listing</Typography>
-      </Box>
-      <Box className="main">
-        <Typography className="gotQustion" variant="h2">
-          Got a question?
-        </Typography>
-        {FAQs.map((val) => (
-          <Accordion className="accordion">
-            <AccordionSummary
-              expandIcon={<ChevronArrowDown />}
-              aria-controls="panel2-content"
-              id="panel2-header"
-            >
-              <Typography className="headerTexts">{val.question}</Typography>
-            </AccordionSummary>
-            <ul className="ul">
-              {val.answers.map((ans) => (
-                <li>{ans}</li>
-              ))}
-            </ul>
-          </Accordion>
-        ))}
-      </Box>
-    </FreeListingStyled>
+        <Box className="main">
+          <Typography className="gotQustion" variant="h2">
+            Got a question?
+          </Typography>
+          {FAQs.map((val) => (
+            <Accordion className="accordion">
+              <AccordionSummary
+                expandIcon={<ChevronArrowDown />}
+                aria-controls="panel2-content"
+                id="panel2-header"
+              >
+                <Typography className="headerTexts">{val.question}</Typography>
+              </AccordionSummary>
+              <ul className="ul">
+                {val.answers.map((ans) => (
+                  <li>{ans}</li>
+                ))}
+              </ul>
+            </Accordion>
+          ))}
+        </Box>
+      </FreeListingStyled>
+      {openCreateProfileModal && (
+        <CreateProfileModal
+          open={openCreateProfileModal}
+          onClose={handleCloseCreateProfileModal}
+        />
+      )}
+    </>
   );
 }
 

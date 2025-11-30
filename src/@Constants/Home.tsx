@@ -37,8 +37,22 @@ const  FAQs = [
     { label: "Navigation Day", value: "navigation-day-v1" },
     { label: "Navigation Night", value: "navigation-night-v1" },
   ];
+  const allIndianLanguage=[
+    { id: 1, label: "Hindi", value: "Hindi" },
+    { id: 2, label: "English", value: "English" },
+    { id: 3, label: "Bengali", value: "Bengali" },
+    { id: 4, label: "Telugu", value: "Telugu" },
+    { id: 5, label: "Marathi", value: "Marathi" },
+    { id: 6, label: "Tamil", value: "Tamil" },
+    { id: 7, label: "Gujarati", value: "Gujarati" },
+    { id: 8, label: "Kannada", value: "Kannada" },
+    { id: 9, label: "Punjabi", value: "Punjabi" },
+    { id: 10, label: "Malayalam", value: "Malayalam" },
+  ]
+  
   export {
     languages,
     FAQs,
-    mapStyles
+    mapStyles,
+    allIndianLanguage
   }

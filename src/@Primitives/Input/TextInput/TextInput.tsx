@@ -8,9 +8,12 @@ import {
   Typography,
   Theme,
   TextField,
+  Box,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { ErrorIcon } from '@Assets/@Icons/ErrorIcon';
+import { SmallInfoIcon } from '@Icons/SmallInfoIcon';
+import { ToolTip } from '@Primitives/Tooltip';
 
 export interface TextInputI {
   type?: string;
@@ -49,6 +52,8 @@ export interface TextInputI {
   onKeyDown?: (e: any) => void;
   onPaste?: (e: any) => void;
   labelAdornment?: string | React.ReactNode;
+  isTooltipIcon?:boolean,
+  toolTipText?:string,
 }
 
 const FormControlComponent = styled(FormControl)(({ theme }) => ({
@@ -190,6 +195,8 @@ function TextInput(props: TextInputI) {
     autoFocus,
     onPaste,
     labelAdornment,
+    isTooltipIcon,
+    toolTipText
   } = props;
 
   /**
@@ -253,7 +260,7 @@ function TextInput(props: TextInputI) {
       disabled={disabled}
       className={className}
     >
-      {label && !isLabeledAdornmentVariant && (
+      {/* {label && !isLabeledAdornmentVariant && (
         <InputLabelComponent
           htmlFor={`text-input-${name || 'box'}`}
           required={required}
@@ -261,6 +268,26 @@ function TextInput(props: TextInputI) {
         >
           {label}
         </InputLabelComponent>
+      )} */}
+            {label && !isLabeledAdornmentVariant && (
+        <Box display='flex' alignItems="center">
+          <InputLabelComponent
+            htmlFor={`text-input-${name || 'box'}`}
+            required={required}
+            sx={labelsx}
+          >
+            {label}
+          </InputLabelComponent>
+          <Box mb={2} ml={2.5}>
+            {isTooltipIcon && (
+              <ToolTip title={toolTipText}>
+                <Box>
+                  <SmallInfoIcon />
+                </Box>
+              </ToolTip>
+            )}
+          </Box>
+        </Box>
       )}
       <TextFieldComponent
         {...props}
