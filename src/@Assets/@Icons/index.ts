@@ -4,7 +4,6 @@ import { GuestsWidget } from '@Assets/@Icons/GuestsWidget';
 import { ArrowDowns, ArrowUp, ArrowLineUp } from '@Assets/@Icons/ArrowDown';
 import { Dedicated, Invoices, Meeting, Tickets } from '@Assets/@Icons/Home';
 import { SendIcon } from '@Assets/@Icons/Broker/SendIcon';
-import { WybridLogo } from './LogoIcon';
 import { ListWhiteIcon } from './ListWhiteIcon/index';
 import { SaveIcon } from './SaveIcon/index';
 import { TrashIcon } from './TrashIcon/index';
@@ -231,6 +230,7 @@ import { CloseEyeBlackIcon, OpenEyeBlackIcon } from './Broker/OpenAndCloseEyeIco
 import LocationWithInsideCircle, {
   GrayLocationWithInsideCircle,
   SmallLocationWithInsideCircle,
+  BlackNormalLocationIcon
 } from './Broker/LocationWithInsideCircle/LocationWithInsideCircle';
 import TwoUserIcon from './Broker/TwoUsersIcon';
 import SortHorizontalIcon from './Broker/SortHorizontalIcon';
@@ -293,7 +293,6 @@ export {
   DarkGrayDeskIcon,
   DeskWithComputerIcon,
   MarkasDefault,
-  WybridLogo,
   TwitterIcon,
   FacebookIcon,
   LinkedInIcon,
@@ -517,5 +516,6 @@ export {
   LinkedInColoredIcon,
   WhatsAppIcon,
   TwitterColoredIcon,
-  InstagramColoredIcon
+  InstagramColoredIcon,
+  BlackNormalLocationIcon,
 };

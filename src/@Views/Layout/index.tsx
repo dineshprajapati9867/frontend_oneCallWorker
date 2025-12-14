@@ -8,6 +8,7 @@ interface PropsI {
   children: React.ReactNode;
 }
 
+
 const MainLayout = styled(Box)(({ theme }) => ({
   backgroundColor: theme.misc.bgGrey,
   minHeight: "100vh",
@@ -19,7 +20,7 @@ const InnerLayout = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.primary.contrastText,
   width: "100%",
   [theme.breakpoints.up("lg")]: {
-    width: "80%",
+    width: "85%",
   },
 }));
 

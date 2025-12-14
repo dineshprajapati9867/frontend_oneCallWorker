@@ -1,6 +1,7 @@
 import React from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+const mobileTheme = createTheme(); // only used for breakpoints
 declare module '@mui/material/styles' {
   interface Theme {
     customTypography: {
@@ -430,36 +431,54 @@ export const theme = createTheme({
       fontWeight: 600,
       lineHeight: '125%',
       color: '#222222',
+      [mobileTheme.breakpoints.down("sm")]: {
+        fontSize: "calc(36px - .15vw) !important",
+      },
     },
     h2: {
       fontSize: '30px',
       fontWeight: 600,
       lineHeight: '125%',
       color: '#222222',
+      [mobileTheme.breakpoints.down("sm")]: {
+        fontSize: "calc(30px - .15vw) !important",
+      },
     },
     h3: {
       fontSize: '24px',
       fontWeight: 600,
       lineHeight: '125%',
       color: '#222222',
+      [mobileTheme.breakpoints.down("sm")]: {
+        fontSize: "calc(24px - .15vw) !important",
+      },
     },
     h4: {
       fontSize: '21px',
       fontWeight: 500,
       lineHeight: '125%',
       color: '#222222',
+      [mobileTheme.breakpoints.down("sm")]: {
+        fontSize: "calc(21px - .15vw) !important",
+      },
     },
     h5: {
       fontSize: '18px',
       fontWeight: 600,
       lineHeight: '125%',
       color: '#222222',
+      [mobileTheme.breakpoints.down("sm")]: {
+        fontSize: "calc(18px - .15vw) !important",
+      },
     },
     h6: {
       fontSize: '16px',
       fontWeight: 500,
       lineHeight: '125%',
       color: '#222222',
+      [mobileTheme.breakpoints.down("sm")]: {
+        fontSize: "calc(16px - .15vw) !important",
+      },
     },
     // h7: {
     //   fontSize: '27px',
@@ -472,46 +491,70 @@ export const theme = createTheme({
       fontWeight: 600,
       lineHeight: '125%',
       color: '#222222',
+      [mobileTheme.breakpoints.down("sm")]: {
+        fontSize: "calc(14px - .15vw) !important",
+      },
     },
     subtitle2: {
       fontSize: '13px',
       fontWeight: 600,
       lineHeight: '125%',
       color: '#222222',
+      [mobileTheme.breakpoints.down("sm")]: {
+        fontSize: "calc(13px - .15vw) !important",
+      },
     },
     body1: {
       fontSize: '14px',
       fontWeight: 400,
       lineHeight: '145%',
       color: '#222222',
+      [mobileTheme.breakpoints.down("sm")]: {
+        fontSize: "calc(14px - .15vw) !important",
+      },
     },
     body2: {
       fontSize: '12px',
       fontWeight: 400,
       lineHeight: '115%',
       color: '#222222',
+      [mobileTheme.breakpoints.down("sm")]: {
+        fontSize: "calc(12px - .15vw) !important",
+      },
     },
     caption: {
       fontSize: '11px',
       fontWeight: 400,
       lineHeight: '115%',
       // color: '#222222',
+      [mobileTheme.breakpoints.down("sm")]: {
+        fontSize: "calc(11px - .15vw) !important",
+      },
     },
     inputValue: {
       fontSize: '14px',
       fontWeight: 400,
       lineHeight: '145%',
       color: '#222222',
+      [mobileTheme.breakpoints.down("sm")]: {
+        fontSize: "calc(14px - .15vw) !important",
+      },
     },
     button: {
       fontSize: '16px',
       fontWeight: 400,
       lineHeight: '24px',
+      [mobileTheme.breakpoints.down("sm")]: {
+        fontSize: "calc(16px - .15vw) !important",
+      },
     },
     imageHeader: {
       fontSize: '12px',
       fontWeight: 600,
       lineHeight: '125%',
+      [mobileTheme.breakpoints.down("sm")]: {
+        fontSize: "calc(12px - .15vw) !important",
+      },
     },
   },
   customTypography: {

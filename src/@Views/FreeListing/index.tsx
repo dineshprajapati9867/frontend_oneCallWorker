@@ -16,6 +16,14 @@ import ocw_logo from "@Assets/Images/ocw_logo.png";
 import CreateProfileModal from "@Views/CreateProfileModal";
 import { hooks } from "@Utils/index";
 const FreeListingStyled = styled(Box)(({ theme }) => ({
+  // width: "100%",
+    height:"100vh",
+  [theme.breakpoints.up("lg")]: {
+    width: "85%",
+    margin:"auto",
+    backgroundColor: theme.palette.primary.contrastText,
+
+  },
   ".navbar": {
     height: theme.spacing(40),
     borderBottom: `1px solid ${theme.misc.borderColor}`,
@@ -95,7 +103,11 @@ function FreeListing() {
     handleOpenCreateProfileModal,
   } = hooks.useUser();
   return (
-    <>
+    <Box sx={(theme)=>({
+      [theme.breakpoints.up("lg")]: {
+        backgroundColor: theme.misc.bgGrey,
+      },
+    })}>
       <FreeListingStyled>
         <nav className="navbar">
           <Box className="leftSide">
@@ -151,7 +163,7 @@ function FreeListing() {
           onClose={handleCloseCreateProfileModal}
         />
       )}
-    </>
+    </Box>
   );
 }
 

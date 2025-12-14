@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import { BasicStepper, Loader } from "@Primitives";
 import { CloseIcon } from "@Icons";
-import { useFormContext } from "react-hook-form";
 import BreadCrumbs from "@Components/BreadCrumbs";
 
 export interface PropI {
@@ -30,7 +29,6 @@ const FixedAppBar = styled(AppBar)(({ theme }) => ({
   justifyContent: "center",
 }));
 
-
 export function CreateProfileHeader({
   steps,
   activeStep,
@@ -39,7 +37,6 @@ export function CreateProfileHeader({
   isBtnLoading,
 }: PropI) {
   return (
-    <div>
       <FixedAppBar position="fixed" color="inherit">
         <Grid
           container
@@ -47,14 +44,14 @@ export function CreateProfileHeader({
           alignItems="center"
           wrap="nowrap"
         >
-          <Grid item>
+          <Grid>
             <Grid
               container
               wrap="nowrap"
               justifyContent="space-between"
               alignItems="flex-end"
             >
-              <Grid item>
+              <Grid>
                 <IconButton
                   sx={(theme) => ({
                     marginRight: theme.spacing(2),
@@ -65,7 +62,7 @@ export function CreateProfileHeader({
                   <CloseIcon />
                 </IconButton>
               </Grid>
-              <Grid item>
+              <Grid>
                 <Box paddingBottom={3.5}>
                   <BreadCrumbs
                     item={[
@@ -88,7 +85,6 @@ export function CreateProfileHeader({
             </Grid>
           </Grid>
           <Grid
-            item
             sx={{
               width: "50%",
             }}
@@ -115,6 +111,5 @@ export function CreateProfileHeader({
           </Grid>
         </Grid>
       </FixedAppBar>
-    </div>
   );
 }

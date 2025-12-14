@@ -1,4 +1,4 @@
-import { CrossBigIcon } from "@Icons/index";
+import { BlackNormalLocationIcon, CrossBigIcon } from "@Icons/index";
 import {
   Avatar,
   Box,
@@ -40,6 +40,11 @@ const ProfileDrawerStyle = styled(Drawer)(({ theme }) => ({
       height: theme.spacing(28),
     },
   },
+  '.flexBox':{
+    display:"flex",
+    alignItems:"center",
+    gap:theme.spacing(8)
+  }
 }));
 const ProfileDrawer = ({ open, onClose }: PrposI) => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -53,11 +58,17 @@ const ProfileDrawer = ({ open, onClose }: PrposI) => {
       <Box className="header">
         <Avatar className="avatar" src={user.picture} />
         <Box className="right">
-          <Typography variant="h3">{capitalizedFirstLetter(user.family_name)}</Typography>
+          <Typography variant="h3">
+            {capitalizedFirstLetter(user.family_name)}
+          </Typography>
           <Typography variant="body1">{user.email}</Typography>
         </Box>
       </Box>
       <Divider />
+      <Box className="flexBox">
+        <BlackNormalLocationIcon />
+        <Typography variant="body1">Manage Address</Typography>
+      </Box>
     </ProfileDrawerStyle>
   );
 };

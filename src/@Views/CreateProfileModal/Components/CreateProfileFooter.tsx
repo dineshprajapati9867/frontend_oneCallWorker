@@ -76,7 +76,7 @@ export function CreateProfileFooter({
               boxShadow: "none",
             })}
           >
-            {activeStep === 0 ? "Cancel" : "Back"}
+            {activeStep === 1 ? "Cancel" : "Back"}
           </Button>
           <Button
             type="submit"

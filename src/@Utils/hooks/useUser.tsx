@@ -28,7 +28,6 @@ const useUserData = () => {
     "Location Information",
   ];
   const [activeStep, setActiveStep] = useState(1);
-  console.log("activeStep", activeStep);
 
   /*
    *  open and close profile drawer

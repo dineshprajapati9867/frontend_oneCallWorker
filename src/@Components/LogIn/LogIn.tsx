@@ -15,6 +15,7 @@ import {
   Button,
   Divider,
   IconButton,
+  Slide
 } from "@mui/material";
 import { hooks, validationPatterns } from "@Utils/index";
 import { useGoogleLogin, useGoogleOneTapLogin } from "@react-oauth/google";
@@ -28,7 +29,7 @@ interface PropsI {
   onClose: () => void;
 }
 
-const LoginStyle = styled(Box)(({ theme }) => ({
+const LoginStyle = styled(Box)<{isMobile:boolean}>(({ theme ,isMobile}) => ({
   padding: theme.spacing(15),
   display: "flex",
   flexDirection: "column",
@@ -46,7 +47,7 @@ const LoginStyle = styled(Box)(({ theme }) => ({
       fontWeight: 600,
     },
     ".desc": {
-      fontSize: theme.spacing(8.5),
+      fontSize:isMobile? theme.spacing(7.5):theme.spacing(8.5),
     },
   },
   ".crossIcon": {
@@ -179,6 +180,7 @@ function LogIn({ open, onClose }: PropsI) {
   const { control, setValue, handleSubmit } = useForm({
     mode: "onChange",
   });
+  const {isMobile}=hooks.useResponsive()
 const  {handleLoginWithGoogle}=hooks.useAuth()
   const onSubmit = (data) => {
     setIsOtpSend(true);
@@ -211,12 +213,16 @@ const  {handleLoginWithGoogle}=hooks.useAuth()
       open={open}
       sx={(theme) => ({
         ".MuiPaper-root": {
-          minWidth: theme.spacing(240),
+          maxWidth: theme.spacing(240),
+          width:"100%",
           borderRadius: theme.spacing(7.5),
+          margin:"0",
         },
       })}
+      slots={{ transition: Slide, }}
+      slotProps={{ transition: { direction: 'up' } }}
     >
-      <LoginStyle>
+      <LoginStyle isMobile={isMobile}>
         {/* Header */}
         <Box className="header">
           <img className="logoImage" src={ocw_logo} alt="logo"/>

@@ -2,7 +2,7 @@ import React from "react";
 import FreeListing from "@Views/FreeListing";
 import HomePage from "@Views/HomePage";
 import NoInternetPage from "@Components/NoInternetPage";
-import WorkerList from "@Components/WorkerList";
+import WorkerList from "@Views/WorkerList";
 export const HomeLayouts: {
   name: string;
   path: string;

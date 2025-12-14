@@ -13,7 +13,7 @@ import { SmallInfoIcon } from '@Icons/SmallInfoIcon';
 interface SearchableDropDownI {
   label?: string;
   options?: {
-    id?: string | number;
+    id?: string;
     value?: string | number | boolean | any;
     label: string;
     avatar?: string;

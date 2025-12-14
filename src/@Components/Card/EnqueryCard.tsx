@@ -13,7 +13,7 @@ const EnquiryCardStyle = styled(Box)(({ theme }) => ({
   borderRadius: theme.spacing(4),
 
   position: "sticky",
-  top: 0,
+  top: 100,
 
   ".des": {
     fontWeight: 500,
@@ -54,7 +54,7 @@ const EnquiryCard = () => {
         />
 
         <Button className="btn" variant="contained">
-          Send Enquiry
+         Get Best Worker
         </Button>
       </Box>
     </EnquiryCardStyle>

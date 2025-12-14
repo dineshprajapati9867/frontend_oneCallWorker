@@ -14,10 +14,19 @@ interface PropsI {
   onClose: () => void;
 }
 const ProfileStyled = styled(Box)(({ theme }) => ({
-  paddingLeft: theme.spacing(16),
-  marginTop: theme.spacing(54),
-  width: theme.spacing(260),
+  height: "100vh",
+  display: "flex",
+  flexDirection: "column",
 }));
+
+const ScrollContent = styled(Box)(({ theme }) => ({
+  overflowY: "auto",
+  paddingLeft: theme.spacing(16),
+  paddingBottom: theme.spacing(16),
+  marginTop: theme.spacing(54),
+  marginBottom: 75,
+}));
+
 const CreateProfileModal = ({ open, onClose }: PropsI) => {
   const { control, watch, setValue } = useForm();
   const {
@@ -29,12 +38,18 @@ const CreateProfileModal = ({ open, onClose }: PropsI) => {
   return (
     <BasicModal open={open} close={onClose} fullScreen>
       <ProfileStyled>
-        <CreateProfileHeader activeStep={activeStep} steps={createProfileStep} onClose={onClose} />
-        {activeStep === 1 && (
-          <PersonalInformation control={control} watch={watch} />
-        )}
-        {activeStep === 2 && <SkillInformation />}
-        {activeStep === 3 && <LocationInformation />}
+        <CreateProfileHeader
+          activeStep={activeStep}
+          steps={createProfileStep}
+          onClose={onClose}
+        />
+        <ScrollContent>
+          {activeStep === 1 && (
+            <PersonalInformation setValue={setValue} control={control} watch={watch} />
+          )}
+          {activeStep === 2 && <SkillInformation setValue={setValue} watch={watch} control={control} />}
+          {activeStep === 3 && <LocationInformation control={control} />}
+        </ScrollContent>
         <CreateProfileFooter
           activeStep={activeStep}
           handleBack={handleBackForCreateProfile}

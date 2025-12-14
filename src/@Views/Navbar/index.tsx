@@ -22,7 +22,7 @@ const NavbarStyle = styled(Box)(({ theme }) => ({
   position: "sticky",
   top: "0px",
   backgroundColor: theme.palette.primary.contrastText,
-  // zIndex:"10000",
+  zIndex:1,
   ".leftSide": {
     display: "flex",
     alignItems: "center",
@@ -106,7 +106,7 @@ export default function Navbar() {
             <Typography className="workerText">WORKER</Typography>
 
             <Button
-              onClick={() => navigate("free-listing")}
+              onClick={() => navigate("/free-listing")}
               variant="text"
               className="listingText"
             >

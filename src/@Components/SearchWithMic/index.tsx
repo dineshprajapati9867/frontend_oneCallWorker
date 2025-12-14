@@ -18,6 +18,7 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { HorizonatDotsLoading, MicAnimation } from "@Primitives/index";
+import { hooks } from "@Utils/index";
 
 const MainBox = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -89,26 +90,31 @@ export default function SearchWithMic() {
   } = useSpeechRecognition();
   const [open, setOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const {ShowInfoSnackBar}=hooks.useSnackBar()
   if (!browserSupportsSpeechRecognition) {
     return alert("Browser doesn't support speech recognition.");
   }
   const handleMicClick = async () => {
+    
     try {
+      
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       stream.getTracks().forEach((track) => track.stop());
       setOpen(true);
       resetTranscript();
       SpeechRecognition.startListening();
     } catch (error) {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          audio: true,
-        });
-        stream.getTracks().forEach((track) => track.stop());
-        setOpen(true);
-        resetTranscript();
-        SpeechRecognition.startListening();
-      } catch (err) {}
+      // try {
+      //   const stream = await navigator.mediaDevices.getUserMedia({
+      //     audio: true,
+      //   });
+      //   stream.getTracks().forEach((track) => track.stop());
+      //   setOpen(true);
+      //   resetTranscript();
+      //   SpeechRecognition.startListening();
+      // } catch (err) {
+        ShowInfoSnackBar("Permission denied. Please give access to microphone and try again.")
+      // }
     }
   };
 
