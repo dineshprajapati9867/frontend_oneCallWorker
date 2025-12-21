@@ -1,4 +1,5 @@
 import { Box, styled, Typography } from "@mui/material";
+import { hooks } from "@Utils/index";
 import React from "react";
 
 interface PropsI {
@@ -7,9 +8,9 @@ interface PropsI {
   onChange: (days: string[]) => void;
 }
 
-const DayCircle = styled(Box)<{ active: boolean }>(({ theme, active }) => ({
+const DayCircle = styled(Box)<{ active: boolean,isMobile:boolean }>(({ theme, active,isMobile }) => ({
   width: theme.spacing(30),
-  height: theme.spacing(30),
+  height:isMobile?theme.spacing(20): theme.spacing(30),
   borderRadius: "50%",
   display: "flex",
   alignItems: "center",
@@ -34,9 +35,9 @@ function CircleDaySelector({ name, selectedDays, onChange }: PropsI) {
       onChange([...selectedDays, name]);
     }
   };
-
+const {isMobile}=hooks.useResponsive()
   return (
-    <DayCircle active={isActive} onClick={handleClick}>
+    <DayCircle isMobile={isMobile} active={isActive} onClick={handleClick}>
       <Typography className="text" variant="subtitle2">{name}</Typography>
     </DayCircle>
   );

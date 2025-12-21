@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "@mui/material/styles";
 import { Paper, Grid, Button } from "@mui/material";
+import { hooks } from "@Utils/index";
 
 export interface PropsI {
   activeStep: number;
@@ -23,7 +24,7 @@ const Footer = styled(Paper)(({ theme }) => ({
   boxShadow: "none",
   borderTop: `1px solid ${theme.misc.borderColor}`,
   zIndex: 1,
-  boxSizing:"border-box"
+  boxSizing: "border-box",
 }));
 
 export function CreateProfileFooter({
@@ -46,7 +47,7 @@ export function CreateProfileFooter({
   const handleNextDisable = () => {
     return false;
   };
-
+  const { isMobile } = hooks.useResponsive();
   return (
     <>
       <Footer elevation={3}>
@@ -57,30 +58,15 @@ export function CreateProfileFooter({
           wrap="nowrap"
         >
           <Button
-            size="large"
+            size={`${isMobile ? "small" : "large"}`}
             variant="outlined"
-            onClick={ handleBack}
-            sx={(theme: any) => ({
-              maxWidth: 84,
-              minWidth: 84,
-              minHeight: 48,
-              maxHeight: 48,
-              backgroundColor: theme.palette.primary.contrastText,
-              color: theme.text.label,
-              fontSize: theme.spacing(8),
-              fontWeight: 400,
-              lineHeight: theme.spacing(12),
-              textTransform: "none",
-              borderColor: theme.misc.borderColor,
-              borderRadius: theme.spacing(4),
-              boxShadow: "none",
-            })}
+            onClick={handleBack}
           >
             {activeStep === 1 ? "Cancel" : "Back"}
           </Button>
           <Button
             type="submit"
-            size="large"
+            size={`${isMobile ? "small" : "large"}`}
             variant="contained"
             // disabled={handleNextDisable()}
             onClick={handleNext}

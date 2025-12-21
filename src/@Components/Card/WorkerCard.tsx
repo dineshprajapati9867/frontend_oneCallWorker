@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  SmallLocationWithInsideCircle,
+  BlackNormalLocationIcon,
   StarMuiIcon,
   WhatsAppIcon,
   CallMuiIcon,
@@ -151,7 +151,7 @@ const WorkerCard = () => {
               </Typography>
             </Box>
             <Box className="iconBox flex">
-              <SmallLocationWithInsideCircle />
+              <BlackNormalLocationIcon />
               <Typography className="font15" variant="body1">
                 MALAD WEST Malad West, Mumbai
               </Typography>

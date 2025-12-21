@@ -1,15 +1,8 @@
 import * as React from "react";
-import {
-  Box,
-  IconButton,
-  Menu,
-  MenuItem,
-  styled,
-  Typography,
-} from "@mui/material";
+import { Box, Menu, MenuItem, styled, Typography } from "@mui/material";
 import { ChevronArrowDown, ChevronArrowUp } from "@Icons/ArrowDown";
 import { languages } from "@Constants/Home";
-import { TranslateIcon } from "@Icons/index";
+import { TranslateIconMui } from "@Icons/index";
 interface PopsI {
   handleGetCurrentLanguage: any;
   i18n: any;
@@ -46,7 +39,7 @@ function LanguageTranslate({ i18n, handleGetCurrentLanguage }: PopsI) {
         onMouseEnter={handleMouseEnter}
         // onMouseOut={handleMouseOut}
       >
-        <TranslateIcon />
+        <TranslateIconMui />
 
         <Typography variant="body1"> {handleGetCurrentLanguage()}</Typography>
         {open ? <ChevronArrowUp /> : <ChevronArrowDown />}

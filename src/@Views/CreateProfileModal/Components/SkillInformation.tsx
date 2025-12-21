@@ -2,6 +2,7 @@ import CircleDaySelector from "@Components/CircleDaySelector";
 import { allIndianLanguage, days, experience } from "@Constants/Home";
 import { Box, styled, Typography } from "@mui/material";
 import { CheckBox, SearchableDropDown } from "@Primitives/index";
+import { hooks } from "@Utils/index";
 import React from "react";
 import { Controller, useWatch } from "react-hook-form";
 
@@ -10,13 +11,12 @@ interface PropsI {
   setValue: any;
   watch: any;
 }
-const SkillStyle = styled(Box)(({ theme }) => ({
+const SkillStyle = styled(Box)<{isMobile:boolean}>(({ theme ,isMobile}) => ({
   display: "flex",
   flexDirection: "column",
   gap: theme.spacing(12),
-  width: theme.spacing(260),
+  width:isMobile ?'90%':theme.spacing(260),
   paddingTop: theme.spacing(12),
-
   ".selectDayWeek": {
     display: "flex",
     justifyContent: "space-between",
@@ -28,6 +28,7 @@ const SkillStyle = styled(Box)(({ theme }) => ({
   },
 }));
 const SkillInformation = ({ control, watch, setValue }: PropsI) => {
+  const {isMobile}=hooks.useResponsive()
   const selectedDays = useWatch({
     control,
     name: "days",
@@ -41,7 +42,7 @@ const SkillInformation = ({ control, watch, setValue }: PropsI) => {
     }
   };
   return (
-    <SkillStyle>
+    <SkillStyle isMobile={isMobile}>
       <Controller
         name="languages"
         control={control}

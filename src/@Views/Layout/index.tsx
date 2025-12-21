@@ -1,6 +1,6 @@
+import Navbar from "@Components/Navbar";
 import { Box, styled } from "@mui/material";
 import { hooks } from "@Utils/index";
-import Navbar from "@Views/Navbar";
 import ProfileDrawer from "@Views/User/components/ProfileDrawer";
 import React from "react";
 

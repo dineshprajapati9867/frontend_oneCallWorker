@@ -11,6 +11,7 @@ import {
 import { BasicStepper, Loader } from "@Primitives";
 import { CloseIcon } from "@Icons";
 import BreadCrumbs from "@Components/BreadCrumbs";
+import { hooks } from "@Utils/index";
 
 export interface PropI {
   steps: string[];
@@ -20,7 +21,7 @@ export interface PropI {
   isBtnLoading: boolean;
 }
 
-const FixedAppBar = styled(AppBar)(({ theme }) => ({
+const FixedAppBar = styled(AppBar)<{isMobile:boolean}>(({ theme,isMobile }) => ({
   padding: theme.spacing(15, 11),
   minHeight: 108,
   maxHeight: 108,
@@ -36,8 +37,9 @@ export function CreateProfileHeader({
   handleSaveAndNext,
   isBtnLoading,
 }: PropI) {
+  const {isMobile}=hooks.useResponsive()
   return (
-      <FixedAppBar position="fixed" color="inherit">
+      <FixedAppBar position="fixed" color="inherit" isMobile={isMobile}>
         <Grid
           container
           justifyContent="space-between"
@@ -101,6 +103,7 @@ export function CreateProfileHeader({
               onClick={handleSaveAndNext}
               size="small"
               variant="outlined"
+
             >
               {isBtnLoading ? (
                 <Loader color="secondary" size={24} type="button" />

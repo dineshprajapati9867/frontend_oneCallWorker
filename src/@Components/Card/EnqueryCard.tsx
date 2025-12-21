@@ -28,9 +28,6 @@ const EnquiryCardStyle = styled(Box)(({ theme }) => ({
     flexDirection: "column",
     gap: theme.spacing(6),
   },
-  ".btn": {
-    height: theme.spacing(17.5),
-  },
 }));
 const EnquiryCard = () => {
   const { type } = useParams();
@@ -53,7 +50,7 @@ const EnquiryCard = () => {
           placeholder="Enter your Mobile Number"
         />
 
-        <Button className="btn" variant="contained">
+        <Button size="small"  variant="contained">
          Get Best Worker
         </Button>
       </Box>

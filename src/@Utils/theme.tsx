@@ -432,7 +432,7 @@ export const theme = createTheme({
       lineHeight: '125%',
       color: '#222222',
       [mobileTheme.breakpoints.down("sm")]: {
-        fontSize: "calc(36px - .15vw) !important",
+        fontSize: "calc(36px - .25vw) !important",
       },
     },
     h2: {
@@ -441,7 +441,7 @@ export const theme = createTheme({
       lineHeight: '125%',
       color: '#222222',
       [mobileTheme.breakpoints.down("sm")]: {
-        fontSize: "calc(30px - .15vw) !important",
+        fontSize: "calc(30px - .25vw) !important",
       },
     },
     h3: {
@@ -450,7 +450,7 @@ export const theme = createTheme({
       lineHeight: '125%',
       color: '#222222',
       [mobileTheme.breakpoints.down("sm")]: {
-        fontSize: "calc(24px - .15vw) !important",
+        fontSize: "calc(24px - .25vw) !important",
       },
     },
     h4: {
@@ -459,7 +459,7 @@ export const theme = createTheme({
       lineHeight: '125%',
       color: '#222222',
       [mobileTheme.breakpoints.down("sm")]: {
-        fontSize: "calc(21px - .15vw) !important",
+        fontSize: "calc(21px - .25vw) !important",
       },
     },
     h5: {
@@ -468,7 +468,7 @@ export const theme = createTheme({
       lineHeight: '125%',
       color: '#222222',
       [mobileTheme.breakpoints.down("sm")]: {
-        fontSize: "calc(18px - .15vw) !important",
+        fontSize: "calc(18px - .25vw) !important",
       },
     },
     h6: {
@@ -477,7 +477,7 @@ export const theme = createTheme({
       lineHeight: '125%',
       color: '#222222',
       [mobileTheme.breakpoints.down("sm")]: {
-        fontSize: "calc(16px - .15vw) !important",
+        fontSize: "calc(16px - .25vw) !important",
       },
     },
     // h7: {
@@ -492,7 +492,7 @@ export const theme = createTheme({
       lineHeight: '125%',
       color: '#222222',
       [mobileTheme.breakpoints.down("sm")]: {
-        fontSize: "calc(14px - .15vw) !important",
+        fontSize: "calc(14px - .25vw) !important",
       },
     },
     subtitle2: {
@@ -501,7 +501,7 @@ export const theme = createTheme({
       lineHeight: '125%',
       color: '#222222',
       [mobileTheme.breakpoints.down("sm")]: {
-        fontSize: "calc(13px - .15vw) !important",
+        fontSize: "calc(13px - .25vw) !important",
       },
     },
     body1: {
@@ -510,7 +510,7 @@ export const theme = createTheme({
       lineHeight: '145%',
       color: '#222222',
       [mobileTheme.breakpoints.down("sm")]: {
-        fontSize: "calc(14px - .15vw) !important",
+        fontSize: "calc(14px - .25vw) !important",
       },
     },
     body2: {
@@ -519,7 +519,7 @@ export const theme = createTheme({
       lineHeight: '115%',
       color: '#222222',
       [mobileTheme.breakpoints.down("sm")]: {
-        fontSize: "calc(12px - .15vw) !important",
+        fontSize: "calc(12px - .25vw) !important",
       },
     },
     caption: {
@@ -528,7 +528,7 @@ export const theme = createTheme({
       lineHeight: '115%',
       // color: '#222222',
       [mobileTheme.breakpoints.down("sm")]: {
-        fontSize: "calc(11px - .15vw) !important",
+        fontSize: "calc(11px - .25vw) !important",
       },
     },
     inputValue: {
@@ -537,7 +537,7 @@ export const theme = createTheme({
       lineHeight: '145%',
       color: '#222222',
       [mobileTheme.breakpoints.down("sm")]: {
-        fontSize: "calc(14px - .15vw) !important",
+        fontSize: "calc(14px - .25vw) !important",
       },
     },
     button: {
@@ -545,7 +545,7 @@ export const theme = createTheme({
       fontWeight: 400,
       lineHeight: '24px',
       [mobileTheme.breakpoints.down("sm")]: {
-        fontSize: "calc(16px - .15vw) !important",
+        fontSize: "calc(16px - .25vw) !important",
       },
     },
     imageHeader: {
@@ -553,7 +553,7 @@ export const theme = createTheme({
       fontWeight: 600,
       lineHeight: '125%',
       [mobileTheme.breakpoints.down("sm")]: {
-        fontSize: "calc(12px - .15vw) !important",
+        fontSize: "calc(12px - .25vw) !important",
       },
     },
   },

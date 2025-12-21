@@ -1,20 +1,22 @@
 import { Box, styled } from "@mui/material";
 import { TextInput } from "@Primitives/index";
+import { hooks } from "@Utils/index";
 import React from "react";
 import { Controller } from "react-hook-form";
 interface PropI {
   control: any;
 }
-const LocationStyle = styled(Box)(({ theme }) => ({
+const LocationStyle = styled(Box)<{isMobile:boolean}>(({ theme ,isMobile}) => ({
   display: "flex",
   flexDirection: "column",
   gap: theme.spacing(12),
-  width: theme.spacing(260),
+  width:isMobile ?'90%':theme.spacing(260),
   paddingTop: theme.spacing(16),
 }));
 const LocationInformation = ({ control }: PropI) => {
+  const {isMobile}=hooks.useResponsive()
   return (
-    <LocationStyle>
+    <LocationStyle isMobile={isMobile}>
       <Controller
         name="address_one"
         control={control}

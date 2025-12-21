@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import { CheckBox, SearchableDropDown, TextInput } from "@Primitives/index";
+import { hooks } from "@Utils/index";
 import React from "react";
 import { Controller, useWatch } from "react-hook-form";
 interface PropsI {
@@ -16,11 +17,11 @@ interface PropsI {
   watch: any;
   setValue: any;
 }
-const PersonalStyled = styled(Box)(({ theme }) => ({
+const PersonalStyled = styled(Box)<{isMobile:boolean}>(({ theme,isMobile }) => ({
   display: "flex",
   flexDirection: "column",
   gap: theme.spacing(12),
-  width: theme.spacing(260),
+  width:isMobile ?'90%':theme.spacing(260),
   position: "relative",
   ".logo": {
     marginBottom: theme.spacing(7.5),
@@ -35,6 +36,7 @@ const PersonalStyled = styled(Box)(({ theme }) => ({
   },
 }));
 const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
+  const {isMobile}=hooks.useResponsive()
   const mobileNnumber = useWatch({
     name: "mobile_number",
     control: control,
@@ -52,7 +54,7 @@ const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
     }
   };
   return (
-    <PersonalStyled>
+    <PersonalStyled isMobile={isMobile}>
       <Box className="logo">
         <Controller
           name="logo"

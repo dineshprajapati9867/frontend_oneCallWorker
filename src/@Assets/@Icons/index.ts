@@ -46,7 +46,6 @@ import {
   CalendarHangIcon,
 } from './CalendarIcon';
 import { LocationIconSmall, LocationIcon, LocationIconGray } from './LocationIcon';
-import { NotificationIcon } from './NotificationIcon';
 import { RightGreenRoundIcon, RightPlainRoundIcon } from './RightGreenRoundIcon';
 import { NotificationWhiteIcon } from './NotificationWhiteIcon';
 import { FilterIcon, DarkFilterIcon } from './FilterIcon';
@@ -112,9 +111,6 @@ import {
 import { FileUpload, FileUploadBlueIcon } from './FileUpload';
 import { DeleteIcon } from './DeleteIcon';
 import { Setting } from './Setting';
-import { Logout } from './Logout';
-
-import { ProfilePencilIcon } from './ProfilrPencilIcon';
 import { UploadImage } from './UploadImage';
 import { ActiveTickmark } from './ActiveTickmark';
 import { PlusInsideBox } from './PlusInsideBox';
@@ -165,8 +161,6 @@ import { ColumnIcon } from './ColumnIcon';
 import { WhiteBackIcon } from './WhiteBackIcon';
 import { HistoryIcon } from './HistoryIcon';
 import {
-  ProfileSettingsIcon,
-  CompanyProfileIcon,
   PrivacyPolicyIcon,
   CancellationPolicyIcon,
   AboutUsIcon,
@@ -175,7 +169,6 @@ import {
   PropertyQRIcon,
   AddonQRIcon,
   ContractIcon,
-  BillingProfileIcon,
 } from './NavbarIcons';
 import { SnackbarSuccessIcon } from './SnackbarSuccessIcon';
 import { SnackbarErrorIcon } from './SnackbarErrorIcon';
@@ -227,11 +220,7 @@ import { WhiteBuildingInsideDot } from './Broker/WhiteBuildingInsideDot';
 import { CopyLinkIcon } from './Broker/CopyLinkIcon';
 import { JpgIcon } from './Broker/JpgIcon';
 import { CloseEyeBlackIcon, OpenEyeBlackIcon } from './Broker/OpenAndCloseEyeIcon';
-import LocationWithInsideCircle, {
-  GrayLocationWithInsideCircle,
-  SmallLocationWithInsideCircle,
-  BlackNormalLocationIcon
-} from './Broker/LocationWithInsideCircle/LocationWithInsideCircle';
+import { BlackNormalLocationIcon } from './Broker/LocationWithInsideCircle/LocationWithInsideCircle';
 import TwoUserIcon from './Broker/TwoUsersIcon';
 import SortHorizontalIcon from './Broker/SortHorizontalIcon';
 
@@ -239,7 +228,7 @@ import BigSearchIncon from './Broker/BigSearchIncon';
 import DollorWithDownArrowIcon from './Broker/DollorWithDownArrowIcon';
 //import { Arrow360 } from './ArrowIcons';
 import { BriefCaseWithDots } from './Broker/BriefCaseWithDots';
-import   TranslateIcon from '@mui/icons-material/GTranslateOutlined';
+import   TranslateIconMui from '@mui/icons-material/GTranslateOutlined';
 import RightArrowMui from '@mui/icons-material/KeyboardArrowRightRounded';
 import { InstagramColoredIcon,  GmailIcon,
   LinkedInColoredIcon,
@@ -250,25 +239,30 @@ import { InstagramColoredIcon,  GmailIcon,
   import MicMuiIcon from "@mui/icons-material/MicOutlined";
   import SearchMuiIcon from '@mui/icons-material/Search';
   import ChatMuiIcon from '@mui/icons-material/Chat';
+  import ProfileIcon from './ProfileIcon';
+  import LogoutIconMui from "@mui/icons-material/Logout";
+import NotificationsIconMui from "@mui/icons-material/NotificationsNoneOutlined";
+import LocationIconMui from '@mui/icons-material/FmdGoodOutlined';
+
 export {
+  LocationIconMui,
+  NotificationsIconMui,
+  LogoutIconMui,
   ChatMuiIcon,
   SearchMuiIcon,
   MicMuiIcon,
   CallMuiIcon,
   StarMuiIcon,
   RightArrowMui,
-  TranslateIcon,
+  TranslateIconMui,
   BlackSmallCrossIcon,
-  SmallLocationWithInsideCircle,
   WhiteBuildingInsideDotSmallBroker,
-  GrayLocationWithInsideCircle,
   BlackBrokerBag,
   DollorWithDownArrowIcon,
   BigSearchIncon,
   DarkBlackDeskIcon,
   SortHorizontalIcon,
   TwoUserIcon,
-  LocationWithInsideCircle,
   BlackLeftArrow,
   ClockIcon,
   ClockWithCountDownIcon,
@@ -304,7 +298,6 @@ export {
   CalendarDotsIcon,
   CalendarWhiteIcon,
   CalendarHangIcon,
-  NotificationIcon,
   RightGreenRoundIcon,
   RightPlainRoundIcon,
   NotificationWhiteIcon,
@@ -357,7 +350,6 @@ export {
   FileUpload,
   FileUploadBlueIcon,
   DeleteIcon,
-  Logout,
   SettingsIcon,
   InputCloseIcon,
   FileIcon,
@@ -376,7 +368,6 @@ export {
   InfoIcon,
   ButtonCloseIcon,
   ReplaceIcon,
-  ProfilePencilIcon,
   ExcelIcon,
   CrossIcon,
   TrashIcon,
@@ -448,7 +439,6 @@ export {
   MyStaffIcon,
   TicketsIcon,
   ReportsIcon,
-  ProfileSettingsIcon,
   PrivacyPolicyIcon,
   CancellationPolicyIcon,
   AboutUsIcon,
@@ -456,10 +446,8 @@ export {
   LogoutRedIcon,
   PropertyQRIcon,
   AddonQRIcon,
-  BillingProfileIcon,
   ContractIcon,
   CopyIcon,
-  CompanyProfileIcon,
   SnackbarSuccessIcon,
   SnackbarErrorIcon,
   ShareIcon,
@@ -518,4 +506,5 @@ export {
   TwitterColoredIcon,
   InstagramColoredIcon,
   BlackNormalLocationIcon,
+  ProfileIcon,
 };

@@ -7,9 +7,9 @@ import LogIn from "@Components/LogIn/LogIn";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import { useNavigate } from "react-router-dom";
 import SearchWithMic from "@Components/SearchWithMic";
-import ocw_logo from "@Assets/Images/ocw_logo.png";
 import { AvatarLabel } from "@Primitives/Admin/SearchableDropDown";
 import { hooks } from "@Utils/index";
+import  ocw_logo from '@Assets/Images/ocw_logo.png'
 const NavbarStyle = styled(Box)(({ theme }) => ({
   height: theme.spacing(40),
   borderBottom: `1px solid ${theme.misc.borderColor}`,

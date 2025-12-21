@@ -30,7 +30,7 @@ import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { Controller, useForm } from "react-hook-form";
-import { HomeIcon, SmallLocationWithInsideCircle } from "@Icons/index";
+import { HomeIcon, BlackNormalLocationIcon } from "@Icons/index";
 import { mapStyles } from "@Constants/Home";
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: markerIcon2x,
@@ -202,8 +202,7 @@ const LocationMapSearch = ({ open, onClose }: PropsI) => {
     label: "Satellite",
     value: "satellite-streets-v12",
   });
-  const { useGetAddress, useForwardGeocodingAddressToLatLon } =
-    hooks.useMisc();
+  const { useGetAddress, useForwardGeocodingAddressToLatLon } = hooks.useMisc();
   const [loactionSuggestions, setLocationSuggestions] = useState([]);
   const searchDebounce = hooks.useDebounce(inputValue, 1000);
 
@@ -297,7 +296,7 @@ const LocationMapSearch = ({ open, onClose }: PropsI) => {
             />
             <Box className="infoBox">
               <Box className="infoTitleBox">
-                <SmallLocationWithInsideCircle />
+                <BlackNormalLocationIcon />
                 <Typography variant="subtitle1">
                   How to set location:
                 </Typography>
@@ -350,7 +349,7 @@ const LocationMapSearch = ({ open, onClose }: PropsI) => {
             fadeAnimation={true}
             zoomControl={false}
           >
-{/* <TileLayer
+            {/* <TileLayer
   url={`https://apis.mapmyindia.com/advancedmaps/v1/${process.env.REACT_APP_MAPMYINDIA_KEY}/map_tile/{z}/{x}/{y}.png`}
   attribution='© MapmyIndia Maps'
 /> */}
