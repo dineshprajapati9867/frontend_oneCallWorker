@@ -15,107 +15,110 @@ import {
   Button,
   Divider,
   IconButton,
-  Slide
+  Slide,
+  Drawer,
 } from "@mui/material";
 import { hooks, validationPatterns } from "@Utils/index";
 import { useGoogleLogin, useGoogleOneTapLogin } from "@react-oauth/google";
 import React, { useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import OTPInput from "react-otp-input";
-import ocw_logo from '@Assets/Images/ocw_logo.png'
+import ocw_logo from "@Assets/Images/ocw_logo.png";
 import axios from "axios";
 interface PropsI {
   open: boolean;
   onClose: () => void;
 }
 
-const LoginStyle = styled(Box)<{isMobile:boolean}>(({ theme ,isMobile}) => ({
-  padding: theme.spacing(15),
-  display: "flex",
-  flexDirection: "column",
-  gap: theme.spacing(4),
+const LoginStyle = styled(Box)<{ isMobile: boolean }>(
+  ({ theme, isMobile }) => ({
+    padding: theme.spacing(15),
+    display: "flex",
+    flexDirection: "column",
+    gap: theme.spacing(4),
 
-  ".logoImage": {
-    width: theme.spacing(50),
-  },
-  ".header": {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    ".welcome": {
-      fontSize: theme.spacing(9),
-      fontWeight: 600,
+    ".logoImage": {
+      width: theme.spacing(50),
     },
-    ".desc": {
-      fontSize:isMobile? theme.spacing(7.5):theme.spacing(8.5),
-    },
-  },
-  ".crossIcon": {
-    fontSize: theme.spacing(6),
-    color: theme.text.darkGrey,
-    cursor: "pointer",
-    position: "absolute",
-    top: theme.spacing(2.5),
-    right: theme.spacing(9),
-  },
-  ".main": {
-    display: "flex",
-    gap: theme.spacing(10),
-    flexDirection: "column",
-  },
-  ".mobileInput": {
-    marginTop: theme.spacing(10),
-    "& .MuiOutlinedInput-root": {
-      "& fieldset": {
-        border: `1.2pt solid ${theme.palette.secondary.dark}`,
-      },
-    },
-    ".MuiOutlinedInput-root": {
-      // border: `1.2pt solid ${theme.palette.secondary.dark}`,
-      maxHeight: theme.spacing(26),
-      borderRadius: theme.spacing(3.5),
-    },
-    ".MuiInputBase-input": {
-      fontSize: theme.spacing(9),
-      fontWeight: 500,
-    },
-  },
-  ".inputStart": {
-    ".MuiTypography-body1": {
-      fontSize: theme.spacing(9),
-      fontWeight: 500,
-    },
-  },
-  ".tnc": {
-    display: "flex",
-    flexDirection: "column",
-    ".checkbox": {
+    ".header": {
       display: "flex",
       alignItems: "center",
-      justifyContent: "center",
+      justifyContent: "space-between",
+      ".welcome": {
+        fontSize: theme.spacing(9),
+        fontWeight: 600,
+      },
+      ".desc": {
+        fontSize: isMobile ? theme.spacing(7.5) : theme.spacing(8.5),
+      },
     },
-    ".privacy": {
-      textAlign: "center",
-    },
-  },
-  ".loginBtn": {
-    fontWeight: 600,
-    border: "none",
-    borderRadius: theme.spacing(3.5),
-  },
-  ".orLogin": {
-    ".MuiDivider-wrapper": {
+    ".crossIcon": {
       fontSize: theme.spacing(6),
-      padding: theme.spacing(2, 6),
-      borderRadius: theme.spacing(6),
       color: theme.text.darkGrey,
-      backgroundColor: "#f4f4f4",
+      cursor: "pointer",
+      position: "absolute",
+      top: theme.spacing(2.5),
+      right: theme.spacing(9),
     },
-  },
-  ".googleBtn": {
-    borderRadius: theme.spacing(3.5),
-  },
-}));
+    ".main": {
+      display: "flex",
+      gap: theme.spacing(10),
+      flexDirection: "column",
+    },
+    ".mobileInput": {
+      marginTop: theme.spacing(10),
+      "& .MuiOutlinedInput-root": {
+        "& fieldset": {
+          border: `1.2pt solid ${theme.palette.secondary.dark}`,
+        },
+      },
+      ".MuiOutlinedInput-root": {
+        // border: `1.2pt solid ${theme.palette.secondary.dark}`,
+        maxHeight: theme.spacing(26),
+        borderRadius: theme.spacing(3.5),
+      },
+      ".MuiInputBase-input": {
+        fontSize: theme.spacing(9),
+        fontWeight: 500,
+      },
+    },
+    ".inputStart": {
+      ".MuiTypography-body1": {
+        fontSize: theme.spacing(9),
+        fontWeight: 500,
+      },
+    },
+    ".tnc": {
+      display: "flex",
+      flexDirection: "column",
+      ".checkbox": {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      },
+      ".privacy": {
+        textAlign: "center",
+      },
+    },
+    ".loginBtn": {
+      fontWeight: 600,
+      border: "none",
+      borderRadius: theme.spacing(3.5),
+    },
+    ".orLogin": {
+      ".MuiDivider-wrapper": {
+        fontSize: theme.spacing(6),
+        padding: theme.spacing(2, 6),
+        borderRadius: theme.spacing(6),
+        color: theme.text.darkGrey,
+        backgroundColor: "#f4f4f4",
+      },
+    },
+    ".googleBtn": {
+      borderRadius: theme.spacing(3.5),
+    },
+  })
+);
 
 const LoginOtp = styled(Box)(({ theme }) => ({
   ".headerText": {
@@ -180,52 +183,18 @@ function LogIn({ open, onClose }: PropsI) {
   const { control, setValue, handleSubmit } = useForm({
     mode: "onChange",
   });
-  const {isMobile}=hooks.useResponsive()
-const  {handleLoginWithGoogle}=hooks.useAuth()
+  const { isMobile } = hooks.useResponsive();
+  const { handleLoginWithGoogle } = hooks.useAuth();
   const onSubmit = (data) => {
     setIsOtpSend(true);
   };
 
-  // const handleLoginWithGoogle=()=>{
-
-  // }
-  // const handleLoginWithGoogle = useGoogleLogin({
-  //   onSuccess: async (response) => {
-  //     console.log("Google Login Success:", response);
-  
-  //     // Google se user data fetch
-  //     const userInfo = await fetch(
-  //       `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${response.access_token}`
-  //     ).then((res) => res.json());
-  
-  //     console.log("User Info:", userInfo);
-  
-  //     // TODO: userInfo ko backend pe bhejna for signup/login
-  //   },
-  //   onError: () => {
-  //     console.log("Google Login Failed");
-  //   },
-  // });
-  
-  
-  return (
-    <Dialog
-      open={open}
-      sx={(theme) => ({
-        ".MuiPaper-root": {
-          maxWidth: theme.spacing(240),
-          width:"100%",
-          borderRadius: theme.spacing(7.5),
-          margin:"0",
-        },
-      })}
-      slots={{ transition: Slide, }}
-      slotProps={{ transition: { direction: 'up' } }}
-    >
+  const ContentData = () => {
+    return (
       <LoginStyle isMobile={isMobile}>
         {/* Header */}
         <Box className="header">
-          <img className="logoImage" src={ocw_logo} alt="logo"/>
+          <img className="logoImage" src={ocw_logo} alt="logo" />
           <Box>
             <Box>
               <Typography className="welcome" variant="h6">
@@ -380,7 +349,30 @@ const  {handleLoginWithGoogle}=hooks.useAuth()
           </LoginOtp>
         )}
       </LoginStyle>
-    </Dialog>
+    );
+  };
+  return (
+    <>
+      {isMobile ? (
+        <Drawer open={open} onClose={onClose} anchor="bottom">
+          <ContentData />
+        </Drawer>
+      ) : (
+        <Dialog
+          open={open}
+          sx={(theme) => ({
+            ".MuiPaper-root": {
+              maxWidth: theme.spacing(240),
+              width: "100%",
+              borderRadius: theme.spacing(7.5),
+              margin: "0",
+            },
+          })}
+          slots={{ transition: Slide }}
+          slotProps={{ transition: { direction: "up" } }}
+        ></Dialog>
+      )}
+    </>
   );
 }
 

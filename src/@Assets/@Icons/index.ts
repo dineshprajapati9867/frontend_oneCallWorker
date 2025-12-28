@@ -80,7 +80,7 @@ import {
   DeleteBlackSlashIcon,
 } from './Home';
 import { LeftArrow, ChevronLeftIcon, ChevronLeftIconBlack, ArrowLeftWhiteIcon } from './LeftArrow';
-import { RightArrow } from './RightArrow';
+import { RightArrow,RightArrowStraightWhite } from './RightArrow';
 import { ArrowDown, ChevronArrowDown, ChevronArrowUp } from './ArrowDown';
 import { ErrorIcon } from './ErrorIcon';
 import {
@@ -507,4 +507,5 @@ export {
   InstagramColoredIcon,
   BlackNormalLocationIcon,
   ProfileIcon,
+  RightArrowStraightWhite
 };

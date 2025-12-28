@@ -46,3 +46,12 @@ export function  googleLogin(access_token:string){
 export function saveGoogleUser(data){
      return postApi(`${API_SERVER_URL}/auth/google-login`,data)
 }
+
+
+/**
+ * get the city and state by Postcode
+ */
+
+export function getPostalCode(pincode:string){
+  return getApi(`${API_SERVER_URL}/postal-code/${pincode}`)
+}

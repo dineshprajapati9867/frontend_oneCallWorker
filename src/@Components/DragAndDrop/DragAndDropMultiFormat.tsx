@@ -2,10 +2,8 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import { styled, Typography, FormHelperText } from '@mui/material';
 import { useDropzone } from 'react-dropzone';
-import {
-  DragAndDropContainerStyles,
-  DragAndDropEditContainer,
-} from '@Constants/CommonStyledComponents';
+import { DragAndDropContainerStyles ,DragAndDropEditContainer} from '@Constants/CommonStyledComponents.tsx'; 
+
 import { hooks } from '@Utils';
 import TextInput from '../../@Primitives/Input/TextInput/TextInput';
 import {

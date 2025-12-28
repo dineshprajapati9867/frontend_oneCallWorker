@@ -13,7 +13,7 @@ interface PropsI {
   open: boolean;
   onClose: () => void;
 }
-const ProfileStyled = styled(Box)(({ theme }) => ({
+const ProfileStyled = styled("form")(({ theme }) => ({
   height: "100vh",
   display: "flex",
   flexDirection: "column",
@@ -28,16 +28,22 @@ const ScrollContent = styled(Box)(({ theme }) => ({
 }));
 
 const CreateProfileModal = ({ open, onClose }: PropsI) => {
-  const { control, watch, setValue } = useForm();
+  const { control, watch, setValue, handleSubmit } = useForm({
+    mode: "onChange",
+  });
   const {
     createProfileStep,
     activeStep,
     handleBackForCreateProfile,
     handleNextForCreateProfile,
   } = hooks.useUser();
+
+  const onSubmit = (data) => {
+    // console.log("data", data);
+  };
   return (
     <BasicModal open={open} close={onClose} fullScreen>
-      <ProfileStyled>
+      <ProfileStyled onSubmit={handleSubmit(onSubmit)}>
         <CreateProfileHeader
           activeStep={activeStep}
           steps={createProfileStep}
@@ -45,10 +51,26 @@ const CreateProfileModal = ({ open, onClose }: PropsI) => {
         />
         <ScrollContent>
           {activeStep === 1 && (
-            <PersonalInformation setValue={setValue} control={control} watch={watch} />
+            <PersonalInformation
+              setValue={setValue}
+              control={control}
+              watch={watch}
+            />
           )}
-          {activeStep === 2 && <SkillInformation setValue={setValue} watch={watch} control={control} />}
-          {activeStep === 3 && <LocationInformation control={control} />}
+          {activeStep === 2 && (
+            <SkillInformation
+              setValue={setValue}
+              watch={watch}
+              control={control}
+            />
+          )}
+          {activeStep === 3 && (
+            <LocationInformation
+              setValue={setValue}
+              watch={watch}
+              control={control}
+            />
+          )}
         </ScrollContent>
         <CreateProfileFooter
           activeStep={activeStep}

@@ -5,8 +5,7 @@ import { Button, IconButton, Typography } from '@mui/material';
 import { useDropzone } from 'react-dropzone';
 import { ExcelIcon, TrashIcon } from '@Icons';
 import SpreedSheetIcon from '@Assets/images/spreadsheet.png';
-import { EditContainer } from '@Constants/CommonStyledComponents';
-
+import { EditContainer } from '@Constants/CommonStyledComponents.tsx';
 export interface DragAndDropBulkUploadI {
   handleFileUpload: any;
   setLoadingModal: (value: boolean) => void;

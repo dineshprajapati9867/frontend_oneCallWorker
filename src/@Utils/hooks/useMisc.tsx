@@ -1,81 +1,102 @@
+import { createContext, useContext, useState, useCallback } from "react";
+import { getAllWorkerList, getPostalCode } from "@Utils/controllers/misc";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { forwardGeocoding, reverseGeocoding, searchLocation } from "@Utils/controllers/location";
-import { getAllWorkerList } from "@Utils/controllers/misc";
-import { getAllWorkerListPropI } from "@Utils/interfaces";
-import React, { createContext, useContext } from "react";
-interface MiscContextI {
-  useGetAddress: any;
-  useReverseGeocodingToAddress:any;
-  useForwardGeocodingAddressToLatLon:(query:string)=>UseQueryResult | any;
-  useGetAllWorkerList:()=>UseQueryResult<getAllWorkerListPropI[]>
+import React from "react";
+// import {
+//   uploadPublicImage,
+// } from '@Utils/controllers/misc';
+// import { hooks } from '@Utils';
+// import { useMutation } from '@tanstack/react-query';
+interface MiscI {
+  //   handleUploadPublicFile: (files: File[]) => Promise<string[] | null>;
+  //   isUploadFileLoading: boolean;
+  //   handleSendPlatformInvitation: (userId: string, data: any) => void;
+  //   isPlatformInvitationMailLoading: boolean;
+  useGetPostalCode:(pincode:string)=>UseQueryResult<{city:string,state:string}>
+  // useGetAllWorkerList:()=>any
 }
 
-const LocationContext = createContext<MiscContextI>({} as MiscContextI);
+const MiscContext = createContext<MiscI>({} as MiscI);
 
-export const useMisc = () => useContext(LocationContext);
+export const useMisc = () => useContext(MiscContext);
 
-const useMiscData = () => {
-  //  get the address
-  const useGetAddress = (search: string,limit?:number) => {
-    return useQuery({
-      queryKey: ["location",search,limit],
-      queryFn: () => searchLocation(search,limit),
-      gcTime: 0,
-      enabled:!!search,
-      select:(data)=>data.data
-    });
-  };
+function useMiscProvider() {
+  //   const { ShowErrorSnackBar, ShowApiErrorSnackBar, ShowSuccessSnackBar } = hooks.useSnackBar();
+  //   const [isUploadFileLoading, setIsUploadFileLoading] = useState(false);
 
-// Reverse geocoding (lat/lon → address)
-  const useReverseGeocodingToAddress = (latitude: number,longitude:number) => {
-    return useQuery({
-      queryKey: ["reverseGeocoding",latitude,longitude],
-      queryFn: () => reverseGeocoding(latitude,longitude),
-      gcTime: 0,
-      enabled:!!latitude && !!longitude,
-      select:(data)=>data.data
-    });
-  };
+  //   /**
+  //    * Generic function to upload files in public bucket
+  //    */
+  //   const handleUploadPublicFile = useCallback(async (files: File[]): Promise<string[] | null> => {
+  //     if (!files?.length) return null;
 
-  
-// forward geocoding (address -> lat/lon )
-  const useForwardGeocodingAddressToLatLon = (query) => {
-    return useQuery({
-      queryKey: ["reverseGeocoding",query],
-      queryFn: () => forwardGeocoding(query),
-      gcTime: 0,
-      enabled:!!query,
-      select:(data)=>data.data
-    });
-  };
+  //     setIsUploadFileLoading(true);
+  //     try {
+  //       const uploadPromises = files.map(async (file) => {
+  //         const formData = new FormData();
+  //         formData.append('file', file);
 
-/**
- *  Get All worker List imageLink and titile
- */
+  //         const extension = file.name.split('.').pop() || '';
+  //         const response = await uploadPublicImage({
+  //           formData,
+  //           extension,
+  //         });
 
-const useGetAllWorkerList=()=>{
-  return useQuery({
-    queryKey:["allWorkerListImageAndTitle"],
-    queryFn:getAllWorkerList,
+  //         if (response?.data?.data?.Location) {
+  //           ShowSuccessSnackBar(`File "${file.name}" uploaded successfully`);
+  //           return response.data.data.Location;
+  //         }
+  //         ShowErrorSnackBar(`Failed to upload ${file.name}`);
+  //         return null;
+  //       });
+
+  //       const results = await Promise.all(uploadPromises);
+
+  //       const uploadedUrls = results.filter((url): url is string => Boolean(url));
+
+  //       return uploadedUrls;
+  //     } catch (err: any) {
+  //       const message = err?.message || 'Failed to upload file(s)';
+  //       ShowErrorSnackBar(message);
+  //       return null;
+  //     } finally {
+  //       setIsUploadFileLoading(false);
+  //     }
+  //   }, []);
+
+  const useGetAllWorkerList =()=>{
+   return useQuery({
+    queryKey:[],
+    queryFn:()=>getAllWorkerList(),
     select:(data)=>data.data,
-  })
-}
+    gcTime: 0,
+   })
+  }
+  /**
+   * get the city and state by Postcode
+   */
+  const useGetPostalCode = (pincode:string) => {
+    return useQuery({
+      queryKey: ["postalcode",pincode],
+      queryFn: () => getPostalCode(pincode),
+      gcTime: 0,
+      enabled: !!pincode,
+      select: (data) => data.data,
+    });
+  };
+
   return {
-    useGetAddress,
-    useReverseGeocodingToAddress,
-    useForwardGeocodingAddressToLatLon,
+    /**
+     * Public file upload
+     */
+    // handleUploadPublicFile,
+    // isUploadFileLoading,
+    useGetPostalCode,
     useGetAllWorkerList
   };
-};
-
-interface ProvideMiscI {
-  children: React.ReactNode;
 }
-export function ProvideMisc({ children }: ProvideMiscI) {
-  const locationData = useMiscData();
-  return (
-    <LocationContext.Provider value={locationData}>
-      {children}
-    </LocationContext.Provider>
-  );
+
+export function ProvideMisc({ children }: { children: React.ReactNode }) {
+  const value = useMiscProvider();
+  return <MiscContext.Provider value={value}>{children}</MiscContext.Provider>;
 }

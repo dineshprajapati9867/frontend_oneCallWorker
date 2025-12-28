@@ -1,7 +1,7 @@
 interface PropsI {
   type?: string;
 }
-
+import React from "react";
 export function GreenTickIcon({ type }: PropsI) {
   const renderType = () => {
     if (type === 'small') {

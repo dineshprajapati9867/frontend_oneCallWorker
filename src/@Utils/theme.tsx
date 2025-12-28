@@ -28,6 +28,8 @@ declare module '@mui/material/styles' {
       leafGreen: string;
       darkOrange:string
       blue?:string;
+      frostGray:string
+      silverGray:string,
     };
     calendar: {
       red: string;
@@ -113,44 +115,6 @@ declare module '@mui/material/styles' {
       naturalLightDark: string;
       fadeGray?: string;
     };
-    notifications: {
-      'Phone Call': string;
-      'Collaterals Shared': string;
-      'Virtual Tour Given': string;
-      'Visit Scheduled': string;
-      'Visit Done': string;
-      'Decision Makers Brought In': string;
-      'Final Negotiation': string;
-      'Closed - Won': string;
-      'Closed - Lost': string;
-      'Contract Sent': string;
-      Canteen: string;
-      Cleaning: string;
-      Desk: string;
-      Electrical: string;
-      Parking: string;
-    };
-    broker: {
-      pantone: string;
-      lavenderBlue: string;
-      coolGray: string;
-      blueGray: string;
-      pureSnow: string;
-      lightCoolGray: string;
-      mintGray: string;
-      aquaMint: string;
-      coolNeutral: string;
-      textColor: string;
-      sageGreen: string;
-      frostGray: string;
-      lightGreen: string;
-      fadeGreen: string;
-      neutral: string;
-      silverGray: string;
-      indigoBlue: string;
-      charcoalGray: string;
-      softGray: string;
-    };
   }
   // allow configuration using `createTheme`
   interface ThemeOptions {
@@ -178,6 +142,8 @@ declare module '@mui/material/styles' {
       leafGreen: string;
       darkOrange:string
       blue?:string
+      frostGray:string
+      silverGray:string
     };
     calendar?: {
       red?: string;
@@ -263,27 +229,6 @@ declare module '@mui/material/styles' {
       cardborderColor: string;
       naturalLightDark?: string;
       fadeGray?: string;
-    };
-    broker: {
-      pantone: string;
-      lavenderBlue: string;
-      coolGray: string;
-      blueGray: string;
-      pureSnow: string;
-      lightCoolGray: string;
-      mintGray: string;
-      aquaMint: string;
-      coolNeutral: string;
-      textColor: string;
-      sageGreen: string;
-      lightGreen: string;
-      fadeGreen: string;
-      frostGray: string;
-      neutral: string;
-      silverGray: string;
-      indigoBlue: string;
-      charcoalGray: string;
-      softGray: string;
     };
   }
   interface TypographyVariants {
@@ -399,7 +344,7 @@ export const theme = createTheme({
               border: 'none',
               '&:hover': {
                 //color: '#EB4C60',
-                color: '#2F80ED',
+                color: '#717171',
                 background: 'none',
               },
               '&:disabled': {
@@ -601,7 +546,9 @@ export const theme = createTheme({
     forestGreen: '#006644',
     leafGreen: '#79f2c0',
      darkOrange:"#fe4200", 
-     blue:"#3069FE"
+     blue:"#3069FE",
+     frostGray: '#CBD2E0',
+     silverGray: '#F2F2F7',
   },
   calendar: {
     red: '#EB4C60',
@@ -686,44 +633,6 @@ export const theme = createTheme({
     cardborderColor: '#F9F9F9',
     naturalLightDark: '#6B778C',
     fadeGray: '#e2e2e2',
-  },
-  notifications: {
-    'Phone Call': '#D4E4F9',
-    'Collaterals Shared': '#EADCFC',
-    'Virtual Tour Given': '#E2DECD',
-    'Visit Scheduled': '#DCE3E8',
-    'Visit Done': '#F7DAED',
-    'Decision Makers Brought In': '#D5F0B1',
-    'Final Negotiation': '#FAF6CF',
-    'Closed - Won': '#C7EBD1',
-    'Closed - Lost': '#FFBBB4',
-    'Contract Sent': '#B6D1FF',
-    Canteen: '#E74C3C',
-    Cleaning: '#2ECC71',
-    Desk: '#9747FF',
-    Electrical: '#F39C12',
-    Parking: '#2F80ED',
-  },
-  broker: {
-    pantone: '#bfdad2',
-    lavenderBlue: '#EEF2FF',
-    coolGray: '#e2e8f0',
-    blueGray: '#94a3b8',
-    pureSnow: '#f8fafc',
-    lightCoolGray: '#E2E8F0',
-    mintGray: '#C5E0D8',
-    aquaMint: '#7DE0C3',
-    coolNeutral: '#8E8E93',
-    textColor: '#374151',
-    sageGreen: '#598377',
-    frostGray: '#CBD2E0',
-    lightGreen: '#f3f8f3',
-    fadeGreen: '#CEE3DD',
-    neutral: '#F8F9FC',
-    silverGray: '#F2F2F7',
-    indigoBlue: '#4962BD',
-    charcoalGray: '#4B4B4B',
-    softGray: '#F2F4F7',
   },
 });
 

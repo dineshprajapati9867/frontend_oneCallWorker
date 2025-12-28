@@ -2,7 +2,9 @@ import { DragAndDropAvatar } from "@Components/DragAndDrop/DragAndDropAvatar";
 import { allIndianLanguage } from "@Constants/Home";
 import {
   Box,
+  FormControl,
   FormControlLabel,
+  FormHelperText,
   Radio,
   RadioGroup,
   styled,
@@ -10,6 +12,7 @@ import {
 } from "@mui/material";
 import { CheckBox, SearchableDropDown, TextInput } from "@Primitives/index";
 import { hooks } from "@Utils/index";
+import { pattern } from "@Utils/pattern";
 import React from "react";
 import { Controller, useWatch } from "react-hook-form";
 interface PropsI {
@@ -17,26 +20,28 @@ interface PropsI {
   watch: any;
   setValue: any;
 }
-const PersonalStyled = styled(Box)<{isMobile:boolean}>(({ theme,isMobile }) => ({
-  display: "flex",
-  flexDirection: "column",
-  gap: theme.spacing(12),
-  width:isMobile ?'90%':theme.spacing(260),
-  position: "relative",
-  ".logo": {
-    marginBottom: theme.spacing(7.5),
-    marginTop: theme.spacing(2.5),
-  },
-  ".checkBox": {
-    position: "absolute",
-    right: "0",
-    ".MuiFormControlLabel-root": {
-      marginRight: "0px",
+const PersonalStyled = styled(Box)<{ isMobile: boolean }>(
+  ({ theme, isMobile }) => ({
+    display: "flex",
+    flexDirection: "column",
+    gap: theme.spacing(12),
+    width: isMobile ? "90%" : theme.spacing(260),
+    position: "relative",
+    ".logo": {
+      marginBottom: theme.spacing(7.5),
+      marginTop: theme.spacing(2.5),
     },
-  },
-}));
+    ".checkBox": {
+      position: "absolute",
+      right: "0",
+      ".MuiFormControlLabel-root": {
+        marginRight: "0px",
+      },
+    },
+  })
+);
 const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
-  const {isMobile}=hooks.useResponsive()
+  const { isMobile } = hooks.useResponsive();
   const mobileNnumber = useWatch({
     name: "mobile_number",
     control: control,
@@ -53,6 +58,19 @@ const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
       setValue("whatsApp_number", "");
     }
   };
+
+  const spaceNotAllowed = (val: string) => {
+    if (val) {
+      if (!pattern.noSpace.test(val)) {
+        return "Space is not allowed";
+      }
+      if (!pattern.name.test(val)) {
+        return "Only alphabets are allowed";
+      }
+    }
+    return undefined;
+  };
+
   return (
     <PersonalStyled isMobile={isMobile}>
       <Box className="logo">
@@ -67,10 +85,15 @@ const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
       <Controller
         name="first_name"
         control={control}
-        render={({ field }) => (
+        rules={{
+          validate: spaceNotAllowed,
+        }}
+        render={({ field, fieldState: { error } }) => (
           <TextInput
             {...field}
             label="First Name*"
+            error={!!error}
+            helperText={error?.message}
             placeholder="Enter First Name"
           />
         )}
@@ -78,10 +101,15 @@ const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
       <Controller
         name="last_name"
         control={control}
-        render={({ field }) => (
+        rules={{
+          validate: spaceNotAllowed,
+        }}
+        render={({ field, fieldState: { error } }) => (
           <TextInput
             {...field}
             label="Last Name*"
+            error={!!error}
+            helperText={error?.message}
             placeholder="Enter Last Name"
           />
         )}
@@ -89,10 +117,19 @@ const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
       <Controller
         name="email"
         control={control}
-        render={({ field }) => (
+        rules={{
+          required: "Email is required",
+          pattern: {
+            value: pattern.email,
+            message: "Enter a valid email address",
+          },
+        }}
+        render={({ field, fieldState: { error } }) => (
           <TextInput
             {...field}
             label="Email ID*"
+            error={!!error}
+            helperText={error?.message}
             placeholder="Enter Email ID"
           />
         )}
@@ -100,11 +137,23 @@ const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
       <Controller
         name="mobile_number"
         control={control}
-        render={({ field }) => (
+        rules={{
+          required: "Mobile Number is required",
+          pattern: {
+            value: pattern.mobile,
+            message: "Enter valid mobile number",
+          },
+        }}
+        render={({ field, fieldState: { error } }) => (
           <TextInput
             {...field}
             label="Mobile Number*"
+            error={!!error}
+            helperText={error?.message}
             placeholder="Enter Mobile Number"
+            inputProps={{
+              maxLength: 10,
+            }}
           />
         )}
       />
@@ -112,11 +161,23 @@ const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
         <Controller
           name="whatsApp_number"
           control={control}
-          render={({ field }) => (
+          rules={{
+            required: "WhatsApp Number is required",
+            pattern: {
+              value: pattern.mobile,
+              message: "Enter valid whatsApp number",
+            },
+          }}
+          render={({ field, fieldState: { error } }) => (
             <TextInput
               {...field}
               label="WhatsApp Number"
+              error={!!error}
+              helperText={error?.message}
               placeholder="Enter WhatsApp Number"
+              inputProps={{
+                maxLength: 10,
+              }}
             />
           )}
         />
@@ -131,7 +192,7 @@ const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
       <Controller
         name="languages"
         control={control}
-        render={({ field }) => (
+        render={({ field, fieldState: { error } }) => (
           <SearchableDropDown
             {...field}
             label="Select Your Languages"
@@ -146,8 +207,14 @@ const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
       <Controller
         name="age"
         control={control}
-        render={({ field }) => (
-          <TextInput {...field} label="Age*" placeholder="Enter Your Age" />
+        render={({ field, fieldState: { error } }) => (
+          <TextInput
+            {...field}
+            label="Age*"
+            placeholder="Enter Your Age"
+            error={!!error}
+            helperText={error?.message}
+          />
         )}
       />
       <Box>
@@ -155,8 +222,8 @@ const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
           name="gender"
           control={control}
           defaultValue=""
-          render={({ field }) => (
-            <>
+          render={({ field, fieldState: { error } }) => (
+            <FormControl error={!!error}>
               <Typography variant="h6">Gender*</Typography>
 
               <RadioGroup row {...field}>
@@ -176,7 +243,8 @@ const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
                   label="Other"
                 />
               </RadioGroup>
-            </>
+              {error && <FormHelperText>{error.message}</FormHelperText>}
+            </FormControl>
           )}
         />
       </Box>

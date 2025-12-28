@@ -1,5 +1,4 @@
 import React from 'react';
-import { TextFieldComponent } from '@Constants/CommonStyledComponents';
 import { CalendarIcon, ErrorIcon } from '@Icons';
 import {
   Box,
@@ -11,7 +10,7 @@ import {
   Button,
 } from '@mui/material';
 import DatePicker from 'react-multi-date-picker';
-
+import { TextFieldComponent } from '@Constants/CommonStyledComponents.tsx';
 interface PropsI {
   value: any;
   onChange: (date: any) => void;

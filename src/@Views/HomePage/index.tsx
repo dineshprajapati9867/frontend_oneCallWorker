@@ -50,37 +50,41 @@ const HomeStyle = styled(Box)(({ theme }) => ({
   },
 }));
 function HomePage() {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const { useGetAllWorkerList } = hooks.useMisc();
   const { data: WorkersListData } = useGetAllWorkerList();
+  const { isMobile } = hooks.useResponsive();
   return (
     <>
       <HomeStyle>
-        <Box className="main">
-          <Box className="leftSide">
-            <Typography className="heading" variant="h1">
-              Find Skilled Workers Near You
-            </Typography>
-            <Typography className="subHeading" variant="body1">
-              Finding skilled workers near you has never been this easier.{" "}
-            </Typography>
-            <Button size="medium" className="findBtn" variant="contained">
-              Find Worker
-            </Button>
+        {!isMobile && (
+          <Box className="main">
+            <Box className="leftSide">
+              <Typography className="heading" variant="h1">
+                Find Skilled Workers Near You
+              </Typography>
+              <Typography className="subHeading" variant="body1">
+                Finding skilled workers near you has never been this easier.{" "}
+              </Typography>
+              <Button size="medium" className="findBtn" variant="contained">
+                Find Worker
+              </Button>
+            </Box>
+            <img className="image" src={homePage} />
           </Box>
-          <img className="image" src={homePage} />
-        </Box>
-        <Typography className="serviceCategories" variant="h1">
-          Service Categories
-        </Typography>
+        )}
+        {!isMobile && (
+          <Typography className="serviceCategories" variant="h1">
+            Service Categories
+          </Typography>
+        )}
         <Box className="imageContainer">
           {WorkersListData?.map((val) => {
             return (
               <ServiceCategoryCard
-                handleClick={() =>{
-                  navigate(`/workers/${val.title.split(" ").join("-")}`)
-                }
-                }
+                handleClick={() => {
+                  navigate(`/workers/${val.title.split(" ").join("-")}`);
+                }}
                 title={val.title}
                 url={val.image_kit_url}
               />

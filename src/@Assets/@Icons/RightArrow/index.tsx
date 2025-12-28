@@ -13,3 +13,19 @@ export function RightArrow() {
     </svg>
   );
 }
+export const  RightArrowStraightWhite = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={24}
+    height={24}
+    fill="none"
+  >
+    <path
+      stroke="#fff"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="m21 12-5-5m5 5-5 5m5-5H3"
+    />
+  </svg>
+)

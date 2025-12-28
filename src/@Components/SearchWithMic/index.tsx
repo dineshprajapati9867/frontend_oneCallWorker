@@ -24,7 +24,8 @@ const MainBox = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   ".searchInput": {
-    height: 40,
+    height: theme.spacing(20),
+    width:"100%"
   },
   ".filterIcon": {
     display: "flex",
@@ -136,10 +137,10 @@ export default function SearchWithMic() {
       <Box
         className="searchInput"
         sx={{
-          width: {
-            md: 326,
-            lg: 500,
-          },
+          // width: {
+          //   // md: 326,
+          //   lg: 500,
+          // },
         }}
       >
         <CustomInputStyled

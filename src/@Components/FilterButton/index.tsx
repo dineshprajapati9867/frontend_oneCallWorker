@@ -11,7 +11,7 @@ const FilterButtonContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(5.5, 6),
   textAlign: "center",
   borderRadius: theme.spacing(6),
-  border: `1px solid ${theme.broker.frostGray}`,
+  border: `1px solid ${theme.text.frostGray}`,
   maxWidth: theme.spacing(72.5),
   cursor: "pointer",
   minWidth: theme.spacing(72.5),
@@ -29,7 +29,7 @@ export function FilterButton({
   return (
     <FilterButtonContainer
       sx={(theme) => ({
-        background: isSelected ? theme.broker.silverGray : "",
+        background: isSelected ? theme.text.silverGray : "",
       })}
       onClick={() => handleSelectFilter(isSelected ? "" : name)} // toggle
     >

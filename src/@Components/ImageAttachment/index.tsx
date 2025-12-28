@@ -4,10 +4,8 @@ import { styled, Typography, SxProps, FormHelperText } from '@mui/material';
 
 import { useDropzone } from 'react-dropzone';
 import { Variant } from '@mui/material/styles/createTypography';
-import {
-  DragAndDropContainerStyles,
-  DragAndDropEditContainer,
-} from '@Constants/CommonStyledComponents';
+import { DragAndDropContainerStyles ,DragAndDropEditContainer} from '@Constants/CommonStyledComponents.tsx'; 
+
 import TextInput from '../../@Primitives/Input/TextInput/TextInput';
 import { ErrorIcon, InputCloseIcon, DeleteIcon, PaperClipIcon } from '../../@Assets/@Icons';
 
