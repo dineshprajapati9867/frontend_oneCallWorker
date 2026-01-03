@@ -111,7 +111,7 @@ const TextFieldComponent = styled(TextField)(({ theme }) => ({
     },
     '&.labeledAdornment': {
       '&.MuiOutlinedInput-root.Mui-disabled': {
-        border: `1px solid ${theme.broker.frostGray}`,
+        border: `1px solid ${theme.text.frostGray}`,
       },
       '&.MuiInputBase-root': {
         backgroundColor: 'transparent',

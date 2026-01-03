@@ -4,7 +4,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { Box } from '@mui/system';
 
 export interface LoaderI {
-  type?: string;
+  type?:"window" | "section"| "table" | "button";
   color?: any;
   size?: any;
 }

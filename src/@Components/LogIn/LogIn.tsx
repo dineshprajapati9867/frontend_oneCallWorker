@@ -22,9 +22,10 @@ import { hooks, validationPatterns } from "@Utils/index";
 import { useGoogleLogin, useGoogleOneTapLogin } from "@react-oauth/google";
 import React, { useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import OTPInput from "react-otp-input";
 import ocw_logo from "@Assets/Images/ocw_logo.png";
 import axios from "axios";
+import { OTPInput } from "input-otp";
+
 interface PropsI {
   open: boolean;
   onClose: () => void;
@@ -32,7 +33,7 @@ interface PropsI {
 
 const LoginStyle = styled(Box)<{ isMobile: boolean }>(
   ({ theme, isMobile }) => ({
-    padding: theme.spacing(15),
+    padding: theme.spacing(isMobile ? 10 : 15),
     display: "flex",
     flexDirection: "column",
     gap: theme.spacing(4),
@@ -120,10 +121,12 @@ const LoginStyle = styled(Box)<{ isMobile: boolean }>(
   })
 );
 
-const LoginOtp = styled(Box)(({ theme }) => ({
+const LoginOtp = styled(Box)<{ isMobile }>(({ theme, isMobile }) => ({
   ".headerText": {
     display: "flex",
     alignItems: "center",
+    padding: theme.spacing(0, 5, 0, 2),
+    justifyContent: "space-between",
     gap: theme.spacing(10),
 
     ".enterText": {
@@ -142,8 +145,8 @@ const LoginOtp = styled(Box)(({ theme }) => ({
     marginTop: theme.spacing(7.5),
   },
   ".otpBox": {
-    width: `${theme.spacing(28)} !important`,
-    height: theme.spacing(34.5),
+    width: `${theme.spacing(isMobile ? 20 : 28)} !important`,
+    height: theme.spacing(isMobile ? 25 : 34.5),
     textAlign: "center",
     border: `1px solid ${theme.text.darkGrey}`,
     borderRadius: theme.spacing(4),
@@ -176,6 +179,11 @@ const LoginOtp = styled(Box)(({ theme }) => ({
     borderRadius: theme.spacing(3.5),
     maxHeight: theme.spacing(20),
   },
+  '.editBox': {
+    display: "flex",
+    alignItems: "center",
+    gap: theme.spacing(2),
+  }
 }));
 
 function LogIn({ open, onClose }: PropsI) {
@@ -216,7 +224,7 @@ function LogIn({ open, onClose }: PropsI) {
               control={control}
               rules={{
                 validate: (val) => {
-                  if (!validationPatterns.pattern.mobile.test(val)) {
+                  if (!validationPatterns.pattern.mobile.test(val) && val.length === 10) {
                     return "Please enter valid mobile number";
                   }
                   return undefined;
@@ -302,15 +310,17 @@ function LogIn({ open, onClose }: PropsI) {
         )}
         {/* after otp  */}
         {isOtpSend && (
-          <LoginOtp>
+          <LoginOtp isMobile={isMobile}>
             <Box className="headerText">
               <Typography className="enterText">
                 Enter the code sent to{" "}
               </Typography>
-              <Typography className="number">+ 91 - 7949747494</Typography>
-              <IconButton onClick={() => setIsOtpSend(false)}>
-                <EditBlueIcon />
-              </IconButton>
+              <Box className="editBox">
+                <Typography className="number">+ 91 - 7949747494</Typography>
+                <IconButton onClick={() => setIsOtpSend(false)}>
+                  <EditBlueIcon />
+                </IconButton>
+              </Box>
             </Box>
             <Box className="otp">
               <Controller
@@ -327,10 +337,17 @@ function LogIn({ open, onClose }: PropsI) {
                   <OTPInput
                     onChange={onChange}
                     value={value}
-                    numInputs={6}
-                    renderInput={(props) => <input {...props} />}
-                    containerStyle="otp"
-                    inputStyle="otpBox"
+                    maxLength={6}
+                    // renderInput={(props) => <input {...props} />}
+                    render={({ slots }) => (
+                      <Box className="otp">
+                        {slots.map((slot, i) => (
+                          <input className="otpBox" key={i} {...slot} />
+                        ))}
+                      </Box>
+                    )}
+                  // containerStyle="otp"
+                  //inputStyle="otpBox"
                   />
                 )}
               />
@@ -354,7 +371,11 @@ function LogIn({ open, onClose }: PropsI) {
   return (
     <>
       {isMobile ? (
-        <Drawer open={open} onClose={onClose} anchor="bottom">
+        <Drawer open={open} onClose={onClose} anchor="bottom" sx={{
+          "& .MuiDrawer-paper": {
+            borderRadius: "15px 15px 0 0"
+          },
+        }} >
           <ContentData />
         </Drawer>
       ) : (
@@ -370,7 +391,10 @@ function LogIn({ open, onClose }: PropsI) {
           })}
           slots={{ transition: Slide }}
           slotProps={{ transition: { direction: "up" } }}
-        ></Dialog>
+          onClose={onClose}
+        >
+          <ContentData />
+        </Dialog>
       )}
     </>
   );

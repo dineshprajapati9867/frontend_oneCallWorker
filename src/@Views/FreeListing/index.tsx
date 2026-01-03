@@ -6,7 +6,7 @@ import {
   Accordion,
   AccordionSummary,
 } from "@mui/material";
-import React from "react";
+import React, { Suspense } from "react";
 
 import { ChevronArrowDown } from "@Icons/ArrowDown";
 import { FAQs } from "@Constants/Home";
@@ -17,12 +17,14 @@ import {
   RightArrowStraightWhite,
 } from "@Icons/index";
 import ocw_logo from "@Assets/Images/ocw_logo.png";
-import CreateProfileModal from "@Views/CreateProfileModal";
+// import CreateProfileModal from "@Views/CreateProfileModal";
 import { hooks } from "@Utils/index";
 import create_step_2 from "@Assets/Images/create_step_2.png";
 import create_step_1 from "@Assets/Images/create_step_1.png";
 import arrow from "@Assets/Images/arrow.png";
-import { TextInput } from "@Primitives/index";
+import { Loader, TextInput } from "@Primitives/index";
+  const CreateProfileModal = React.lazy(() => import("@Views/CreateProfileModal"));
+
 const FreeListingStyled = styled(Box)<{ isMobile: boolean }>(
   ({ theme, isMobile }) => ({
     // width: "100%",
@@ -143,7 +145,7 @@ const FreeListingStyled = styled(Box)<{ isMobile: boolean }>(
         border: "none",
         outline: "none",
         padding: theme.spacing(2),
-        fontSize: 16,
+        fontSize: theme.spacing(isMobile ? 10 : 8),
       },
 
       ".startBtn": {
@@ -239,6 +241,8 @@ function FreeListing() {
     handleOpenCreateProfileModal,
   } = hooks.useUser();
   const { isMobile } = hooks.useResponsive();
+
+
   return (
     <Box
       sx={(theme) => ({
@@ -263,8 +267,9 @@ function FreeListing() {
             onClick={handleOpenCreateProfileModal}
             className="createBtn"
             variant="contained"
+            disabled={openCreateProfileModal}
           >
-            Create Your Profile
+           {`Create Your Profile${openCreateProfileModal?"...":""}`} 
           </Button>
         </nav>
         {!isMobile && (
@@ -335,7 +340,7 @@ function FreeListing() {
 
               <Box className="steps">
                 <Box className="step">
-                  <img src={create_step_1} alt="Step 1" />
+                  <img loading="lazy" src={create_step_1} alt="Step 1" />
                   <Box>
                     <Typography className="stepTitle">Step 1</Typography>
                     <Typography className="stepText">Create Account</Typography>
@@ -345,10 +350,10 @@ function FreeListing() {
                   </Box>
                 </Box>
 
-                {!isMobile && <img className="arrow" src={arrow} alt="arrow" />}
+                {!isMobile && <img loading="lazy" className="arrow" src={arrow} alt="arrow" />}
 
                 <Box className="step">
-                  <img src={create_step_2} alt="Step 2" />
+                  <img loading="lazy" src={create_step_2} alt="Step 2" />
                   <Box>
                     <Typography className="stepTitle">Step 2</Typography>
                     <Typography className="stepText">
@@ -366,8 +371,8 @@ function FreeListing() {
             <Typography className="gotQustion" variant="h5">
               Got a question?
             </Typography>
-            {FAQs.map((val) => (
-              <Accordion className="accordion">
+            {FAQs.map((val, i) => (
+              <Accordion className="accordion" key={i}>
                 <AccordionSummary
                   expandIcon={<ChevronArrowDown />}
                   aria-controls="panel2-content"
@@ -378,8 +383,8 @@ function FreeListing() {
                   </Typography>
                 </AccordionSummary>
                 <ul className="ul">
-                  {val.answers.map((ans) => (
-                    <li>{ans}</li>
+                  {val.answers.map((ans, i) => (
+                    <li key={i}>{ans}</li>
                   ))}
                 </ul>
               </Accordion>
@@ -388,10 +393,12 @@ function FreeListing() {
         </Box>
       </FreeListingStyled>
       {openCreateProfileModal && (
-        <CreateProfileModal
-          open={openCreateProfileModal}
-          onClose={handleCloseCreateProfileModal}
-        />
+        <Suspense fallback={null}>
+          <CreateProfileModal
+            open={openCreateProfileModal}
+            onClose={handleCloseCreateProfileModal}
+          />
+        </Suspense>
       )}
     </Box>
   );

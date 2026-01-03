@@ -62,7 +62,7 @@ const ProfileDrawerStyle = styled(Drawer)<{ isMobile: boolean }>(
       fontSize: `${theme.spacing(8.5)} !important`,
     },
     ".main": {
-      padding:isMobile?theme.spacing(4.5, 5): theme.spacing(9, 10),
+      padding: isMobile ? theme.spacing(4.5, 5) : theme.spacing(9, 10),
 
       ".text": {
         fontWeight: 400,

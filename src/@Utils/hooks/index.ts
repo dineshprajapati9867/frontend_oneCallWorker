@@ -3,8 +3,6 @@ import { useDebounce } from "./Custom/useDebounce";
 import { ProvideMisc } from "./useMisc";
 import { useMisc } from "./useMisc";
 import { useHashRouteToggle } from "./Custom/useHashRouteToggle";
-import { useResize } from "./Custom/useResize";
-import { useOnClickOutside } from "./Custom/useOnclickOutside";
 import { useGetLatitudeAndLongitude } from "./Custom/useGetLatitudeAndLongitude";
 import { ProvideAuth,useAuth } from "./Auth";
 import useToken from "./useToken";
@@ -13,8 +11,6 @@ import { ProvideResponsive,useResponsive } from "./useResponsive";
 export {
   useGetLatitudeAndLongitude,
   useHashRouteToggle,
-  useResize,
-  useOnClickOutside,
   useMisc,
   ProvideMisc,
   useSnackBar,

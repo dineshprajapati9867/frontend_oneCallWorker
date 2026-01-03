@@ -28,8 +28,8 @@ declare module '@mui/material/styles' {
       leafGreen: string;
       darkOrange:string
       blue?:string;
-      frostGray:string
-      silverGray:string,
+      frostGray?:string
+      silverGray?:string,
     };
     calendar: {
       red: string;
@@ -142,8 +142,8 @@ declare module '@mui/material/styles' {
       leafGreen: string;
       darkOrange:string
       blue?:string
-      frostGray:string
-      silverGray:string
+      frostGray?:string
+      silverGray?:string
     };
     calendar?: {
       red?: string;

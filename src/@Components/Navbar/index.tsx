@@ -1,16 +1,15 @@
-import React, { useState } from "react";
 import { Avatar, Box, Button, styled, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import LanguageTranslate from "@Components/LanguageTranslate";
 import { languages } from "@Constants/Home";
-import LogIn from "@Components/LogIn/LogIn";
+//import LogIn from "@Components/LogIn/LogIn";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import { useNavigate } from "react-router-dom";
 import SearchWithMic from "@Components/SearchWithMic";
-import { AvatarLabel } from "@Primitives/Admin/SearchableDropDown";
 import { hooks } from "@Utils/index";
 import ocw_logo from "@Assets/Images/ocw_logo.png";
-import avatar from "@Assets/Images/avatar.png";
+import React, { lazy, Suspense } from "react";
+const LogIn =lazy(()=>import("@Components/LogIn/LogIn"))
 const NavbarStyle = styled(Box)<{ isMobile: boolean }>(
   ({ theme, isMobile }) => ({
     position: 'sticky',
@@ -91,7 +90,7 @@ export default function Navbar() {
   const { t, i18n } = useTranslation("navbar");
   const navigate = useNavigate();
  // const [openLogin, setOpenLogin] = useState(false);
-  const { handleOpenProfileDrawer,openLogin, handleCloseLogin} = hooks.useUser();
+  const { handleOpenProfileDrawer,openLogin, handleCloseLogin,handleOpenLogin} = hooks.useUser();
   const { isMobile } = hooks.useResponsive();
   // Current language display
   const handleGetCurrentLanguage = () => {
@@ -147,12 +146,11 @@ export default function Navbar() {
             ) : (
               <Button
                 className="btn"
-                onClick={() => {
-                  setOpenLogin(true);
-                }}
+                onClick={handleOpenLogin}
                 variant="contained"
               >
-                {t("loginSignUp")}
+                {/* {t(`loginSignUp`)} */}
+                {`Login/Sign Up${openLogin?"...":""}`}
               </Button>
             )}
           </Box>
@@ -165,7 +163,7 @@ export default function Navbar() {
       </NavbarStyle>
 
       {openLogin && (
-        <LogIn open={openLogin} onClose={handleCloseLogin} />
+       <Suspense fallback={null}> <LogIn open={openLogin} onClose={handleCloseLogin} /></Suspense>
       )}
     </>
   );
