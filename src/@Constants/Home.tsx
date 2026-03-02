@@ -53,6 +53,11 @@ const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 const experience = [
   {
+    id: "0-1",
+    label: "0-1",
+    value: "0-1",
+  },
+  {
     id: "1",
     label: "1",
     value: "1",
@@ -74,8 +79,33 @@ const experience = [
   },
   {
     id: "5",
-    label: "5+",
+    label: "5",
     value: "5",
+  },
+  {
+    id: "6",
+    label: "6",
+    value: "6",
+  },
+  {
+    id: "7",
+    label: "7",
+    value: "7",
+  },
+  {
+    id: "8",
+    label: "8",
+    value: "8",
+  },
+  {
+    id: "9",
+    label: "9",
+    value: "9",
+  },
+  {
+    id: "10",
+    label: "10+",
+    value: "10",
   },
 ];
 export { languages, FAQs, mapStyles, allIndianLanguage, experience, days };

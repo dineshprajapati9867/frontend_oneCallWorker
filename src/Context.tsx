@@ -6,13 +6,13 @@ interface PropsI {
 
 function ContextContainer({ children }: PropsI) {
   return (
-    <hooks.ProvideAuth>
-      <hooks.ProvideMisc>
-        <hooks.ProvideUser>
+    <hooks.ProvideUser>
+      <hooks.ProvideAuth>
+        <hooks.ProvideMisc>
           <hooks.ProvideResponsive>{children}</hooks.ProvideResponsive>
-        </hooks.ProvideUser>
-      </hooks.ProvideMisc>
-    </hooks.ProvideAuth>
+        </hooks.ProvideMisc>
+      </hooks.ProvideAuth>
+    </hooks.ProvideUser>
   );
 }
 export default ContextContainer;

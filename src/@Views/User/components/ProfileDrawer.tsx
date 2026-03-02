@@ -99,6 +99,7 @@ const ProfileDrawer = ({ open, onClose }: PrposI) => {
   const user = JSON.parse(localStorage.getItem("user"));
 
   const handleNotification = async () => {
+    console.log("Notification.permission",Notification.permission)
     if (!("Notification" in window)) {
       return ShowInfoSnackBar("This browser does not support notifications");
     }

@@ -13,13 +13,15 @@ export const useAuth = () => useContext(authContext);
 
 function useProvideAuth() {
   const { setToken ,setUser} = hooks.useToken();
-  const {ShowApiErrorSnackBar}=hooks.useSnackBar()
+  const {ShowApiErrorSnackBar}=hooks.useSnackBar();
+  const {handleCloseLogin}=hooks.useUser()
   const handleLoginWithGoogle = useGoogleLogin({
     onSuccess: async (res) => {
         const userInfo = await googleLogin(res.access_token);        
         const savedUser = await saveGoogleUser(userInfo.data);
         setToken(savedUser.data.jwtToken)        
         setUser(savedUser.data.user)
+        handleCloseLogin()
     },
     onError: (err) => {
       ShowApiErrorSnackBar(err)

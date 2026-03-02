@@ -3,6 +3,7 @@ import FreeListing from "@Views/FreeListing";
 import HomePage from "@Views/HomePage";
 import NoInternetPage from "@Components/NoInternetPage";
 import WorkerList from "@Views/WorkerList";
+import { WorkerDetails } from "@Views/WorkerDetails";
 export const HomeLayouts: {
   name: string;
   path: string;
@@ -17,6 +18,11 @@ export const HomeLayouts: {
     name: "workerList",
     path: "workers/:type",
     Component: WorkerList,
+  },
+  {
+    name: "workerDetails",
+    path: "worker/:id",
+    Component: WorkerDetails,
   },
 ];
 

@@ -11,11 +11,11 @@ interface PropsI {
   setValue: any;
   watch: any;
 }
-const SkillStyle = styled(Box)<{isMobile:boolean}>(({ theme ,isMobile}) => ({
+const SkillStyle = styled(Box)<{ isMobile: boolean }>(({ theme, isMobile }) => ({
   display: "flex",
   flexDirection: "column",
   gap: theme.spacing(12),
-  width:isMobile ?'90%':theme.spacing(260),
+  width: isMobile ? '90%' : theme.spacing(260),
   paddingTop: theme.spacing(12),
   ".selectDayWeek": {
     display: "flex",
@@ -28,7 +28,7 @@ const SkillStyle = styled(Box)<{isMobile:boolean}>(({ theme ,isMobile}) => ({
   },
 }));
 const SkillInformation = ({ control, watch, setValue }: PropsI) => {
-  const {isMobile}=hooks.useResponsive()
+  const { isMobile } = hooks.useResponsive()
   const selectedDays = useWatch({
     control,
     name: "days",
@@ -44,33 +44,47 @@ const SkillInformation = ({ control, watch, setValue }: PropsI) => {
   return (
     <SkillStyle isMobile={isMobile}>
       <Controller
-        name="languages"
+        name="skills"
         control={control}
-        render={({ field }) => (
+        rules={
+          {
+            required: "Skills is required"
+          }
+        }
+        render={({ field, fieldState: { error } }) => (
           <SearchableDropDown
             {...field}
             label="Select Your Skills"
             placeholder="Select Your Skills"
             options={allIndianLanguage}
             isMulti={true}
+            error={!!error}
+            helperText={error ? error.message : null}
           />
         )}
       />
       <Controller
         name="experience"
         control={control}
-        render={({ field }) => (
+        rules={
+          {
+            required: "Skills is required"
+          }
+        }
+        render={({ field, fieldState: { error } }) => (
           <SearchableDropDown
             {...field}
-            label="Years of Experience"
+            label="Years of Experience*"
             placeholder="Select Experience"
             options={experience}
+            error={!!error}
+            helperText={error ? error.message : null}
           />
         )}
       />
       <Box>
         <Box className="selectDayWeek">
-          <Typography variant="h6">Select Days Of the Week</Typography>
+          <Typography variant="h6">Select Days Of the Week*</Typography>
           <CheckBox
             size="small"
             checked={selectedDays?.length === days.length}
@@ -89,6 +103,7 @@ const SkillInformation = ({ control, watch, setValue }: PropsI) => {
                   name={day}
                   selectedDays={value}
                   onChange={onChange}
+
                 />
               ))}
             </Box>

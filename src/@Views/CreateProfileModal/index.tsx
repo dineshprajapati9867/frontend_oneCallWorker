@@ -28,7 +28,7 @@ const ScrollContent = styled(Box)(({ theme }) => ({
 }));
 
 const CreateProfileModal = ({ open, onClose }: PropsI) => {
-  const { control, watch, setValue, handleSubmit } = useForm({
+  const { control, watch, setValue, handleSubmit, formState:{isValid} } = useForm({
     mode: "onChange",
   });
   const {
@@ -36,11 +36,15 @@ const CreateProfileModal = ({ open, onClose }: PropsI) => {
     activeStep,
     handleBackForCreateProfile,
     handleNextForCreateProfile,
+    handleCreateProfile,
+    isCreateProfilePending
   } = hooks.useUser();
 
   const onSubmit = (data) => {
-    // console.log("data", data);
+    handleCreateProfile(data)
   };
+
+
   return (
     <BasicModal open={open} close={onClose} fullScreen>
       <ProfileStyled onSubmit={handleSubmit(onSubmit)}>
@@ -48,6 +52,8 @@ const CreateProfileModal = ({ open, onClose }: PropsI) => {
           activeStep={activeStep}
           steps={createProfileStep}
           onClose={onClose}
+          handleSaveAndNext={handleSubmit(onSubmit)}
+          isBtnLoading={isCreateProfilePending}
         />
         <ScrollContent>
           {activeStep === 1 && (
@@ -76,6 +82,7 @@ const CreateProfileModal = ({ open, onClose }: PropsI) => {
           activeStep={activeStep}
           handleBack={handleBackForCreateProfile}
           handleNext={handleNextForCreateProfile}
+          isButtonDisabled={!isValid}
         />
       </ProfileStyled>
     </BasicModal>

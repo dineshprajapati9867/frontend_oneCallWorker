@@ -18,41 +18,47 @@ const LocationStyle = styled(Box)<{ isMobile: boolean }>(
   })
 );
 const LocationInformation = ({ control, watch, setValue }: PropsI) => {
-  const {ShowCautionSnackBar}=hooks.useSnackBar()
+  const { ShowCautionSnackBar } = hooks.useSnackBar()
   const { isMobile } = hooks.useResponsive();
   const { useGetPostalCode } = hooks.useMisc();
   const pincode = watch("pincode");
-  const { data, isSuccess,isError } = useGetPostalCode(
+  const { data, isSuccess, isError } = useGetPostalCode(
     pincode?.length === 6 && pincode
   );
 
-console.log("isError",isError);
+  console.log("isError", isError);
 
   useEffect(() => {
     if (isSuccess && data) {
       setValue("city", data.city);
       setValue("state", data.state);
     }
-    if(isError){
+    if (isError) {
       ShowCautionSnackBar("Postal code not found")
-      setValue("pincode", "");    }
-  }, [isSuccess, data, setValue,isError]);
-  
+      setValue("pincode", "");
+    }
+  }, [isSuccess, data, setValue, isError]);
+
   return (
     <LocationStyle isMobile={isMobile}>
       <Controller
         name="address_one"
         control={control}
-        render={({ field }) => (
+        rules={{
+          required: "Address line 1 is required"
+        }}
+        render={({ field, fieldState: { error } }) => (
           <TextInput
             {...field}
             label="Address Line 1*"
             placeholder="Enter Floor Name,Building Name,Street"
+            error={!!error}
+            helperText={error ? error.message : null}
           />
         )}
       />
       <Controller
-        name="address_one"
+        name="address_two"
         control={control}
         render={({ field }) => (
           <TextInput
@@ -65,8 +71,14 @@ console.log("isError",isError);
       <Controller
         name="area"
         control={control}
-        render={({ field }) => (
-          <TextInput {...field} label="Area*" placeholder="Enter Area" />
+        rules={{
+          required: "Area is required"
+        }}
+        render={({ field, fieldState: { error } }) => (
+          <TextInput {...field} label="Area*" placeholder="Enter Area"
+            error={!!error}
+            helperText={error ? error.message : null}
+          />
         )}
       />
       <Controller
@@ -79,7 +91,10 @@ console.log("isError",isError);
       <Controller
         name="pincode"
         control={control}
-        render={({ field }) => (
+        rules={{
+          required: "Pincode is required"
+        }}
+        render={({ field, fieldState: { error } }) => (
           <TextInput
             {...field}
             label="Pincode*"
@@ -92,30 +107,42 @@ console.log("isError",isError);
               setValue('city', '');
               setValue('state', '');
             }}
+            error={!!error}
+            helperText={error ? error.message : null}
           />
         )}
       />
       <Controller
         name="state"
         control={control}
-        render={({ field }) => (
+        rules={{
+          required: "state is required"
+        }}
+        render={({ field, fieldState: { error } }) => (
           <TextInput
             {...field}
             label="State*"
             placeholder="State"
             disabled={true}
+            error={!!error}
+            helperText={error ? error.message : null}
           />
         )}
       />
       <Controller
         name="city"
         control={control}
-        render={({ field }) => (
+        rules={{
+          required: "City is required"
+        }}
+        render={({ field, fieldState: { error } }) => (
           <TextInput
             {...field}
             label="City*"
             placeholder="City"
             disabled={true}
+            error={!!error}
+            helperText={error ? error.message : null}
           />
         )}
       />

@@ -32,8 +32,8 @@ const WorkerList = () => {
       <Box className="Card">
         <Box className="CardContainer">
           {arr.map((val) => (
-            // <WorkerCard />
-            <WorkerCardSkeleton/>
+             <WorkerCard />
+            //<WorkerCardSkeleton/>
           ))}
         </Box>
         {(isLaptop || isDeskTop) && <EnquiryCard />}

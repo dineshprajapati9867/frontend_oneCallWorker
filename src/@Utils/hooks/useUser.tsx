@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
 import { hooks } from "..";
+import { useMutation } from "@tanstack/react-query";
+import { createProfileUser } from "@Utils/controllers/user";
 
 interface userI {
   openProfileDrawer: boolean;
@@ -12,9 +14,11 @@ interface userI {
   activeStep: number;
   handleBackForCreateProfile: () => void;
   handleNextForCreateProfile: () => void;
-  openLogin:boolean;
-  handleOpenLogin:()=>void;
-  handleCloseLogin:()=>void
+  openLogin: boolean;
+  handleOpenLogin: () => void;
+  handleCloseLogin: () => void;
+  handleCreateProfile: (data) => void;
+  isCreateProfilePending:boolean
 }
 
 const userContext = createContext<userI>({} as userI);
@@ -22,6 +26,7 @@ const userContext = createContext<userI>({} as userI);
 export const useUser = () => useContext(userContext);
 
 const useUserData = () => {
+  const { ShowApiErrorSnackBar, ShowSuccessSnackBar } = hooks.useSnackBar()
   const [openProfileDrawer, setOpenProfileDrawer] = useState(false);
   const [openCreateProfileModal, setOpenCreateProfileModal] =
     hooks.useHashRouteToggle("create-profile");
@@ -71,6 +76,26 @@ const useUserData = () => {
   const handleNextForCreateProfile = () => {
     setActiveStep((prev) => prev + 1);
   };
+
+  /**
+   *  Create Proile
+   */
+  const { mutate: mutateCreateProfile,isPending:isCreateProfilePending } = useMutation({
+    mutationFn: createProfileUser,
+    onSuccess(data) {
+      console.log("data", data
+      )
+      ShowSuccessSnackBar("Sucess")
+    },
+    onError: (err) => {
+      ShowApiErrorSnackBar(err)
+    }
+  })
+
+  const handleCreateProfile = (data) => {
+    console.log("dinesh::::",data)
+     // mutateCreateProfile(data)
+  }
   return {
     openProfileDrawer,
     handleOpenProfileDrawer,
@@ -84,7 +109,9 @@ const useUserData = () => {
     handleBackForCreateProfile,
     openLogin,
     handleOpenLogin,
-    handleCloseLogin
+    handleCloseLogin,
+    handleCreateProfile,
+    isCreateProfilePending
   };
 };
 

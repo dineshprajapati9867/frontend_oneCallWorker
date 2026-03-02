@@ -1,5 +1,6 @@
 import { DragAndDropAvatar } from "@Components/DragAndDrop/DragAndDropAvatar";
 import { allIndianLanguage } from "@Constants/Home";
+import { ErrorIcon } from "@Icons/ErrorIcon";
 import {
   Box,
   FormControl,
@@ -38,6 +39,14 @@ const PersonalStyled = styled(Box)<{ isMobile: boolean }>(
         marginRight: "0px",
       },
     },
+    '.formHelperBox': {
+      display: 'flex',
+      '.MuiFormHelperText-root': {
+        marginTop: '0px',
+        marginLeft: theme.spacing(1.25),
+        fontSize: theme.spacing(6)
+      }
+    }
   })
 );
 const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
@@ -77,15 +86,19 @@ const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
         <Controller
           name="logo"
           control={control}
-          render={({ field: { onChange } }) => (
+          render={({ field: { onChange, } }) => (<>
+
             <DragAndDropAvatar onChange={onChange} displayPicture={logo} />
+          </>
           )}
+
         />
       </Box>
       <Controller
         name="first_name"
         control={control}
         rules={{
+          required: "First name is required",
           validate: spaceNotAllowed,
         }}
         render={({ field, fieldState: { error } }) => (
@@ -93,7 +106,7 @@ const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
             {...field}
             label="First Name*"
             error={!!error}
-            helperText={error?.message}
+            helperText={error ? error.message : null}
             placeholder="Enter First Name"
           />
         )}
@@ -102,6 +115,7 @@ const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
         name="last_name"
         control={control}
         rules={{
+          required: "Last name is required",
           validate: spaceNotAllowed,
         }}
         render={({ field, fieldState: { error } }) => (
@@ -109,7 +123,7 @@ const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
             {...field}
             label="Last Name*"
             error={!!error}
-            helperText={error?.message}
+            helperText={error ? error.message : null}
             placeholder="Enter Last Name"
           />
         )}
@@ -129,7 +143,7 @@ const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
             {...field}
             label="Email ID*"
             error={!!error}
-            helperText={error?.message}
+            helperText={error ? error.message : null}
             placeholder="Enter Email ID"
           />
         )}
@@ -139,17 +153,20 @@ const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
         control={control}
         rules={{
           required: "Mobile Number is required",
-          pattern: {
-            value: pattern.mobile,
-            message: "Enter valid mobile number",
-          },
+        
+          validate: (val) => {
+            if (!pattern.mobile.test(val)) {
+              return "Enter valid mobile number"
+            }
+            return undefined
+          }
         }}
         render={({ field, fieldState: { error } }) => (
           <TextInput
             {...field}
             label="Mobile Number*"
             error={!!error}
-            helperText={error?.message}
+            helperText={error ? error.message : null}
             placeholder="Enter Mobile Number"
             inputProps={{
               maxLength: 10,
@@ -162,18 +179,19 @@ const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
           name="whatsApp_number"
           control={control}
           rules={{
-            required: "WhatsApp Number is required",
-            pattern: {
-              value: pattern.mobile,
-              message: "Enter valid whatsApp number",
-            },
+            validate: (val) => {
+              if (val?.length === 10 && !pattern.mobile.test(val)) {
+                return "Enter valid mobile number"
+              }
+              return undefined
+            }
           }}
           render={({ field, fieldState: { error } }) => (
             <TextInput
               {...field}
               label="WhatsApp Number"
               error={!!error}
-              helperText={error?.message}
+              helperText={error ? error.message : null}
               placeholder="Enter WhatsApp Number"
               inputProps={{
                 maxLength: 10,
@@ -207,13 +225,19 @@ const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
       <Controller
         name="age"
         control={control}
+        rules={{
+          required: "Age name is required",
+        }}
         render={({ field, fieldState: { error } }) => (
           <TextInput
             {...field}
             label="Age*"
             placeholder="Enter Your Age"
             error={!!error}
-            helperText={error?.message}
+            helperText={error ? error.message : null}
+            inputProps={{
+              maxLength: 2
+            }}
           />
         )}
       />
@@ -222,8 +246,11 @@ const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
           name="gender"
           control={control}
           defaultValue=""
+          rules={{
+            required: "Select a gender"
+          }}
           render={({ field, fieldState: { error } }) => (
-            <FormControl error={!!error}>
+            <FormControl error={!!error} >
               <Typography variant="h6">Gender*</Typography>
 
               <RadioGroup row {...field}>
@@ -243,7 +270,10 @@ const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
                   label="Other"
                 />
               </RadioGroup>
-              {error && <FormHelperText>{error.message}</FormHelperText>}
+              {error && <Box className="formHelperBox">
+                <ErrorIcon />
+                <FormHelperText>{error.message}</FormHelperText>
+              </Box>}
             </FormControl>
           )}
         />

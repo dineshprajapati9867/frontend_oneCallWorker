@@ -44,9 +44,9 @@ export function CreateProfileFooter({
    * Checks if the next button should be disabled.
    * @returns {boolean} - True if the next button should be disabled.
    */
-  const handleNextDisable = () => {
-    return false;
-  };
+  // const handleNextDisable = () => {
+  //   return false;
+  // };
   const { isMobile } = hooks.useResponsive();
   return (
     <>
@@ -68,7 +68,7 @@ export function CreateProfileFooter({
             type="submit"
             size={`${isMobile ? "small" : "large"}`}
             variant="contained"
-            // disabled={handleNextDisable()}
+             disabled={isButtonDisabled}
             onClick={handleNext}
           >
             {handleButtonText()}

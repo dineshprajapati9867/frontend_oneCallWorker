@@ -8,6 +8,7 @@ import {
 } from "@Icons/index";
 import { Box, Button, styled, Typography } from "@mui/material";
 import { hooks } from "@Utils/index";
+import { useNavigate } from "react-router-dom";
 // import VerifiedIcon from "@mui/icons-material/Verified";
 // import { VerifyAnimation } from "@Primitives/index";
 
@@ -106,7 +107,7 @@ const WorkerCardStyle = styled(Box)<{ isMobile: boolean }>(
 
 const WorkerCard = () => {
   const { isMobile } = hooks.useResponsive();
-
+  const navigate = useNavigate()
   const ButtonGroups = () => {
     return (
       <>
@@ -127,9 +128,13 @@ const WorkerCard = () => {
       </>
     );
   };
+
+  const handleCard = () => {
+    navigate("/worker/098765678")
+  }
   return (
     <WorkerCardStyle isMobile={isMobile}>
-      <Box className="main">
+      <Box className="main" onClick={handleCard}>
         <Box display={"flex"} mb={isMobile && 5}>
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZjz0S_eXnprzunfLmYiQEBNzmWbs8_iWR5A&s"
