@@ -146,6 +146,7 @@ const FreeListingStyled = styled(Box)<{ isMobile: boolean }>(
         outline: "none",
         padding: theme.spacing(2),
         fontSize: theme.spacing(isMobile ? 10 : 8),
+        width:isMobile?"80%":"100%"
       },
 
       ".startBtn": {

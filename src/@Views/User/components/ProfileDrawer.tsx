@@ -25,6 +25,7 @@ interface PrposI {
   open: boolean;
   onClose: () => void;
 }
+
 const ProfileDrawerStyle = styled(Drawer)<{ isMobile: boolean }>(
   ({ theme, isMobile }) => ({
     ".MuiPaper-root": {
@@ -71,7 +72,6 @@ const ProfileDrawerStyle = styled(Drawer)<{ isMobile: boolean }>(
         display: "flex",
         alignItems: "center",
         gap: theme.spacing(8),
-        cursor: "pointer",
         padding: theme.spacing(5),
         "&:hover": {
           backgroundColor: theme.palette.action.hover,
@@ -82,13 +82,15 @@ const ProfileDrawerStyle = styled(Drawer)<{ isMobile: boolean }>(
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
+        gap: theme.spacing(8),
+        padding: theme.spacing(5),
         "&:hover": {
           backgroundColor: theme.palette.action.hover,
           transition: "background-color 0.2s ease",
         },
       },
     },
-  })
+  }),
 );
 const ProfileDrawer = ({ open, onClose }: PrposI) => {
   const [notificationPermission, setNotificationPermission] =
@@ -99,20 +101,20 @@ const ProfileDrawer = ({ open, onClose }: PrposI) => {
   const user = JSON.parse(localStorage.getItem("user"));
 
   const handleNotification = async () => {
-    console.log("Notification.permission",Notification.permission)
+    console.log("Notification.permission", Notification.permission);
     if (!("Notification" in window)) {
       return ShowInfoSnackBar("This browser does not support notifications");
     }
 
     if (notificationPermission === "granted") {
       return ShowInfoSnackBar(
-        "To disable notifications, please update browser settings manually."
+        "To disable notifications, please update browser settings manually.",
       );
     }
 
     if (Notification.permission === "denied") {
       return ShowInfoSnackBar(
-        "Permission denied. Please enable notifications from browser settings."
+        "Permission denied. Please enable notifications from browser settings.",
       );
     }
 
@@ -124,6 +126,33 @@ const ProfileDrawer = ({ open, onClose }: PrposI) => {
     localStorage.clear();
     onClose();
   };
+  const menuItems = [
+    {
+      id: 1,
+      label: "Edit Profile",
+      icon: <ProfileIcon />,
+      onClick: () => console.log("Edit Profile"),
+    },
+    {
+      id: 2,
+      label: "Manage Address",
+      icon: <LocationIconMui />,
+      onClick: () => console.log("Manage Address"),
+    },
+    {
+      id: 3,
+      label: "Notifications",
+      icon: <NotificationsIconMui />,
+      onClick: handleNotification,
+      isSwitch: true,
+    },
+    {
+      id: 4,
+      label: "Logout",
+      icon: <LogoutIconMui />,
+      onClick: handleLogout,
+    },
+  ];
   return (
     <ProfileDrawerStyle
       open={open}
@@ -158,33 +187,28 @@ const ProfileDrawer = ({ open, onClose }: PrposI) => {
       </Box>
       <Divider />
       <Box className="main">
-        <Box className="flexBox">
-          <ProfileIcon />
-          <Typography className="text" variant="h6">
-            Edit Profile
-          </Typography>
-        </Box>
-        <Box className="flexBox">
-          <LocationIconMui />
-          <Typography className="text" variant="h6">
-            Manage Address
-          </Typography>
-        </Box>
-        <Box className="commonStyle" onClick={handleNotification}>
-          <Box className="flexBox">
-            <NotificationsIconMui />
-            <Typography className="text" variant="h6">
-              Notifications
-            </Typography>
-          </Box>
-          <IOSSwitch checked={notificationPermission === "granted"} />
-        </Box>
-        <Box onClick={handleLogout} className="flexBox">
-          <LogoutIconMui />
-          <Typography className="text" variant="h6">
-            Logout
-          </Typography>
-        </Box>
+        {menuItems.map((item) => {
+          return (
+            <Box
+              key={item.id}
+              className={item.isSwitch ? "commonStyle" : "flexBox"}
+              onClick={!item.isSwitch ? item.onClick : undefined}
+            >
+              <Box className="flexBox">
+                {item.icon}
+                <Typography className="text" variant="h6">
+                  {item.label}
+                </Typography>
+              </Box>
+              {item.isSwitch && (
+                <IOSSwitch
+                  checked={notificationPermission === "granted"}
+                  onClick={item.onClick}
+                />
+              )}
+            </Box>
+          );
+        })}
       </Box>
     </ProfileDrawerStyle>
   );
