@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Dialog,
+  Drawer,
   IconButton,
   Input,
   InputAdornment,
   styled,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import {
   BlackSmallCrossIcon,
@@ -25,7 +27,7 @@ const MainBox = styled(Box)(({ theme }) => ({
   alignItems: "center",
   ".searchInput": {
     height: theme.spacing(20),
-    width:"100%"
+    width: "100%",
   },
   ".filterIcon": {
     display: "flex",
@@ -89,32 +91,24 @@ export default function SearchWithMic() {
     resetTranscript,
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.only("xs"));
   const [open, setOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
-  const {ShowInfoSnackBar}=hooks.useSnackBar()
+  const { ShowInfoSnackBar } = hooks.useSnackBar();
   if (!browserSupportsSpeechRecognition) {
     return alert("Browser doesn't support speech recognition.");
   }
   const handleMicClick = async () => {
-    
     try {
-      
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       stream.getTracks().forEach((track) => track.stop());
       setOpen(true);
       resetTranscript();
       SpeechRecognition.startListening();
     } catch (error) {
-      // try {
-      //   const stream = await navigator.mediaDevices.getUserMedia({
-      //     audio: true,
-      //   });
-      //   stream.getTracks().forEach((track) => track.stop());
-      //   setOpen(true);
-      //   resetTranscript();
-      //   SpeechRecognition.startListening();
-      // } catch (err) {
-        ShowInfoSnackBar("Permission denied. Please give access to microphone and try again.")
+      ShowInfoSnackBar(
+        "Permission denied. Please give access to microphone and try again.",
+      );
       // }
     }
   };
@@ -132,56 +126,10 @@ export default function SearchWithMic() {
       setOpen(false);
     }
   }, [listening, transcript]);
-  return (
-    <MainBox>
-      <Box
-        className="searchInput"
-        sx={{
-          // width: {
-          //   // md: 326,
-          //   lg: 500,
-          // },
-        }}
-      >
-        <CustomInputStyled
-          placeholder="Search"
-          value={searchText}
-          onChange={(e) => {
-            setSearchText(e.target.value);
-          }}
-          endAdornment={
-            <InputAdornment position="end">
-              {searchText && (
-                <IconButton onClick={() => setSearchText("")}>
-                  <BlackSmallCrossIcon />
-                </IconButton>
-              )}
-              <IconButton onClick={handleMicClick}>
-                <MicMuiIcon className="micIcon" />
-              </IconButton>
-              <button className="searchIcon">
-                <SearchMuiIcon width={24} height={24} />
-              </button>
-            </InputAdornment>
-          }
-        />
-      </Box>
-      {/* <BasicModal */}
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        sx={(theme) => ({
-          ".MuiPaper-root": {
-            height: theme.spacing(130),
-            width: theme.spacing(275),
-            padding: theme.spacing(15),
-            borderRadius: theme.spacing(7.5),
-            margin: theme.spacing(0),
-            boxSizing: "border-box",
-            overflow: "hidden",
-          },
-        })}
-      >
+
+  const renderData = () => {
+    return (
+      <>
         <IconButton
           sx={{
             top: "5px",
@@ -237,7 +185,70 @@ export default function SearchWithMic() {
             </Typography>
           </Box>
         )}
-      </Dialog>
+      </>
+    );
+  };
+  return (
+    <MainBox>
+      <Box className="searchInput">
+        <CustomInputStyled
+          placeholder="Search"
+          value={searchText}
+          onChange={(e) => {
+            setSearchText(e.target.value);
+          }}
+          endAdornment={
+            <InputAdornment position="end">
+              {searchText && (
+                <IconButton onClick={() => setSearchText("")}>
+                  <BlackSmallCrossIcon />
+                </IconButton>
+              )}
+              <IconButton onClick={handleMicClick}>
+                <MicMuiIcon className="micIcon" />
+              </IconButton>
+              <button className="searchIcon">
+                <SearchMuiIcon width={24} height={24} />
+              </button>
+            </InputAdornment>
+          }
+        />
+      </Box>
+      {isMobile ? (
+        <Drawer
+          open={open}
+          onClose={handleClose}
+          anchor="bottom"
+          sx={(theme) => ({
+            "& .MuiDrawer-paper": {
+              borderRadius: "15px 15px 0 0",
+              height: theme.spacing(100),
+              width: "100%",
+              paddingTop:theme.spacing(10)
+            },
+          })}
+        >
+          {renderData()}
+        </Drawer>
+      ) : (
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          sx={(theme) => ({
+            ".MuiPaper-root": {
+              height: theme.spacing(130),
+              width: theme.spacing(275),
+              padding: theme.spacing(15),
+              borderRadius: theme.spacing(7.5),
+              margin: theme.spacing(0),
+              boxSizing: "border-box",
+              overflow: "hidden",
+            },
+          })}
+        >
+          {renderData()}
+        </Dialog>
+      )}
     </MainBox>
   );
 }

@@ -1,5 +1,5 @@
 import CircleDaySelector from "@Components/CircleDaySelector";
-import { allIndianLanguage, days, experience } from "@Constants/Home";
+import { skills, days, experience } from "@Constants/Home";
 import { Box, styled, Typography } from "@mui/material";
 import { CheckBox, SearchableDropDown } from "@Primitives/index";
 import { hooks } from "@Utils/index";
@@ -56,7 +56,7 @@ const SkillInformation = ({ control, watch, setValue }: PropsI) => {
             {...field}
             label="Select Your Skills"
             placeholder="Select Your Skills"
-            options={allIndianLanguage}
+            options={skills}
             isMulti={true}
             error={!!error}
             helperText={error ? error.message : null}

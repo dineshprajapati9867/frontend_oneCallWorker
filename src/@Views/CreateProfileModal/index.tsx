@@ -41,7 +41,7 @@ const CreateProfileModal = ({ open, onClose }: PropsI) => {
   } = hooks.useUser();
 
   const onSubmit = (data) => {
-    handleCreateProfile(data)
+   handleCreateProfile(data)
   };
 
 

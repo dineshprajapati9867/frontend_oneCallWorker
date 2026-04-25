@@ -37,6 +37,9 @@ export function CreateProfileFooter({
    * Returns the button text.
    */
   const handleButtonText = () => {
+    if(activeStep===3){
+        return "Submit"
+    }
     return "Next";
   };
 

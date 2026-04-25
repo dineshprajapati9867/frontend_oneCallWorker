@@ -36,9 +36,9 @@ const FixedAppBar = styled(AppBar)<{ isMobile: boolean }>(
     justifyContent: "center",
 
     ...(isMobile && {
-      '.crossIcon':{
- paddingLeft:  "0px",
- paddingTop:'0px'
+      ".crossIcon": {
+        paddingLeft: "0px",
+        paddingTop: "0px",
       },
       ".stepBox": {
         paddingTop: theme.spacing(9),
@@ -46,8 +46,6 @@ const FixedAppBar = styled(AppBar)<{ isMobile: boolean }>(
       ".stepText": {
         paddingBottom: theme.spacing(3),
       },
-
-      
     }),
   }),
 );
@@ -61,7 +59,6 @@ export function CreateProfileHeader({
 }: PropI) {
   const { isMobile } = hooks.useResponsive();
   const progress = (activeStep / steps.length) * 100;
-  console.log("isMobile", isMobile);
 
   return (
     <>
@@ -78,14 +75,12 @@ export function CreateProfileHeader({
               wrap="nowrap"
               justifyContent="space-between"
               alignItems="center"
-
             >
               <Grid>
                 <IconButton
                   sx={(theme) => ({
                     marginRight: theme.spacing(2),
                     marginBottom: theme.spacing(-3),
-                    paddingLeft: isMobile && "0px",
                   })}
                   onClick={onClose}
                   className="crossIcon"
@@ -146,13 +141,14 @@ export function CreateProfileHeader({
             </Button>
           </Grid>
         </Grid>
-        {isMobile&&
-        <Box className="stepBox">
-          <Typography className="stepText" variant="subtitle1">
-            STEP {activeStep} OF {steps.length}
-          </Typography>
-          <LinearProgress variant="determinate" value={progress} />
-        </Box>}
+        {isMobile && (
+          <Box className="stepBox">
+            <Typography className="stepText" variant="subtitle1">
+              STEP {activeStep} OF {steps.length}
+            </Typography>
+            <LinearProgress variant="determinate" value={progress} />
+          </Box>
+        )}
       </FixedAppBar>
     </>
   );

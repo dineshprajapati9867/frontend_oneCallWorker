@@ -43,10 +43,6 @@ const ProfileDrawerStyle = styled(Drawer)<{ isMobile: boolean }>(
       padding: isMobile
         ? theme.spacing(5, 7, 0, 7)
         : theme.spacing(10, 15, 0, 15),
-
-      // '&:hover':{
-      //   backgroundColor:"red"
-      // }
     },
     ".header": {
       display: "flex",
@@ -64,19 +60,30 @@ const ProfileDrawerStyle = styled(Drawer)<{ isMobile: boolean }>(
     },
     ".main": {
       padding: isMobile ? theme.spacing(4.5, 5) : theme.spacing(9, 10),
-
+      '.iconButtons':{
+        border:`1px solid ${theme.misc.borderColor}`,
+        color:"black",
+        '&:hover':{
+          backgroundColor:"transparent"
+        }
+      },
       ".text": {
         fontWeight: 400,
       },
       ".flexBox": {
-        display: "flex",
-        alignItems: "center",
-        gap: theme.spacing(8),
         padding: theme.spacing(5),
+        cursor:"pointer",
+
         "&:hover": {
           backgroundColor: theme.palette.action.hover,
           transition: "background-color 0.2s ease",
         },
+      },
+      ".iconLabelBox": {
+        display: "flex",
+        alignItems: "center",
+        gap: theme.spacing(8),
+        padding: theme.spacing(5),
       },
       ".commonStyle": {
         display: "flex",
@@ -84,6 +91,7 @@ const ProfileDrawerStyle = styled(Drawer)<{ isMobile: boolean }>(
         justifyContent: "space-between",
         gap: theme.spacing(8),
         padding: theme.spacing(5),
+         cursor:"pointer",
         "&:hover": {
           backgroundColor: theme.palette.action.hover,
           transition: "background-color 0.2s ease",
@@ -135,7 +143,7 @@ const ProfileDrawer = ({ open, onClose }: PrposI) => {
     },
     {
       id: 2,
-      label: "Manage Address",
+      label: "Saved",
       icon: <LocationIconMui />,
       onClick: () => console.log("Manage Address"),
     },
@@ -192,10 +200,12 @@ const ProfileDrawer = ({ open, onClose }: PrposI) => {
             <Box
               key={item.id}
               className={item.isSwitch ? "commonStyle" : "flexBox"}
-              onClick={!item.isSwitch ? item.onClick : undefined}
+              onClick={ item.onClick}
             >
-              <Box className="flexBox">
-                {item.icon}
+              <Box className="iconLabelBox" ml={item.label==="Logout"?2:0}>
+               <IconButton className="iconButtons">
+                 {item.icon}
+               </IconButton>
                 <Typography className="text" variant="h6">
                   {item.label}
                 </Typography>

@@ -49,6 +49,33 @@ const allIndianLanguage = [
   { id: "11", label: "Bhojpuri", value: "Bhojpuri" },
 ];
 
+const skills = [
+  { id: 1, label: "Painter", value: "Painter" },
+  { id: 2, label: "Plumber", value: "Plumber" },
+  { id: 3, label: "Electrician", value: "Electrician" },
+  { id: 4, label: "Carpenter", value: "Carpenter" },
+  { id: 5, label: "AC Technician", value: "AC Technician" },
+  { id: 6, label: "Refrigerator Technician", value: "Refrigerator Technician" },
+  { id: 7, label: "TV Repair", value: "TV Repair" },
+  { id: 8, label: "Washing Machine Repair", value: "Washing Machine Repair" },
+  { id: 9, label: "Mobile Repair", value: "Mobile Repair" },
+  { id: 10, label: "Computer Repair", value: "Computer Repair" },
+  { id: 11, label: "Laptop Repair", value: "Laptop Repair" },
+  { id: 12, label: "CCTV Installation", value: "CCTV Installation" },
+  { id: 13, label: "RO Technician", value: "RO Technician" },
+  { id: 14, label: "Driver", value: "Driver" },
+  { id: 15, label: "House Cleaning", value: "House Cleaning" },
+  { id: 16, label: "Cook", value: "Cook" },
+  { id: 17, label: "Babysitter", value: "Babysitter" },
+  { id: 18, label: "Security Guard", value: "Security Guard" },
+  { id: 19, label: "Gardener", value: "Gardener" },
+  { id: 20, label: "Tailor", value: "Tailor" },
+  { id: 21, label: "Makeup Artist", value: "Makeup Artist" },
+  { id: 22, label: "Hair Stylist", value: "Hair Stylist" },
+  { id: 23, label: "Massage Therapist", value: "Massage Therapist" },
+  { id: 24, label: "Fitness Trainer", value: "Fitness Trainer" },
+  { id: 25, label: "Tutor", value: "Tutor" },
+];
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 const experience = [
@@ -108,4 +135,4 @@ const experience = [
     value: "10",
   },
 ];
-export { languages, FAQs, mapStyles, allIndianLanguage, experience, days };
+export { languages, FAQs, mapStyles, allIndianLanguage, experience, days,skills };

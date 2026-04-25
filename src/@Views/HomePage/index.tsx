@@ -66,9 +66,9 @@ function HomePage() {
               <Typography className="subHeading" variant="body1">
                 Finding skilled workers near you has never been this easier.{" "}
               </Typography>
-              <Button size="medium" className="findBtn" variant="contained">
+              {/* <Button size="medium" className="findBtn" variant="contained">
                 Find Worker
-              </Button>
+              </Button> */}
             </Box>
             <img className="image" src={homePage} />
           </Box>
