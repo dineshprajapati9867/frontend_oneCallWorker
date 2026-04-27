@@ -8,7 +8,6 @@ import "./i18n.ts";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { IKContext } from "imagekitio-react";
 const { CustomMuiThemeProvider } = theme;
-
 const { SnackBarProvider } = snack;
 
 const twentyFourHoursInMs = 1000 * 60 * 60 * 24;

@@ -112,8 +112,10 @@ export default function Navbar() {
               src={ocw_logo}
               alt="logo"
             />
-            {!isMobile && <SearchWithMic />}
+         
           </Box>
+          {!isMobile &&<Box width={'40%'}>
+             <SearchWithMic /></Box>}
           <Box className="rightSide">
             {!isMobile && (
               <LanguageTranslate

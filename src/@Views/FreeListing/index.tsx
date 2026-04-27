@@ -305,7 +305,7 @@ function FreeListing() {
                 <Button
                   endIcon={<RightArrowStraightWhite />}
                   variant="contained"
-                  className="startBtn"
+                  className="startBtn shineBtn"
                 >
                   Start Now
                 </Button>

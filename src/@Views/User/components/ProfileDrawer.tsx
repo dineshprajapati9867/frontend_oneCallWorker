@@ -139,13 +139,13 @@ const ProfileDrawer = ({ open, onClose }: PrposI) => {
       id: 1,
       label: "Edit Profile",
       icon: <ProfileIcon />,
-      onClick: () => console.log("Edit Profile"),
+     // onClick: () => console.log("Edit Profile"),
     },
     {
       id: 2,
       label: "Saved",
       icon: <LocationIconMui />,
-      onClick: () => console.log("Manage Address"),
+      //onClick: () => console.log("Manage Address"),
     },
     {
       id: 3,

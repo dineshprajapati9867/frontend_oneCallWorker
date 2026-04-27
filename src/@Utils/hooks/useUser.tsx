@@ -87,7 +87,6 @@ const useUserData = () => {
     useMutation({
       mutationFn: createProfileUser,
       onSuccess(data) {
-        console.log("data", data);
         ShowSuccessSnackBar("Sucess");
       },
       onError: (err) => {
