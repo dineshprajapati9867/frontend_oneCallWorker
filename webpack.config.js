@@ -49,13 +49,15 @@ module.exports = {
     new Dotenv(),
     new HtmlWebpackPlugin({ template: "./public/index.html" }),
     new ForkTsCheckerWebpackPlugin({
-      typescript: {
-        diagnosticOptions: {
-          semantic: false,
-          syntactic: true,
-        },
-      },
-    }),
+  async: false,
+  typescript: {
+    memoryLimit: 4096,
+    diagnosticOptions: {
+      semantic: false,
+      syntactic: true,
+    },
+  },
+})
   ],
   devtool: "source-map",
   optimization: {

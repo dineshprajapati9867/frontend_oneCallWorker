@@ -83,8 +83,6 @@ const useUserData = () => {
   const { mutate: mutateCreateProfile,isPending:isCreateProfilePending } = useMutation({
     mutationFn: createProfileUser,
     onSuccess(data) {
-      console.log("data", data
-      )
       ShowSuccessSnackBar("Sucess")
     },
     onError: (err) => {
@@ -93,7 +91,6 @@ const useUserData = () => {
   })
 
   const handleCreateProfile = (data) => {
-    console.log("dinesh::::",data)
      // mutateCreateProfile(data)
   }
   return {

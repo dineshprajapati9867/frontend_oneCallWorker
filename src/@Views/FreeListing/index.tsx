@@ -23,7 +23,11 @@ import create_step_2 from "@Assets/Images/create_step_2.png";
 import create_step_1 from "@Assets/Images/create_step_1.png";
 import arrow from "@Assets/Images/arrow.png";
 import { Loader, TextInput } from "@Primitives/index";
-  const CreateProfileModal = React.lazy(() => import("@Views/CreateProfileModal"));
+import { useForm, Controller } from "react-hook-form";
+import { pattern } from "@Utils/pattern";
+const CreateProfileModal = React.lazy(
+  () => import("@Views/CreateProfileModal")
+);
 
 const FreeListingStyled = styled(Box)<{ isMobile: boolean }>(
   ({ theme, isMobile }) => ({
@@ -126,7 +130,7 @@ const FreeListingStyled = styled(Box)<{ isMobile: boolean }>(
       },
 
       ".inputBox": {
-        margin: theme.spacing(15, 0),
+        // margin: theme.spacing(15, 0),
         display: "flex",
         alignItems: "center",
         border: `2px solid ${theme.palette.secondary.dark}`,
@@ -241,8 +245,17 @@ function FreeListing() {
     handleOpenCreateProfileModal,
   } = hooks.useUser();
   const { isMobile } = hooks.useResponsive();
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
 
 
+
+  const handleStartBtn = (data) => {
+   // console.log("Valid number:", data.mobile);
+  };
   return (
     <Box
       sx={(theme) => ({
@@ -269,7 +282,7 @@ function FreeListing() {
             variant="contained"
             disabled={openCreateProfileModal}
           >
-           {`Create Your Profile${openCreateProfileModal?"...":""}`} 
+            {`Create Your Profile${openCreateProfileModal ? "..." : ""}`}
           </Button>
         </nav>
         {!isMobile && (
@@ -295,20 +308,56 @@ function FreeListing() {
               <Typography className="subtitle">
                 Get discovered by customers near you
               </Typography>
-
-              <Box className="inputBox">
-                <Typography variant="h5" className="countryCode">
-                  +91
-                </Typography>
-                <input maxLength={10} placeholder="Enter Mobile No." />
-                <Button
-                  endIcon={<RightArrowStraightWhite />}
-                  variant="contained"
-                  className="startBtn"
-                >
-                  Start Now
-                </Button>
-              </Box>
+              <Controller
+                control={control}
+                name="mobile"
+                rules={{
+                  required: "Please Enter a Valid Mobile Number",
+                  pattern: {
+                    value: pattern.mobile,
+                    message: "Please Enter a Valid Mobile Number",
+                  },
+                }}
+                render={({ field }) => (
+                  <Box my={15}>
+                    <Box
+                      className="inputBox"
+                      sx={{
+                        border: "2px solid",
+                        borderColor: errors.mobile
+                          ? "red !important"
+                          : "#717171",
+                      }}
+                    >
+                      <Typography variant="h5" className="countryCode">
+                        +91
+                      </Typography>
+                      <input
+                        {...field}
+                        maxLength={10}
+                        placeholder="Enter Mobile No."
+                        onChange={(e) => {
+                          const value = e.target.value.replace(/\D/g, "");
+                          field.onChange(value);
+                        }}
+                      />
+                      <Button
+                        endIcon={<RightArrowStraightWhite />}
+                        variant="contained"
+                        className="startBtn"
+                        onClick={handleSubmit(handleStartBtn)}
+                      >
+                        Start Now
+                      </Button>
+                    </Box>
+                    {errors.mobile && (
+                      <span style={{ color: "red" }}>
+                        Please Enter a Valid Mobile Number
+                      </span>
+                    )}
+                  </Box>
+                )}
+              />
 
               <Box className="benefits">
                 <Box className="boxFlex">
@@ -350,7 +399,14 @@ function FreeListing() {
                   </Box>
                 </Box>
 
-                {!isMobile && <img loading="lazy" className="arrow" src={arrow} alt="arrow" />}
+                {!isMobile && (
+                  <img
+                    loading="lazy"
+                    className="arrow"
+                    src={arrow}
+                    alt="arrow"
+                  />
+                )}
 
                 <Box className="step">
                   <img loading="lazy" src={create_step_2} alt="Step 2" />

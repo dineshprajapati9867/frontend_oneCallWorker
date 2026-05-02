@@ -4,6 +4,8 @@ import HomePage from "@Views/HomePage";
 import NoInternetPage from "@Components/NoInternetPage";
 import WorkerList from "@Views/WorkerList";
 import { WorkerDetails } from "@Views/WorkerDetails";
+import ReviewComments from "@Views/WorkerDetails/components/ReviewComments";
+import WriteReview from "@Views/WorkerDetails/components/WriteReview";
 export const HomeLayouts: {
   name: string;
   path: string;
@@ -23,6 +25,16 @@ export const HomeLayouts: {
     name: "workerDetails",
     path: "worker/:id",
     Component: WorkerDetails,
+  },
+  {
+    name: "workerDetails",
+    path: "ocwSocial/post/:id",
+    Component: ReviewComments,
+  },
+  {
+    name: "WriteReview",
+    path: "worker/write-review/:id",
+    Component: WriteReview,
   },
 ];
 

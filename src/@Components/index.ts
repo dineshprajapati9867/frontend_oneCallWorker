@@ -18,6 +18,7 @@ import {ServiceCategoryCard,EnquiryCard,WorkerCard} from './Card'
 import { FilterButton } from "./FilterButton";
 import CircleDaySelector from "./CircleDaySelector";
 import Navbar from "./Navbar";
+import Footer from './Footer'
 export{
   EnquiryCard,
   ServiceCategoryCard,
@@ -40,5 +41,6 @@ export{
   ThreeDotMenu,
   FilterButton,
   CircleDaySelector,
-  Navbar
+  Navbar,
+  Footer
 }

@@ -89,9 +89,6 @@ import {
   HomeIcon,
   UserIcon,
   BriefCaseIcon,
-  BuildingIcon,
-  DeskIcon,
-  EventIcon,
   FileTextIcon,
   MailIcon,
   PercentIcon,
@@ -100,12 +97,6 @@ import {
   MyStaffIcon,
   TicketsIcon,
   ReportsIcon,
-  ServiceStaffIcon,
-  MeetingsIcon,
-  BroadCastIcon,
-  GuestIconLight,
-  MyStaffWhiteIcon,
-  PhoneBoothIcon,
 } from './Home/HomeLeftSibeBarIcon';
 
 import { FileUpload, FileUploadBlueIcon } from './FileUpload';
@@ -154,7 +145,6 @@ import { AttachmentIcon } from './AttachmentIcon';
 import { BlackUserIcon } from './BlackUserIcon';
 import { DotsVertical } from './DotsVertical';
 import { Capacity } from './Capacity';
-import { PhoneIcon } from './PhoneIcon';
 import { PolicyIcon } from './PoilcyIcon';
 import { CouponIcon } from './CouponIcon';
 import { ColumnIcon } from './ColumnIcon';
@@ -180,11 +170,7 @@ import { RedDeleteIcon } from './RedDeleteIcon';
 import {
   AttachmentGreenIcon,
   ActivityRedIcon,
-  PhonePurpleIcon,
-  TaskOrangeIcon,
   PersonDoppelgangerBlueIcon,
-  TaskBlackIcon,
-  BriefcaseBrownIcon,
   ChatMessageRedIcon,
 } from './SalesLeadIcons';
 
@@ -318,9 +304,6 @@ export {
   HomeIcon,
   UserIcon,
   BriefCaseIcon,
-  BuildingIcon,
-  DeskIcon,
-  EventIcon,
   FileTextIcon,
   MailIcon,
   PercentIcon,
@@ -423,7 +406,6 @@ export {
   LocationIconSmall,
   WalletIconSmall,
   Capacity,
-  PhoneIcon,
   PolicyIcon,
   CouponIcon,
   CreateContractIcon,
@@ -451,7 +433,6 @@ export {
   SnackbarSuccessIcon,
   SnackbarErrorIcon,
   ShareIcon,
-  ServiceStaffIcon,
   BlackUsersIcon,
   CurrencyIcon,
   DescriptionIcon,
@@ -464,18 +445,9 @@ export {
   ArrowLeftWhiteIcon,
   RoundedCircleIcon,
   PlusCircleIcon,
-  MeetingsIcon,
-  BroadCastIcon,
-  GuestIconLight,
-  MyStaffWhiteIcon,
-  PhoneBoothIcon,
   AttachmentGreenIcon,
   ActivityRedIcon,
-  PhonePurpleIcon,
-  TaskOrangeIcon,
   PersonDoppelgangerBlueIcon,
-  TaskBlackIcon,
-  BriefcaseBrownIcon,
   ChatMessageRedIcon,
   DownloadQR,
   GuestsWidget,

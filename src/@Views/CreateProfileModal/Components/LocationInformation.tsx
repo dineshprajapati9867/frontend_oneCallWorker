@@ -26,7 +26,6 @@ const LocationInformation = ({ control, watch, setValue }: PropsI) => {
     pincode?.length === 6 && pincode
   );
 
-  console.log("isError", isError);
 
   useEffect(() => {
     if (isSuccess && data) {

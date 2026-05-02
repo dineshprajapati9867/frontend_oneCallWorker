@@ -31,6 +31,7 @@ const TextArea = styled(TextareaAutosize)<{ ownerState: { error?: any } }>(
   ({ theme, ownerState }) => ({
     width: '100%',
     height: '95px',
+     boxSizing: "border-box",
     border: '1px solid',
     borderColor: theme.misc.inputBorderColor,
     borderRadius: '5px',
