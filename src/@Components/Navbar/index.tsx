@@ -2,22 +2,21 @@ import { Avatar, Box, Button, styled, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import LanguageTranslate from "@Components/LanguageTranslate";
 import { languages } from "@Constants/Home";
-//import LogIn from "@Components/LogIn/LogIn";
-import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import { useNavigate } from "react-router-dom";
 import SearchWithMic from "@Components/SearchWithMic";
 import { hooks } from "@Utils/index";
 import ocw_logo from "@Assets/Images/ocw_logo.png";
 import React, { lazy, Suspense } from "react";
-const LogIn =lazy(()=>import("@Components/LogIn/LogIn"))
+import { TrendingUpIconMui } from "@Icons/index";
+const LogIn = lazy(() => import("@Components/LogIn/LogIn"));
 const NavbarStyle = styled(Box)<{ isMobile: boolean }>(
   ({ theme, isMobile }) => ({
-    position: 'sticky',
+    position: "sticky",
     top: "0px",
     backgroundColor: theme.palette.primary.contrastText,
     zIndex: 1,
     ".navbarTop": {
-      height: isMobile?theme.spacing(27.5):theme.spacing(40),
+      height: isMobile ? theme.spacing(27.5) : theme.spacing(40),
       borderBottom: !isMobile && `1px solid ${theme.misc.borderColor}`,
       width: "100%",
       padding: theme.spacing(0, 10),
@@ -83,14 +82,19 @@ const NavbarStyle = styled(Box)<{ isMobile: boolean }>(
         },
       },
     },
-  })
+  }),
 );
 
 export default function Navbar() {
   const { t, i18n } = useTranslation("navbar");
   const navigate = useNavigate();
- // const [openLogin, setOpenLogin] = useState(false);
-  const { handleOpenProfileDrawer,openLogin, handleCloseLogin,handleOpenLogin} = hooks.useUser();
+  // const [openLogin, setOpenLogin] = useState(false);
+  const {
+    handleOpenProfileDrawer,
+    openLogin,
+    handleCloseLogin,
+    handleOpenLogin,
+  } = hooks.useUser();
   const { isMobile } = hooks.useResponsive();
   // Current language display
   const handleGetCurrentLanguage = () => {
@@ -112,10 +116,19 @@ export default function Navbar() {
               src={ocw_logo}
               alt="logo"
             />
-         
           </Box>
-          {!isMobile &&<Box width={'40%'}>
-             <SearchWithMic /></Box>}
+          {!isMobile && (
+            <Box width={"40%"}>
+              <SearchWithMic
+                onClickOnDropdown={(value) => {
+                  console.log("jhggh", value);
+                }}
+                 onChange={(value) => {
+    console.log("Typing:", value);
+  }}
+              />
+            </Box>
+          )}
           <Box className="rightSide">
             {!isMobile && (
               <LanguageTranslate
@@ -132,14 +145,14 @@ export default function Navbar() {
                   variant="text"
                   className="listingText"
                 >
-                  <TrendingUpIcon fontSize="small" />
+                  <TrendingUpIconMui fontSize="small" />
                   <Typography variant="body1" className="text">
                     Free Listing
                   </Typography>
                 </Button>
               </Box>
             )}
-            {(user && token)|| isMobile ? (
+            {(user && token) || isMobile ? (
               <Avatar
                 sx={{ cursor: "pointer" }}
                 onClick={handleOpenProfileDrawer}
@@ -152,7 +165,7 @@ export default function Navbar() {
                 variant="contained"
               >
                 {/* {t(`loginSignUp`)} */}
-                {`Login/Sign Up${openLogin?"...":""}`}
+                {`Login/Sign Up${openLogin ? "..." : ""}`}
               </Button>
             )}
           </Box>
@@ -165,7 +178,10 @@ export default function Navbar() {
       </NavbarStyle>
 
       {openLogin && (
-       <Suspense fallback={null}> <LogIn open={openLogin} onClose={handleCloseLogin} /></Suspense>
+        <Suspense fallback={null}>
+          {" "}
+          <LogIn open={openLogin} onClose={handleCloseLogin} />
+        </Suspense>
       )}
     </>
   );

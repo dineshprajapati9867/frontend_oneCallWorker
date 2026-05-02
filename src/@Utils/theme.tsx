@@ -31,15 +31,7 @@ declare module '@mui/material/styles' {
       frostGray?:string
       silverGray?:string,
     };
-    calendar: {
-      red: string;
-      blue: string;
-      pink: string;
-      orange: string;
-      contrastText: string;
-      lightBlue?: string;
-      palePink?: string;
-    };
+
     graph: {
       contrastText: string;
       backgroundColor: string;
@@ -144,15 +136,6 @@ declare module '@mui/material/styles' {
       blue?:string
       frostGray?:string
       silverGray?:string
-    };
-    calendar?: {
-      red?: string;
-      blue?: string;
-      pink?: string;
-      orange?: string;
-      contrastText?: string;
-      lightBlue?: string;
-      palePink?: string;
     };
     graph?: {
       contrastText?: string;
@@ -549,15 +532,6 @@ export const theme = createTheme({
      blue:"#3069FE",
      frostGray: '#CBD2E0',
      silverGray: '#F2F2F7',
-  },
-  calendar: {
-    red: '#EB4C60',
-    blue: '#D4E4F9',
-    pink: '#F9D4D4',
-    orange: '#F9DDD4',
-    contrastText: '#000000',
-    lightBlue: '#D4E4F9',
-    palePink: '#F2B3BB',
   },
   graph: {
     contrastText: '#ffffff',

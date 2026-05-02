@@ -242,8 +242,10 @@ import { InstagramColoredIcon,  GmailIcon,
   import LogoutIconMui from "@mui/icons-material/Logout";
 import NotificationsIconMui from "@mui/icons-material/NotificationsNoneOutlined";
 import LocationIconMui from '@mui/icons-material/FmdGoodOutlined';
+import TrendingUpIconMui from "@mui/icons-material/TrendingUp";
 
 export {
+  TrendingUpIconMui,
   LocationIconMui,
   NotificationsIconMui,
   LogoutIconMui,

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   Box,
+  ClickAwayListener,
   Dialog,
   Drawer,
   IconButton,
@@ -15,16 +16,86 @@ import {
   CloseIcon,
   MicMuiIcon,
   SearchMuiIcon,
+  TrendingUpIconMui,
 } from "@Icons";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { HorizonatDotsLoading, MicAnimation } from "@Primitives/index";
 import { hooks } from "@Utils/index";
+import { skills } from "@Constants/Home";
 
+interface PropsI {
+  onClickOnDropdown: (value: string) => void;
+  onChange?: (value: string) => void;
+}
 const MainBox = styled(Box)(({ theme }) => ({
   display: "flex",
+  position: "relative",
   alignItems: "center",
+  ".dropDownBox": {
+    border: `1px solid ${theme.misc.darkBlue}`,
+    borderRadius: theme.spacing(3),
+    marginTop: theme.spacing(2),
+    position: "absolute",
+    width: "100%",
+    background: "#fff",
+    padding: theme.spacing(5, 6),
+    boxSizing: "border-box",
+    overflowY: "auto",
+    height: "50vh",
+    "&::-webkit-scrollbar": {
+      width: "6px",
+    },
+
+    "&::-webkit-scrollbar-thumb": {
+      background: "#ccc",
+      borderRadius: "10px",
+    },
+
+    "&::-webkit-scrollbar-track": {
+      background: "transparent",
+    },
+  },
+
+  ".title": {
+    fontSize: "12px",
+    color: "gray",
+    marginBottom: theme.spacing(2),
+  },
+
+  ".item": {
+    display: "flex",
+    gap: theme.spacing(6),
+    alignItems: "center",
+    padding: theme.spacing(2),
+    borderRadius: theme.spacing(2),
+    cursor: "pointer",
+
+    "&:hover": {
+      background: "#f5f5f5",
+    },
+  },
+
+  ".iconBox": {
+    width: theme.spacing(10),
+    height: theme.spacing(10),
+    padding: theme.spacing(1, 1.5),
+    background: "#e0e0e0",
+    borderRadius: theme.spacing(2),
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  ".name": {
+    fontWeight: 500,
+  },
+
+  ".category": {
+    fontSize: "12px",
+    color: "gray",
+  },
   ".searchInput": {
     height: theme.spacing(20),
     width: "100%",
@@ -84,13 +155,15 @@ const CustomInputStyled = styled(Input)(({ theme }) => ({
  * @param {SearchWithFilterPropsI} props - The props for the component.
  * @returns A React component.
  */
-export default function SearchWithMic() {
+export default function SearchWithMic({ onClickOnDropdown, onChange }: PropsI) {
+  const [openDropDown, setOpenDropDown] = useState(false);
   const {
     transcript,
     listening,
     resetTranscript,
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
+
   const isMobile = useMediaQuery((theme) => theme.breakpoints.only("xs"));
   const [open, setOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
@@ -190,13 +263,18 @@ export default function SearchWithMic() {
   };
   return (
     <MainBox>
+                <ClickAwayListener onClickAway={()=>setOpenDropDown(false)}>
+
       <Box className="searchInput">
         <CustomInputStyled
           placeholder="Search"
           value={searchText}
           onChange={(e) => {
-            setSearchText(e.target.value);
+            const value = e.target.value;
+            setSearchText(value);
+            onChange?.(value);
           }}
+          onFocus={() => setOpenDropDown(true)}
           endAdornment={
             <InputAdornment position="end">
               {searchText && (
@@ -213,7 +291,33 @@ export default function SearchWithMic() {
             </InputAdornment>
           }
         />
+        {openDropDown && (
+
+         
+          <Box className="dropDownBox">
+            <Typography className="title">TRENDING SEARCHES</Typography>
+
+            {skills.slice(0, 11).map((item) => (
+              <Box
+                key={item.id}
+                className="item"
+                onClick={() => {
+                  onClickOnDropdown(item.value);
+                  setSearchText(item.value);
+                  setOpenDropDown(false);
+                }}
+              >
+                <TrendingUpIconMui className="iconBox" fontSize="large" />
+                <Box>
+                  <Typography className="name">{item.label}</Typography>
+                  <Typography className="category">Category</Typography>
+                </Box>
+              </Box>
+            ))}
+          </Box>
+        )}
       </Box>
+        </ClickAwayListener>
       {isMobile ? (
         <Drawer
           open={open}
@@ -224,7 +328,7 @@ export default function SearchWithMic() {
               borderRadius: "15px 15px 0 0",
               height: theme.spacing(100),
               width: "100%",
-              paddingTop:theme.spacing(10)
+              paddingTop: theme.spacing(10),
             },
           })}
         >

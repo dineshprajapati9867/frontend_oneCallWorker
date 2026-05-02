@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
 import { hooks } from "..";
-import { useMutation } from "@tanstack/react-query";
-import { createProfileUser } from "@Utils/controllers/user";
+import { useMutation, useQuery, UseQueryResult } from "@tanstack/react-query";
+import { createProfileUser, getAllWorkersBasedOnSkill } from "@Utils/controllers/user";
 import { createProfileI } from "@Utils/interfaces";
 
 interface userI {
@@ -20,6 +20,7 @@ interface userI {
   handleCloseLogin: () => void;
   handleCreateProfile: (data) => void;
   isCreateProfilePending: boolean;
+  useGetAllWorkersBasedOnSkill:(skill:string,page:number,limit:number)=>UseQueryResult<any>
 }
 
 const userContext = createContext<userI>({} as userI);
@@ -99,12 +100,25 @@ const useUserData = () => {
       ...data,
       experience: data.experience.value,
       languages: data.languages.map((val: { value: string }) => val.value),
-      skills: data.skills.map((val: { value: string }) => val.value),
+      skills: data.skills.map((val: { value: string }) => val.value.toLowerCase()),
     };
   };
   const handleCreateProfile = (data:createProfileI) => {
    mutateCreateProfile(createPayload(data));
   };
+
+
+  // get All worker based on skill
+
+  const useGetAllWorkersBasedOnSkill=(skill:string,page:number,limit:number)=>{
+    return  useQuery({
+    queryKey:["getAllWorkersBasedOnSkill",skill,page,limit],
+    queryFn:()=>getAllWorkersBasedOnSkill(skill,page,limit),
+    enabled:!!skill,
+    select:(data)=>data.data
+  })
+  }
+
   return {
     openProfileDrawer,
     handleOpenProfileDrawer,
@@ -121,6 +135,7 @@ const useUserData = () => {
     handleCloseLogin,
     handleCreateProfile,
     isCreateProfilePending,
+    useGetAllWorkersBasedOnSkill
   };
 };
 
