@@ -57,7 +57,6 @@ import { ThreeDots, WhiteThreeDots, ThreeDotsModified, ThreeDotsHorizontal } fro
 import { PencilIcon } from './PencilIcon';
 import { SpocIdentificationIcon } from './SpocIdentificationIcon';
 import { BlackEmailIcon, EmailOutlined, EmailIcon, RedEmailIcon } from './EmailIcon';
-import { ListIcon } from './ListIcon';
 import { BlockIcon, BlackBlockIcon } from './BlockIcon';
 import { CompanyIcon } from './CompanyIcon';
 import { DownloadIcon, BlackDownloadIcon } from './DownloadIcon';
@@ -326,7 +325,6 @@ export {
   EmailOutlined,
   EmailIcon,
   RedEmailIcon,
-  ListIcon,
   BlockIcon,
   BlackBlockIcon,
   ErrorIcon,

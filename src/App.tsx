@@ -11,6 +11,7 @@ import {
 import HomeLayout from "@Views/Layout";
 import { HomeLayouts, PublicRoute } from "./routes";
 import NotFoundPage from "@Components/404Page";
+import './index.css'
 
 function AppLayout() {
   const location = useLocation();

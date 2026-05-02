@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState } from "react";
 import { hooks } from "..";
 import { useMutation } from "@tanstack/react-query";
 import { createProfileUser } from "@Utils/controllers/user";
+import { createProfileI } from "@Utils/interfaces";
 
 interface userI {
   openProfileDrawer: boolean;
@@ -18,7 +19,7 @@ interface userI {
   handleOpenLogin: () => void;
   handleCloseLogin: () => void;
   handleCreateProfile: (data) => void;
-  isCreateProfilePending:boolean
+  isCreateProfilePending: boolean;
 }
 
 const userContext = createContext<userI>({} as userI);
@@ -26,7 +27,7 @@ const userContext = createContext<userI>({} as userI);
 export const useUser = () => useContext(userContext);
 
 const useUserData = () => {
-  const { ShowApiErrorSnackBar, ShowSuccessSnackBar } = hooks.useSnackBar()
+  const { ShowApiErrorSnackBar, ShowSuccessSnackBar } = hooks.useSnackBar();
   const [openProfileDrawer, setOpenProfileDrawer] = useState(false);
   const [openCreateProfileModal, setOpenCreateProfileModal] =
     hooks.useHashRouteToggle("create-profile");
@@ -39,7 +40,7 @@ const useUserData = () => {
   const [openLogin, setOpenLogin] = useState(false);
 
   /*
-   *  open and close Login 
+   *  open and close Login
    */
   const handleOpenLogin = () => {
     setOpenLogin(true);
@@ -74,12 +75,15 @@ const useUserData = () => {
     }
   };
   const handleNextForCreateProfile = () => {
-    setActiveStep((prev) => prev + 1);
+    if (activeStep < 3) {
+      setActiveStep((prev) => prev + 1);
+    }
   };
 
   /**
    *  Create Proile
    */
+<<<<<<< HEAD
   const { mutate: mutateCreateProfile,isPending:isCreateProfilePending } = useMutation({
     mutationFn: createProfileUser,
     onSuccess(data) {
@@ -93,6 +97,30 @@ const useUserData = () => {
   const handleCreateProfile = (data) => {
      // mutateCreateProfile(data)
   }
+=======
+  const { mutate: mutateCreateProfile, isPending: isCreateProfilePending } =
+    useMutation({
+      mutationFn: createProfileUser,
+      onSuccess(data) {
+        ShowSuccessSnackBar("Sucess");
+      },
+      onError: (err) => {
+        ShowApiErrorSnackBar(err);
+      },
+    });
+
+  const createPayload = (data: createProfileI) => {
+    return {
+      ...data,
+      experience: data.experience.value,
+      languages: data.languages.map((val: { value: string }) => val.value),
+      skills: data.skills.map((val: { value: string }) => val.value),
+    };
+  };
+  const handleCreateProfile = (data:createProfileI) => {
+   mutateCreateProfile(createPayload(data));
+  };
+>>>>>>> 734ea66160114f5070653290df007ffa37992be1
   return {
     openProfileDrawer,
     handleOpenProfileDrawer,
@@ -108,7 +136,7 @@ const useUserData = () => {
     handleOpenLogin,
     handleCloseLogin,
     handleCreateProfile,
-    isCreateProfilePending
+    isCreateProfilePending,
   };
 };
 

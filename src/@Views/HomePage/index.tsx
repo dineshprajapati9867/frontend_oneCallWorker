@@ -41,8 +41,14 @@ const HomeStyle = styled(Box)<{isMobile:boolean}>(({ theme ,isMobile}) => ({
       marginTop: theme.spacing(7.5),
     },
   },
-  ".serviceCategories": {
-    marginBottom: theme.spacing(15),
+    '.serviceBox':{
+ display: "flex",
+ justifyContent:"space-between",
+   margin: theme.spacing(15,0),
+
+   '.viewBtn':{
+    borderRadius:theme.spacing(15)
+   }
   },
   ".imageContainer": {
     display: "flex",
@@ -51,6 +57,7 @@ const HomeStyle = styled(Box)<{isMobile:boolean}>(({ theme ,isMobile}) => ({
     
     flexWrap: "wrap",
   },
+
 }));
 function HomePage() {
   const navigate = useNavigate();
@@ -69,17 +76,20 @@ function HomePage() {
               <Typography className="subHeading" variant="body1">
                 Finding skilled workers near you has never been this easier.{" "}
               </Typography>
-              <Button size="medium" className="findBtn" variant="contained">
+              {/* <Button size="medium" className="findBtn" variant="contained">
                 Find Worker
-              </Button>
+              </Button> */}
             </Box>
             <img className="image" src={homePage} />
           </Box>
         )}
-        {!isMobile && (
-          <Typography className="serviceCategories" variant="h1">
+        {isMobile && (
+          <Box className="serviceBox">
+          <Typography  variant="h1">
             Service Categories
-          </Typography>
+          </Typography> 
+          <Button className="viewBtn" variant="outlined">View all Categories</Button>
+          </Box>
         )}
         <Box className="imageContainer">
           {WorkersListData?.map((val) => {

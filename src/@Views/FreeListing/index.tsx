@@ -150,6 +150,7 @@ const FreeListingStyled = styled(Box)<{ isMobile: boolean }>(
         outline: "none",
         padding: theme.spacing(2),
         fontSize: theme.spacing(isMobile ? 10 : 8),
+        width:isMobile?"80%":"100%"
       },
 
       ".startBtn": {
@@ -308,6 +309,7 @@ function FreeListing() {
               <Typography className="subtitle">
                 Get discovered by customers near you
               </Typography>
+<<<<<<< HEAD
               <Controller
                 control={control}
                 name="mobile"
@@ -358,6 +360,22 @@ function FreeListing() {
                   </Box>
                 )}
               />
+=======
+
+              <Box className="inputBox">
+                <Typography variant="h5" className="countryCode">
+                  +91
+                </Typography>
+                <input maxLength={10} placeholder="Enter Mobile No." />
+                <Button
+                  endIcon={<RightArrowStraightWhite />}
+                  variant="contained"
+                  className="startBtn shineBtn"
+                >
+                  Start Now
+                </Button>
+              </Box>
+>>>>>>> 734ea66160114f5070653290df007ffa37992be1
 
               <Box className="benefits">
                 <Box className="boxFlex">
