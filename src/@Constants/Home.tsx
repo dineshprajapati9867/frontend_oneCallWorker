@@ -22,8 +22,12 @@ const FAQs = [
   //   ],
   // },
   {
-    question: "Is there a fee for using oneCallWorker?",
-    answers: ["Listing is free"],
+    question: "Can I list my profile for FREE on oneCallWorker",
+    answers: ["Totally! Just add your phone number, address, and business type - it's super easy!"],
+  },
+  {
+    question: "Can I change my listing information after I create it?",
+    answers: [`Absolutely! Just go to the "My Profile"  update details like your phone number, address, hours etc.`],
   },
 ];
 

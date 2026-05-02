@@ -7,7 +7,7 @@ import { ServiceCategoryCard, WorkerCard } from "@Components/index";
 import ProfileDrawer from "@Views/User/components/ProfileDrawer";
 import { useNavigate } from "react-router-dom";
 import WorkerCardSkeleton from "@Components/Card/WorkerCardSkelton";
-const HomeStyle = styled(Box)(({ theme }) => ({
+const HomeStyle = styled(Box)<{isMobile:boolean}>(({ theme ,isMobile}) => ({
   padding: theme.spacing(5),
 
   [theme.breakpoints.up("md")]: {
@@ -17,6 +17,8 @@ const HomeStyle = styled(Box)(({ theme }) => ({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+    height:"40vh",
+    overflow:"hideen",
     ".heading": {
       fontSize: "2.5vmax",
       whiteSpace: "nowrap",
@@ -51,7 +53,8 @@ const HomeStyle = styled(Box)(({ theme }) => ({
   ".imageContainer": {
     display: "flex",
     alignItems: "center",
-    gap: theme.spacing(10),
+    gap:isMobile?theme.spacing(12): theme.spacing(15),
+    
     flexWrap: "wrap",
     margin: theme.spacing(15, 0),
   },
@@ -106,9 +109,9 @@ function HomePage() {
   const { isMobile } = hooks.useResponsive();
   return (
     <>
-      <HomeStyle>
+      <HomeStyle isMobile={isMobile}>
         {!isMobile && (
-          <Box className="main">
+          <Box className="main" >
             <Box className="leftSide">
               <Typography className="heading" variant="h1">
                 Find Skilled Workers Near You

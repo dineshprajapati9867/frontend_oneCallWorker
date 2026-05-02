@@ -1,3 +1,4 @@
+import Footer from "@Components/Footer";
 import Navbar from "@Components/Navbar";
 import { Box, styled } from "@mui/material";
 import { hooks } from "@Utils/index";
@@ -33,6 +34,7 @@ function HomeLayout({ children }: PropsI) {
         <InnerLayout>
           <Navbar />
           <Box className="content-layout">{children}</Box>
+          <Footer/>
         </InnerLayout>
       </MainLayout>
       {openProfileDrawer && (

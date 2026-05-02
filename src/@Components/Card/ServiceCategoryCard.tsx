@@ -10,7 +10,16 @@ interface PropI {
 const StyledServiceCard = styled(Box)<{isMobile:boolean}>(({ theme,isMobile }) => ({
   cursor: "pointer",
   width:isMobile?"100px": " 150px",
-  // height: "150px",
+  height: theme.spacing(50),
+    [theme.breakpoints.down("sm")]: {
+    width: "20%", // mobile pe 4 cards in row
+  },
+  ".image-box": {
+    objectFit: "cover",
+    width: "100%",
+    height: "100%",
+    borderRadius: theme.spacing(5),
+    overflow: "hidden",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -40,13 +49,18 @@ const StyledServiceCard = styled(Box)<{isMobile:boolean}>(({ theme,isMobile }) =
   ".service-name": {
     marginTop: theme.spacing(3),
     textAlign: "center",
+        [theme.breakpoints.down("sm")]: {
+   fontSize:`${theme.spacing(6)} !important`
   },
+  },
+}
 }));
 
 export const ServiceCategoryCard = ({ title, url, handleClick }: PropI) => {
   const isMobile=useMediaQuery((theme)=>theme.breakpoints.only("xs"))
   return (
     <StyledServiceCard onClick={handleClick} isMobile={isMobile}>
+      <IKImage loading="lazy" src={url} className="image-box" />
       <Box className="imageBox">
         <IKImage loading="lazy" src={url} alt={title} className="image" />
       </Box>

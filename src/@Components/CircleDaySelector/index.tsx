@@ -5,7 +5,7 @@ import React from "react";
 interface PropsI {
   name: string;
   selectedDays: string[];
-  onChange: (days: string[]) => void;
+  onChange?: (days: string[]) => void;
 }
 
 const DayCircle = styled(Box)<{ active: boolean,isMobile:boolean }>(({ theme, active,isMobile }) => ({
@@ -26,7 +26,7 @@ const DayCircle = styled(Box)<{ active: boolean,isMobile:boolean }>(({ theme, ac
 }));
 
 function CircleDaySelector({ name, selectedDays, onChange }: PropsI) {
-  const isActive = selectedDays.includes(name);
+  const isActive = selectedDays?.includes(name);
 
   const handleClick = () => {
     if (isActive) {

@@ -6,12 +6,14 @@ import {
   CallMuiIcon,
   ChatMuiIcon,
 } from "@Icons/index";
-import { Box, Button, styled, Typography } from "@mui/material";
+import { Box, Button, styled, Tooltip, Typography } from "@mui/material";
 import { hooks } from "@Utils/index";
 import { useNavigate } from "react-router-dom";
 // import VerifiedIcon from "@mui/icons-material/Verified";
 // import { VerifyAnimation } from "@Primitives/index";
-
+import verified from "@Assets/Images/verified.gif";
+import new_thumb from "@Assets/Images/new_thumb_icon.svg";
+// import { ToolTip } from "@Primitives/Tooltip";
 const WorkerCardStyle = styled(Box)<{ isMobile: boolean }>(
   ({ theme, isMobile }) => ({
     ".main": {
@@ -48,6 +50,9 @@ const WorkerCardStyle = styled(Box)<{ isMobile: boolean }>(
       gap: theme.spacing(6),
       padding: theme.spacing(10),
       paddingRight: "0px",
+    },
+    ".thumbBox": {
+      gap: theme.spacing(5),
     },
     ".image": {
       height: !isMobile && "100%",
@@ -102,12 +107,12 @@ const WorkerCardStyle = styled(Box)<{ isMobile: boolean }>(
         border: "none",
       },
     },
-  })
+  }),
 );
 
 const WorkerCard = () => {
   const { isMobile } = hooks.useResponsive();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const ButtonGroups = () => {
     return (
       <>
@@ -115,6 +120,9 @@ const WorkerCard = () => {
           className="btn"
           variant="contained"
           startIcon={<CallMuiIcon className="commonIconStyle" />}
+          onClick={(e: React.MouseEvent<HTMLElement>) => {
+            e.stopPropagation();
+          }}
         >
           7039824822
         </Button>
@@ -129,9 +137,9 @@ const WorkerCard = () => {
     );
   };
 
-  const handleCard = () => {
-    navigate("/worker/098765678")
-  }
+  const handleCard = (e) => {
+    navigate("/worker/098765678");
+  };
   return (
     <WorkerCardStyle isMobile={isMobile}>
       <Box className="main" onClick={handleCard}>
@@ -142,7 +150,10 @@ const WorkerCard = () => {
             className="image"
           />
           <Box className="rightSide">
-            <Typography variant="h4">Dinesh Prajapati</Typography>
+            <Box className="thumbBox flex">
+              <img src={new_thumb} alt="thumb_image" />
+              <Typography variant="h4">Dinesh Prajapati</Typography>
+            </Box>
             <Box className="ratingBox flex">
               <Box className="starRatingBox">
                 <Typography className="rating font15" variant="h5">
@@ -154,6 +165,12 @@ const WorkerCard = () => {
               <Typography className="ratings" variant="body1">
                 50 Ratings
               </Typography>
+              <Tooltip
+                arrow={true}
+                title={"This Profile Information is verified by oneCallWorker."}
+              >
+                <img height={30} src={verified} />
+              </Tooltip>
             </Box>
             <Box className="iconBox flex">
               <BlackNormalLocationIcon />
