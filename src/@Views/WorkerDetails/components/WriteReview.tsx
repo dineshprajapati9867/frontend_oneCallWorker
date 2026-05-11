@@ -1,6 +1,6 @@
 import StarRating from "@Components/StarRating";
 import UploadImage from "@Components/UploadImage";
-import { ChevronLeftIconDarkBlack, LeftArrow } from "@Icons/LeftArrow";
+import { ChevronLeftIconDarkBlack, } from "@Icons/LeftArrow";
 import {
   Box,
   Button,
