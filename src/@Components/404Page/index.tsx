@@ -1,6 +1,6 @@
 import { Box, Button, styled, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import Img404 from '../../@Assets/images/404.png';
+import Img404 from '../../@Assets/Images/404.png';
 import React from 'react';
 const BoxContainer = styled(Box)(({ theme }) => ({
   height: '100vh',

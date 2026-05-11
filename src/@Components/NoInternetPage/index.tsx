@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Button, styled, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Loader } from "@Primitives";
-import NoInternetImg from "../../@Assets/images/noInternet.png";
+import NoInternetImg from "../../@Assets/Images/noInternet.png";
 
 const BoxContainer = styled(Box)(({ theme }) => ({
   display: "flex",

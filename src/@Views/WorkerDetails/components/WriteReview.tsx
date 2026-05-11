@@ -42,12 +42,12 @@ const StyleWrite = styled(Box)<{ isMobile: boolean }>(
         padding: theme.spacing(10, 10, 0, 10),
       }),
     },
-    '.contentData':{
-       ...(isMobile&&{
-           height:'calc(100vh - 60px)',
-          overflowY:"auto",
-            marginBottom: theme.spacing(10),
-       })
+    ".contentData": {
+      ...(isMobile && {
+        height: "calc(100vh - 60px)",
+        overflowY: "auto",
+        marginBottom: theme.spacing(10),
+      }),
     },
     ".main": {
       display: "flex",
@@ -58,7 +58,6 @@ const StyleWrite = styled(Box)<{ isMobile: boolean }>(
       display: "flex",
       flexDirection: "column",
       gap: theme.spacing(10),
-
     },
     ".header": {
       display: "flex",
@@ -106,8 +105,8 @@ const StyleWrite = styled(Box)<{ isMobile: boolean }>(
   }),
 );
 function WriteReview() {
-    const [images, setImages] = React.useState([]);
-  
+  const [images, setImages] = React.useState([]);
+
   const isMobile = useMediaQuery((theme) => theme.breakpoints.only("xs"));
   const [rating, setRating] = useState(1);
   const location = useLocation();
@@ -118,9 +117,9 @@ function WriteReview() {
     navigate(-1);
   };
 
-   const handleUploadImage = useCallback((file: any) => {
-      setImages((prev) => [...prev, ...file]);
-    }, []);
+  const handleUploadImage = useCallback((file: any) => {
+    setImages((prev) => [...prev, ...file]);
+  }, []);
   const content = () => {
     return (
       <StyleWrite isMobile={isMobile}>
@@ -139,7 +138,11 @@ function WriteReview() {
               </Box>
               {isMobile && <Divider />}
             </Box>
-            <Box className="content contentData" padding={isMobile&&7.5} paddingTop={0}>
+            <Box
+              className="content contentData"
+              padding={isMobile && 7.5}
+              paddingTop={0}
+            >
               <Box className="header">
                 <img
                   className="image"
@@ -182,23 +185,24 @@ function WriteReview() {
               </Typography>
               <UploadImage onChange={handleUploadImage} />
 
-       <Box display={"flex"} flexWrap={"wrap"} gap={5}>
-                 {images.map((val: { preview: string }) => {
-            return (
-              <ImageCard
-                key={val.preview}
-                link={val.preview}
-                handleCrossIcon={() => {
-                  setImages((prev) => {
-                    return prev.filter(
-                      (img: { preview: string }) => img.preview !== val.preview,
-                    );
-                  });
-                }}
-              />
-            );
-          })}
-       </Box>
+              <Box display={"flex"} flexWrap={"wrap"} gap={5}>
+                {images.map((val: { url: string }) => {
+                  return (
+                    <ImageCard
+                      key={val.url}
+                      link={val.url}
+                      handleCrossIcon={() => {
+                        setImages((prev) => {
+                          return prev.filter(
+                            (img: { preview: string }) =>
+                              img.preview !== val.url,
+                          );
+                        });
+                      }}
+                    />
+                  );
+                })}
+              </Box>
               <Box className="submitBox">
                 <Button className="submitBtn" variant="contained">
                   Submit Review
