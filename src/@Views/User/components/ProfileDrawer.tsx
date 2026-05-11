@@ -3,8 +3,7 @@ import {
   LogoutIconMui,
   NotificationsIconMui,
   ProfileIcon,
-  LocationIconMui,
-  TranslateIconMui,
+  BookmarkIconMui,
 } from "@Icons/index";
 import {
   Avatar,
@@ -15,12 +14,14 @@ import {
   IconButton,
   styled,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import { IOSSwitch } from "@Primitives/index";
 import { capitalizedFirstLetter } from "@Utils/helpers";
 import { hooks } from "@Utils/index";
 import React, { useState } from "react";
 import avatar from "@Assets/Images/avatar.png";
+import { useNavigate } from "react-router-dom";
 interface PrposI {
   open: boolean;
   onClose: () => void;
@@ -60,19 +61,19 @@ const ProfileDrawerStyle = styled(Drawer)<{ isMobile: boolean }>(
     },
     ".main": {
       padding: isMobile ? theme.spacing(4.5, 5) : theme.spacing(9, 10),
-      '.iconButtons':{
-        border:`1px solid ${theme.misc.borderColor}`,
-        color:"black",
-        '&:hover':{
-          backgroundColor:"transparent"
-        }
+      ".iconButtons": {
+        border: `1px solid ${theme.misc.borderColor}`,
+        color: "black",
+        "&:hover": {
+          backgroundColor: "transparent",
+        },
       },
       ".text": {
         fontWeight: 400,
       },
       ".flexBox": {
         padding: theme.spacing(5),
-        cursor:"pointer",
+        cursor: "pointer",
 
         "&:hover": {
           backgroundColor: theme.palette.action.hover,
@@ -91,7 +92,7 @@ const ProfileDrawerStyle = styled(Drawer)<{ isMobile: boolean }>(
         justifyContent: "space-between",
         gap: theme.spacing(8),
         padding: theme.spacing(5),
-         cursor:"pointer",
+        cursor: "pointer",
         "&:hover": {
           backgroundColor: theme.palette.action.hover,
           transition: "background-color 0.2s ease",
@@ -103,9 +104,14 @@ const ProfileDrawerStyle = styled(Drawer)<{ isMobile: boolean }>(
 const ProfileDrawer = ({ open, onClose }: PrposI) => {
   const [notificationPermission, setNotificationPermission] =
     useState<NotificationPermission>(Notification.permission);
-  const { handleOpenLogin } = hooks.useUser();
+  const {
+    handleOpenLogin,
+    
+    handleCloseProfileDrawer,
+  } = hooks.useUser();
+  const navigate = useNavigate();
   const { ShowInfoSnackBar } = hooks.useSnackBar();
-  const { isMobile } = hooks.useResponsive();
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.only("xs"));
   const user = JSON.parse(localStorage.getItem("user"));
 
   const handleNotification = async () => {
@@ -138,13 +144,18 @@ const ProfileDrawer = ({ open, onClose }: PrposI) => {
       id: 1,
       label: "Edit Profile",
       icon: <ProfileIcon />,
-     // onClick: () => console.log("Edit Profile"),
+      onClick: () => {
+        navigate("/personal-details/8767", { state: { modal: true } });
+handleCloseProfileDrawer()
+      },
     },
     {
       id: 2,
       label: "Saved",
-      icon: <LocationIconMui />,
-      //onClick: () => console.log("Manage Address"),
+      icon: <BookmarkIconMui />,
+      // onClick: () => {
+      //   navigate("personal-details/98765456789")
+      // },
     },
     {
       id: 3,
@@ -160,6 +171,7 @@ const ProfileDrawer = ({ open, onClose }: PrposI) => {
       onClick: handleLogout,
     },
   ];
+
   return (
     <ProfileDrawerStyle
       open={open}
@@ -199,12 +211,13 @@ const ProfileDrawer = ({ open, onClose }: PrposI) => {
             <Box
               key={item.id}
               className={item.isSwitch ? "commonStyle" : "flexBox"}
-              onClick={ item.onClick}
+              onClick={item.onClick}
             >
-              <Box className="iconLabelBox" ml={item.label==="Logout"?2:0}>
-               <IconButton className="iconButtons">
-                 {item.icon}
-               </IconButton>
+              <Box
+                className="iconLabelBox"
+                ml={item.label === "Logout" ? 2 : 0}
+              >
+                <IconButton className="iconButtons">{item.icon}</IconButton>
                 <Typography className="text" variant="h6">
                   {item.label}
                 </Typography>

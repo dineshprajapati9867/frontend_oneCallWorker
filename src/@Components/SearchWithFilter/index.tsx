@@ -1,7 +1,19 @@
-import React from 'react';
-import { Box, Button, Input, InputAdornment, styled, Typography } from '@mui/material';
-import { CloseIcon, DarkFilterIcon, SearchIcon } from '@Icons';
-import { BasicModal } from '@Primitives';
+import React from "react";
+import {
+  Box,
+  Button,
+  IconButton,
+  Input,
+  InputAdornment,
+  styled,
+  Typography,
+} from "@mui/material";
+import {
+  CloseIcon,
+  DarkFilterIcon,
+  SearchIcon,
+} from "@Icons";
+import { BasicModal } from "@Primitives";
 
 export interface SearchWithFilterPropsI {
   searchText: string | undefined;
@@ -18,42 +30,42 @@ export interface SearchWithFilterPropsI {
 }
 
 const MainBox = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  '.searchInput': {
+  display: "flex",
+  alignItems: "center",
+  ".searchInput": {
     height: 40,
   },
-  '.filterIcon': {
-    display: 'flex',
-    alignItems: 'center',
-    cursor: 'pointer',
+  ".filterIcon": {
+    display: "flex",
+    alignItems: "center",
+    cursor: "pointer",
     marginLeft: theme.spacing(8),
   },
 }));
 
 const CustomInputStyled = styled(Input)(({ theme }) => ({
   ...theme.typography.inputValue,
-  height: '100%',
-  width: '100%',
+  height: "100%",
+  width: "100%",
   backgroundColor: theme.palette.secondary.light,
   border: `1px solid ${theme.misc.borderColor}`,
   borderRadius: theme.spacing(1.5),
   padding: theme.spacing(5, 4),
-  fontSize: '14px',
+  fontSize: "14px",
   letterSpacing: theme.spacing(0.5),
   lineHeight: theme.spacing(10),
   color: theme.misc.inputPlaceholder,
-  '&:before, &:after, &:hover:not(.Mui-disabled):before': {
-    border: '0',
+  "&:before, &:after, &:hover:not(.Mui-disabled):before": {
+    border: "0",
   },
-  '&.Mui-disabled': {
+  "&.Mui-disabled": {
     opacity: 0.6,
   },
-  '&.Mui-focused': {
+  "&.Mui-focused": {
     backgroundColor: theme.palette.primary.contrastText,
     border: `1px solid ${theme.misc.focusedBorder}`,
   },
-  '&.Mui-error': {
+  "&.Mui-error": {
     border: `2px solid ${theme.misc.darkRed}`,
   },
 }));
@@ -61,23 +73,23 @@ const CustomInputStyled = styled(Input)(({ theme }) => ({
 const FilterModal = styled(Box)(({ theme }) => ({
   padding: theme.spacing(12, 16),
   minWidth: theme.spacing(213),
-  width: 'auto',
-  height: 'auto',
-  '.filterHeader': {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  width: "auto",
+  height: "auto",
+  ".filterHeader": {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: theme.spacing(15),
   },
-  '.closeIcon': {
-    display: 'flex',
-    alignItems: 'center',
-    cursor: 'pointer',
+  ".closeIcon": {
+    display: "flex",
+    alignItems: "center",
+    cursor: "pointer",
   },
-  '.filterFooter': {
+  ".filterFooter": {
     marginTop: theme.spacing(32.5),
   },
-  '.applyBtn': {
+  ".applyBtn": {
     marginRight: theme.spacing(5),
   },
 }));
@@ -103,49 +115,69 @@ export default function SearchWithFilter({
   return (
     <MainBox>
       <Box
-        className='searchInput'
+        className="searchInput"
         sx={{
           width: {
-            md: 326,
+            xs:"100%",
             lg: 500,
-            xl: 705,
           },
         }}
       >
         <CustomInputStyled
-          placeholder='Search'
+          placeholder="Search"
           value={searchText}
           onChange={handleSearchValue}
           autoFocus={autoFocus}
           startAdornment={
-            <InputAdornment position='start'>
+            <InputAdornment position="start">
               <SearchIcon width={24} height={24} />
             </InputAdornment>
+          }
+          endAdornment={
+            searchText && (
+              <InputAdornment position="end">
+                <IconButton
+                  size="small"
+                  onClick={() =>
+                    handleSearchValue({
+                      target: { value: "" },
+                    })
+                  }
+                >
+                  <CloseIcon />
+                </IconButton>
+              </InputAdornment>
+            )
           }
         />
       </Box>
       {isFilter && (
-        <Box className='filterIcon' onClick={onClickFilterIcon}>
+        <Box className="filterIcon" onClick={onClickFilterIcon}>
           <DarkFilterIcon />
         </Box>
       )}
       {open && onClose && (
         <BasicModal open={open} close={onClose}>
           <FilterModal minHeight={minHeight}>
-            <Box className='filterHeader'>
-              <Typography variant='h6'  color={(theme) => theme.text.dark}>
+            <Box className="filterHeader">
+              <Typography variant="h6" color={(theme) => theme.text.dark}>
                 Filters
               </Typography>
-              <Box className='closeIcon' onClick={onClose}>
+              <Box className="closeIcon" onClick={onClose}>
                 <CloseIcon />
               </Box>
             </Box>
             {children}
-            <Box className='filterFooter'>
-              <Button variant='contained' size='medium' className='applyBtn' onClick={onApply}>
+            <Box className="filterFooter">
+              <Button
+                variant="contained"
+                size="medium"
+                className="applyBtn"
+                onClick={onApply}
+              >
                 Apply
               </Button>
-              <Button variant='outlined' size='medium' onClick={onCancel}>
+              <Button variant="outlined" size="medium" onClick={onCancel}>
                 Cancel
               </Button>
             </Box>

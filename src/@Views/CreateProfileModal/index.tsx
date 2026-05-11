@@ -1,7 +1,7 @@
 import BreadCrumbs from "@Components/BreadCrumbs";
-import { Box, styled } from "@mui/material";
+import { Box, Drawer, styled, useMediaQuery } from "@mui/material";
 import { BasicModal } from "@Primitives/index";
-import React from "react";
+import React, { Activity } from "react";
 import { CreateProfileHeader } from "./Components/CreateProfileHeader";
 import { hooks } from "@Utils/index";
 import PersonalInformation from "./Components/PersonalInformation";
@@ -9,26 +9,37 @@ import { useForm } from "react-hook-form";
 import { CreateProfileFooter } from "./Components/CreateProfileFooter";
 import SkillInformation from "./Components/SkillInformation";
 import LocationInformation from "./Components/LocationInformation";
-interface PropsI {
-  open: boolean;
-  onClose: () => void;
-}
+import { useLocation, useNavigate } from "react-router-dom";
+
 const ProfileStyled = styled("form")(({ theme }) => ({
-  height: "100vh",
+  // height: "100vh",
   display: "flex",
   flexDirection: "column",
 }));
 
-const ScrollContent = styled(Box)(({ theme }) => ({
-  overflowY: "auto",
-  paddingLeft: theme.spacing(16),
-  paddingBottom: theme.spacing(16),
-  marginTop: theme.spacing(54),
-  marginBottom: 75,
-}));
+const ScrollContent = styled(Box)<{ isMobile: boolean }>(
+  ({ theme, isMobile }) => ({
+    // overflowY: "auto",
+    marginRight: theme.spacing(isMobile ? 8 : 16),
+    paddingLeft: theme.spacing(isMobile ? 8 : 16),
+    paddingBottom: theme.spacing(16),
+    marginTop: isMobile ? theme.spacing(54) : 0,
+    marginBottom: isMobile ? 75 : 0,
+  }),
+);
 
-const CreateProfileModal = ({ open, onClose }: PropsI) => {
-  const { control, watch, setValue, handleSubmit, formState:{isValid} } = useForm({
+const CreateProfileModal = () => {
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isModal = location.state?.modal;
+  const {
+    control,
+    watch,
+    setValue,
+    handleSubmit,
+    formState: { isValid },
+  } = useForm({
     mode: "onChange",
   });
   const {
@@ -37,32 +48,36 @@ const CreateProfileModal = ({ open, onClose }: PropsI) => {
     handleBackForCreateProfile,
     handleNextForCreateProfile,
     handleCreateProfile,
-    isCreateProfilePending
+    isCreateProfilePending,
+    useGetProfileData
   } = hooks.useUser();
-
+  const {data}=useGetProfileData();
+  
   const onSubmit = (data) => {
-   handleCreateProfile(data)
+    handleCreateProfile(data);
   };
 
-
-  return (
-    <BasicModal open={open} close={onClose} fullScreen>
+  const handleClose = () => {
+    navigate(-1);
+  };
+  const content = () => {
+    return (
       <ProfileStyled onSubmit={handleSubmit(onSubmit)}>
         <CreateProfileHeader
           activeStep={activeStep}
           steps={createProfileStep}
-          onClose={onClose}
+          onClose={handleClose}
           handleSaveAndNext={handleSubmit(onSubmit)}
           isBtnLoading={isCreateProfilePending}
         />
-        <ScrollContent>
-          {activeStep === 1 && (
+        <ScrollContent isMobile={isMobile}>
+          <Activity mode={activeStep === 1 ? "visible" : "hidden"}>
             <PersonalInformation
               setValue={setValue}
               control={control}
               watch={watch}
             />
-          )}
+          </Activity>
           {activeStep === 2 && (
             <SkillInformation
               setValue={setValue}
@@ -85,7 +100,26 @@ const CreateProfileModal = ({ open, onClose }: PropsI) => {
           isButtonDisabled={!isValid}
         />
       </ProfileStyled>
-    </BasicModal>
+    );
+  };
+  if (!isMobile) {
+    return content();
+  }
+  return (
+    <>
+      <Drawer
+        sx={{
+          ".MuiPaper-root": {
+            width: "100vw",
+          },
+        }}
+        anchor="right"
+        open={isModal && isMobile}
+        onClose={handleClose}
+      >
+        {content()}
+      </Drawer>
+    </>
   );
 };
 

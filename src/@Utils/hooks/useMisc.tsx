@@ -2,82 +2,82 @@ import { createContext, useContext, useState, useCallback } from "react";
 import { getAllWorkerList, getPostalCode } from "@Utils/controllers/misc";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import React from "react";
-// import {
-//   uploadPublicImage,
-// } from '@Utils/controllers/misc';
-// import { hooks } from '@Utils';
-// import { useMutation } from '@tanstack/react-query';
+import { uploadImageToS3 } from "../controllers/misc";
+import { hooks } from "..";
 interface MiscI {
-  //   handleUploadPublicFile: (files: File[]) => Promise<string[] | null>;
-  //   isUploadFileLoading: boolean;
-  //   handleSendPlatformInvitation: (userId: string, data: any) => void;
-  //   isPlatformInvitationMailLoading: boolean;
-  useGetPostalCode:(pincode:string)=>UseQueryResult<{city:string,state:string}>
-  // useGetAllWorkerList:()=>any
+  handleUploadImages: (files: File[]) => Promise<string[] | null>;
+  isUploadFileLoading: boolean;
+  useGetPostalCode: (
+    pincode: string,
+  ) => UseQueryResult<{ city: string; state: string }>;
+  useGetAllWorkerList: (limit:number) => UseQueryResult<any>;
 }
 
+interface UploadFileResponse {
+  url: string;
+  file_name: string;
+}
 const MiscContext = createContext<MiscI>({} as MiscI);
 
 export const useMisc = () => useContext(MiscContext);
 
 function useMiscProvider() {
-  //   const { ShowErrorSnackBar, ShowApiErrorSnackBar, ShowSuccessSnackBar } = hooks.useSnackBar();
-  //   const [isUploadFileLoading, setIsUploadFileLoading] = useState(false);
+  const { ShowErrorSnackBar, ShowSuccessSnackBar } = hooks.useSnackBar();
+  const [isUploadFileLoading, setIsUploadFileLoading] = useState(false);
 
-  //   /**
-  //    * Generic function to upload files in public bucket
-  //    */
-  //   const handleUploadPublicFile = useCallback(async (files: File[]): Promise<string[] | null> => {
-  //     if (!files?.length) return null;
+  /**
+   * Generic function to upload files in public bucket
+   */
+  const handleUploadImages = useCallback(
+    async (files: File[]): Promise<UploadFileResponse[] | null> => {
+      if (!files?.length) return null;
+      setIsUploadFileLoading(true);
 
-  //     setIsUploadFileLoading(true);
-  //     try {
-  //       const uploadPromises = files.map(async (file) => {
-  //         const formData = new FormData();
-  //         formData.append('file', file);
+      try {
+        const formData = new FormData();
+        files.forEach((file) => {
+          formData.append("files", file);
+        });
 
-  //         const extension = file.name.split('.').pop() || '';
-  //         const response = await uploadPublicImage({
-  //           formData,
-  //           extension,
-  //         });
+        const response = await uploadImageToS3(formData);
 
-  //         if (response?.data?.data?.Location) {
-  //           ShowSuccessSnackBar(`File "${file.name}" uploaded successfully`);
-  //           return response.data.data.Location;
-  //         }
-  //         ShowErrorSnackBar(`Failed to upload ${file.name}`);
-  //         return null;
-  //       });
+        const uploadedFiles: UploadFileResponse[] =
+          response?.data?.results?.map((r: UploadFileResponse) => ({
+            url: r.url,
+            file_name: r.file_name,
+          })) || [];
 
-  //       const results = await Promise.all(uploadPromises);
+        if (uploadedFiles.length) {
+          ShowSuccessSnackBar(
+            `${uploadedFiles.length} file(s) uploaded successfully`,
+          );
+        }
 
-  //       const uploadedUrls = results.filter((url): url is string => Boolean(url));
+        return uploadedFiles;
+      } catch (err: any) {
+        ShowErrorSnackBar(err?.message || "Failed to upload file(s)");
+        return null;
+      } finally {
+        setIsUploadFileLoading(false);
+      }
+    },
+    [],
+  );
 
-  //       return uploadedUrls;
-  //     } catch (err: any) {
-  //       const message = err?.message || 'Failed to upload file(s)';
-  //       ShowErrorSnackBar(message);
-  //       return null;
-  //     } finally {
-  //       setIsUploadFileLoading(false);
-  //     }
-  //   }, []);
-
-  const useGetAllWorkerList =()=>{
-   return useQuery({
-    queryKey:[],
-    queryFn:()=>getAllWorkerList(),
-    select:(data)=>data.data,
-    gcTime: 0,
-   })
-  }
+  const useGetAllWorkerList = (limit:number) => {
+    return useQuery({
+      queryKey: [limit],
+      queryFn: () => getAllWorkerList(limit),
+      select: (data) => data.data,
+      gcTime: 0,
+    });
+  };
   /**
    * get the city and state by Postcode
    */
-  const useGetPostalCode = (pincode:string) => {
+  const useGetPostalCode = (pincode: string) => {
     return useQuery({
-      queryKey: ["postalcode",pincode],
+      queryKey: ["postalcode", pincode],
       queryFn: () => getPostalCode(pincode),
       gcTime: 0,
       enabled: !!pincode,
@@ -89,10 +89,10 @@ function useMiscProvider() {
     /**
      * Public file upload
      */
-    // handleUploadPublicFile,
-    // isUploadFileLoading,
+    handleUploadImages,
+    isUploadFileLoading,
     useGetPostalCode,
-    useGetAllWorkerList
+    useGetAllWorkerList,
   };
 }
 

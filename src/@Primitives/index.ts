@@ -1,7 +1,6 @@
 import Inputs from './Input';
 import Button from './Button';
 import { BasicModal } from './Modal/BasicModal';
-import SearchBox from './SearchBox';
 import CheckBox from './Input/CheckBox/CheckBox';
 import BasicStepper from './BasicStepper';
 import Tab from './Tab';
@@ -28,7 +27,6 @@ export {
   Button,
   Inputs,
   BasicModal,
-  SearchBox,
   CheckBox,
   IOSSwitch,
   Tab,

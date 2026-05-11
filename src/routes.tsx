@@ -3,9 +3,10 @@ import FreeListing from "@Views/FreeListing";
 import HomePage from "@Views/HomePage";
 import NoInternetPage from "@Components/NoInternetPage";
 import WorkerList from "@Views/WorkerList";
-import { WorkerDetails } from "@Views/WorkerDetails";
+import WorkerDetails  from "@Views/WorkerDetails";
 import ReviewComments from "@Views/WorkerDetails/components/ReviewComments";
 import WriteReview from "@Views/WorkerDetails/components/WriteReview";
+import CreateProfileModal from "@Views/CreateProfileModal";
 export const HomeLayouts: {
   name: string;
   path: string;
@@ -36,6 +37,11 @@ export const HomeLayouts: {
     path: "worker/write-review/:id",
     Component: WriteReview,
   },
+  {
+    name: "CreateProfileModal",
+    path: "personal-details/:id",
+    Component: CreateProfileModal,
+  },
 ];
 
 /**
@@ -52,9 +58,9 @@ export const PublicRoute: {
     path: "no-internet",
     Component: NoInternetPage,
   },
-  {
-    name: "freeListing",
-    path: "free-listing",
-    Component: FreeListing,
-  },
+  // {
+  //   name: "freeListing",
+  //   path: "free-listing",
+  //   Component: FreeListing,
+  // },
 ];

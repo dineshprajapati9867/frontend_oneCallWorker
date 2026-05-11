@@ -452,8 +452,6 @@ function FreeListing() {
       {openCreateProfileModal && (
         <Suspense fallback={null}>
           <CreateProfileModal
-            open={openCreateProfileModal}
-            onClose={handleCloseCreateProfileModal}
           />
         </Suspense>
       )}

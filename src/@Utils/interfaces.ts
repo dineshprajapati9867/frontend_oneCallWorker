@@ -11,6 +11,7 @@ export interface optionI {
 }
 
 export interface createProfileI {
+  profile:string | any
   first_name: string;
   last_name: string;
   email: string;
@@ -22,6 +23,10 @@ export interface createProfileI {
   languages: optionI[];
 
   skills: optionI[];
+  images:{
+    url:string,
+    file:any
+  }[]
   experience: optionI;
   days: string[];
 
@@ -31,4 +36,11 @@ export interface createProfileI {
   city: string;
   state: string;
   pincode: string;
+}
+
+export interface serviceCategoryI {
+  _id: string;
+  title: string;
+  image_kit_id: string;
+  image_kit_url: string;
 }

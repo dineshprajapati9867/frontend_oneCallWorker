@@ -1,8 +1,11 @@
 import React from 'react';
-
-export function RedCrossIcon() {
+interface PropsI{
+  width?:number
+  ;height?:number
+}
+export function RedCrossIcon({width=25,height=25}:PropsI) {
   return (
-    <svg width='77' height='76' viewBox='0 0 77 76' fill='none' xmlns='http://www.w3.org/2000/svg'>
+    <svg width={width} height={height} viewBox='0 0 77 76' fill='none' xmlns='http://www.w3.org/2000/svg'>
       <rect x='0.5' width='76' height='76' rx='38' fill='#FF0000' />
       <path
         d='M52.5625 24.9375L24.4375 53.0625'

@@ -1,4 +1,4 @@
-import { Box, styled, Typography } from "@mui/material";
+import { Box, styled, Typography, useMediaQuery } from "@mui/material";
 import { hooks } from "@Utils/index";
 import React from "react";
 
@@ -10,7 +10,7 @@ interface PropsI {
 
 const DayCircle = styled(Box)<{ active: boolean,isMobile:boolean }>(({ theme, active,isMobile }) => ({
   width: theme.spacing(30),
-  height:isMobile?theme.spacing(20): theme.spacing(30),
+  height:isMobile?theme.spacing(15): theme.spacing(30),
   borderRadius: "50%",
   display: "flex",
   alignItems: "center",
@@ -20,8 +20,12 @@ const DayCircle = styled(Box)<{ active: boolean,isMobile:boolean }>(({ theme, ac
   backgroundColor: active ? theme.text.primary : "transparent",
   border:  `1px solid ${theme.misc.borderColor}`,
   transition: "all 0.2s ease",
+   ...(isMobile&&{
+      padding:theme.spacing(2,3)
+   }),
   '.text':{
     color: active ? theme.palette.primary.contrastText  :theme.text.darkGrey,
+    fontSize:isMobile&&`${theme.spacing(5)}!important`
   }
 }));
 
@@ -35,7 +39,7 @@ function CircleDaySelector({ name, selectedDays, onChange }: PropsI) {
       onChange([...selectedDays, name]);
     }
   };
-const {isMobile}=hooks.useResponsive()
+const isMobile=useMediaQuery((theme)=>theme.breakpoints.only("xs"))
   return (
     <DayCircle isMobile={isMobile} active={isActive} onClick={handleClick}>
       <Typography className="text" variant="subtitle2">{name}</Typography>

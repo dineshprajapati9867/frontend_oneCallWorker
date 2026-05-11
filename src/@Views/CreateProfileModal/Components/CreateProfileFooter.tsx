@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "@mui/material/styles";
-import { Paper, Grid, Button } from "@mui/material";
+import { Paper, Grid, Button, useMediaQuery } from "@mui/material";
 import { hooks } from "@Utils/index";
 
 export interface PropsI {
@@ -10,8 +10,8 @@ export interface PropsI {
   isButtonDisabled?: boolean;
 }
 
-const Footer = styled(Paper)(({ theme }) => ({
-  position: "fixed",
+const Footer = styled(Paper)<{isMobile:boolean}>(({ theme ,isMobile}) => ({
+  position: isMobile?"fixed":"static",
   bottom: 0,
   left: 0,
   right: 0,
@@ -23,6 +23,10 @@ const Footer = styled(Paper)(({ theme }) => ({
   paddingRight: theme.spacing(16),
   boxShadow: "none",
   borderTop: `1px solid ${theme.misc.borderColor}`,
+...(!isMobile&&{
+  borderBottom: `1px solid ${theme.misc.borderColor}`,
+
+}) ,
   zIndex: 1,
   boxSizing: "border-box",
 }));
@@ -43,17 +47,10 @@ export function CreateProfileFooter({
     return "Next";
   };
 
-  /**
-   * Checks if the next button should be disabled.
-   * @returns {boolean} - True if the next button should be disabled.
-   */
-  // const handleNextDisable = () => {
-  //   return false;
-  // };
-  const { isMobile } = hooks.useResponsive();
+const isMobile=useMediaQuery((theme)=>theme.breakpoints.only('xs'))
   return (
     <>
-      <Footer elevation={3}>
+      <Footer elevation={3} isMobile={isMobile}>
         <Grid
           container
           justifyContent="space-between"
@@ -64,6 +61,7 @@ export function CreateProfileFooter({
             size={`${isMobile ? "small" : "large"}`}
             variant="outlined"
             onClick={handleBack}
+            disabled={activeStep===1}
           >
             {activeStep === 1 ? "Cancel" : "Back"}
           </Button>

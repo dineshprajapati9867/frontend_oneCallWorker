@@ -6,7 +6,6 @@ import {
   Button,
   Divider,
   IconButton,
-  Rating,
   Snackbar,
   styled,
   Tooltip,
@@ -17,15 +16,13 @@ import {
   BlackNormalLocationIcon,
   CallMuiIcon,
   CopyIcon,
-  CopyLinkIcon,
-  PhoneIconBlue,
   StarMuiIcon,
   WhatsAppIcon,
+  BookmarkIconMui,
 } from "@Icons/index";
 import verified from "@Assets/Images/verified.gif";
 import ImageCard from "./components/ImageCard";
 import UserReview from "./components/UserReview";
-import BookmarkBorderTwoToneIcon from "@mui/icons-material/BookmarkBorderTwoTone";
 import StarRating from "@Components/StarRating";
 import { useNavigate } from "react-router-dom";
 import CircleDaySelector from "@Components/CircleDaySelector";
@@ -47,8 +44,11 @@ const contactData = [
 ];
 const DetailsStyle = styled(Box)<{ isMobile: boolean }>(
   ({ theme, isMobile }) => ({
-    padding: theme.spacing(10),
+    ".mX10": {
+      margin: theme.spacing(0, 10),
+    },
     ".header": {
+      margin: theme.spacing(10),
       padding: !isMobile && theme.spacing(10),
       border: !isMobile && `1px solid ${theme.misc.borderColor}`,
       borderRadius: !isMobile && theme.spacing(3),
@@ -105,7 +105,7 @@ const DetailsStyle = styled(Box)<{ isMobile: boolean }>(
       display: "flex",
       alignItems: "center",
       minHeight: theme.spacing(13.5),
-      width: theme.spacing(26),
+      // width: theme.spacing(26),
       gap: theme.spacing(1),
       backgroundColor: theme.misc.verdantGreen,
       padding: theme.spacing(0, 2.5),
@@ -142,7 +142,8 @@ const DetailsStyle = styled(Box)<{ isMobile: boolean }>(
       },
     },
     ".imageContainer": {
-      width: "60%",
+      boxSizing: "border-box",
+      width: isMobile ? "" : "60%",
       ".imageBox": {
         display: "flex",
         gap: theme.spacing(10),
@@ -151,7 +152,7 @@ const DetailsStyle = styled(Box)<{ isMobile: boolean }>(
       },
     },
     ".contact": {
-      width: "30%",
+      width: isMobile ? "" : "30%",
 
       ".contactList": {
         display: "flex",
@@ -200,9 +201,13 @@ const DetailsStyle = styled(Box)<{ isMobile: boolean }>(
     },
     ".availableDays": {
       width: "100%",
+      padding: theme.spacing(10),
+      boxSizing: "border-box",
     },
     ".address": {
-      width: "30%",
+      width: isMobile ? "100vw" : "30%",
+      //boxSizing: "border-box",
+
       ".gap8": {
         gap: theme.spacing(4),
       },
@@ -217,14 +222,25 @@ const DetailsStyle = styled(Box)<{ isMobile: boolean }>(
         color: theme.text.darkGrey,
       },
     },
+    ".reviewAndRatingBox": {
+      boxSizing: "border-box",
+      padding: theme.spacing(10),
+      margin: theme.spacing(10, 0),
+      borderRadius: !isMobile && theme.spacing(3),
+
+      border: !isMobile && `1px solid ${theme.misc.borderColor}`,
+      ".startYourReview": {
+        paddingTop: theme.spacing(8),
+      },
+    },
   }),
 );
-export function WorkerDetails() {
+export default function WorkerDetails() {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.only("xs"));
   const navigate = useNavigate();
   const [isCopy, setIsCopy] = useState(false);
   const handleRating = () => {
-    navigate("/worker/write-review/9876567");
+    navigate("/worker/write-review/9876567",{state:{modal:true}});
   };
 
   const handleCopy = (text: string) => {
@@ -244,13 +260,13 @@ export function WorkerDetails() {
             </Box>
             {!isMobile && (
               <IconButton className="bookMark">
-                <BookmarkBorderTwoToneIcon />
+                <BookmarkIconMui />
               </IconButton>
             )}
           </Box>
 
           <Box className="ratingBox flexBox">
-            <Box className="starRatingBox">
+            <Box className="starRatingBox" width={52}>
               <Typography className="rating font15" variant="h5">
                 4.2
               </Typography>
@@ -334,18 +350,32 @@ export function WorkerDetails() {
           </Box>
         </Box>
       </Box>
-      <Box className="main">
-        <Box className="justifySpaceBetween flex">
-          <Box className="imageContainer commonStyle">
+      {isMobile && <Divider />}
+      <Box className="main" px={isMobile ? 0 : 10}>
+        <Box
+          className="justifySpaceBetween flex"
+          flexDirection={isMobile ? "column" : "row"}
+        >
+          <Box
+            className="imageContainer commonStyle "
+            padding={isMobile ? 10 : 0}
+          >
             <Typography className="pB10" variant="h4">
               Photos
             </Typography>
             <Box className="imageBox ">
-              <ImageCard />
-              <ImageCard />
+              <ImageCard
+                name="By Owner"
+                link="https://wallpapers.com/images/hd/link-hd-wallpaper-and-background-image-71mfep3ai8bib1mn.jpg"
+              />
+              <ImageCard
+                name="By User"
+                link="https://wallpapers.com/images/hd/link-hd-wallpaper-and-background-image-71mfep3ai8bib1mn.jpg"
+              />
             </Box>
           </Box>
-          <Box className="contact commonStyle">
+          {isMobile && <Divider />}
+          <Box className="contact commonStyle" padding={isMobile ? 10 : 0}>
             <Typography className="pB10" variant="h4">
               Contact Information
             </Typography>
@@ -380,11 +410,17 @@ export function WorkerDetails() {
               )}
             </Box>
           </Box>
+          {isMobile && <Divider />}
         </Box>
-        <Box className="justifySpaceBetween flex" alignItems={"flex-start"}>
-          <Box width={"60%"}>
+        <Box
+          className="justifySpaceBetween flex"
+          alignItems={"flex-start"}
+          flexDirection={isMobile ? "column-reverse" : "row"}
+        >
+          <Box width={isMobile ? "100%" : "60%"}>
+            {isMobile && <Divider />}
             <Box className="availableDays commonStyle leftSection">
-              <Typography className="pB10" variant="h4">
+              <Typography className={`${isMobile ? "" : "pB10"}`} variant="h4">
                 Available Days
               </Typography>
               <Box className="flexBox">
@@ -398,14 +434,41 @@ export function WorkerDetails() {
                 ))}
               </Box>
             </Box>
-
-            <Box className="Reviews&Ratings">
-              <Typography className="pB10" variant="h4">Reviews & Ratings
-</Typography>
-
+            {isMobile && <Divider />}
+            <Box className="reviewAndRatingBox">
+              <Typography className="pB10" variant="h4">
+                Reviews & Ratings
+              </Typography>
+              <Box className="flexBox" gap={"20px !important"}>
+                <Box
+                  className="starRatingBox"
+                  width={isMobile ? 50 : 72}
+                  height={isMobile ? 50 : 72}
+                >
+                  <Typography
+                    className="rating"
+                    variant={isMobile ? "h3" : "h1"}
+                  >
+                    4.2
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography variant="h4">9 Ratings</Typography>
+                  <Typography variant="body1" className="ratings">
+                    Ocw rating index based on 9 ratings across the web
+                  </Typography>
+                </Box>
+              </Box>
+              <Box className="startYourReview">
+                <Typography className="pB10" variant="h4">
+                  Start your Review
+                </Typography>
+                <StarRating onClick={handleRating} size={isMobile ? "medium" : "large"} />
+              </Box>
             </Box>
           </Box>
-          <Box className="address commonStyle">
+          {isMobile && <Divider />}
+          <Box className="address commonStyle" padding={isMobile ? 10 : 0}>
             <Typography className="pB10" variant="h4">
               Address
             </Typography>
@@ -456,9 +519,11 @@ export function WorkerDetails() {
           </Box>
         </Box>
       </Box>
-      <Box className="userReview">
+      <Divider />
+      <Box className="userReview" padding={10}>
         <UserReview />
       </Box>
+      <Divider />
     </DetailsStyle>
   );
 }

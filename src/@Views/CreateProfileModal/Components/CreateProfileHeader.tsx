@@ -8,6 +8,7 @@ import {
   IconButton,
   Button,
   LinearProgress,
+  useMediaQuery,
 } from "@mui/material";
 import { BasicStepper, Loader } from "@Primitives";
 import { CloseIcon } from "@Icons";
@@ -24,13 +25,11 @@ export interface PropI {
 
 const FixedAppBar = styled(AppBar)<{ isMobile: boolean }>(
   ({ theme, isMobile }) => ({
-    padding: isMobile ? theme.spacing(7.5, 5.5) : theme.spacing(15, 11),
+    padding: isMobile ? theme.spacing(7.5, 5.5) : theme.spacing(5,0,2.5,0),
     ...(isMobile && {
-      paddingTop: "0px",
+      paddingTop: theme.spacing(8),
       paddingBottom: "0px",
     }),
-    minHeight: 108,
-    maxHeight: 108,
     boxShadow: "none",
     border: `1px solid ${theme.palette.primary.light}`,
     justifyContent: "center",
@@ -57,66 +56,72 @@ export function CreateProfileHeader({
   handleSaveAndNext,
   isBtnLoading,
 }: PropI) {
-  const { isMobile } = hooks.useResponsive();
   const progress = (activeStep / steps.length) * 100;
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.only("xs"));
 
   return (
     <>
-      <FixedAppBar position="fixed" color="inherit" isMobile={isMobile}>
+      <FixedAppBar
+        position={isMobile ? "fixed" : "static"}
+        color="inherit"
+        isMobile={isMobile}
+      >
         <Grid
           container
           justifyContent="space-between"
           alignItems="center"
           wrap="nowrap"
         >
-          <Grid>
-            <Grid
-              container
-              wrap="nowrap"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Grid>
-                <IconButton
-                  sx={(theme) => ({
-                    marginRight: theme.spacing(2),
-                    marginBottom: theme.spacing(-3),
-                  })}
-                  onClick={onClose}
-                  className="crossIcon"
-                >
-                  <CloseIcon />
-                </IconButton>
-              </Grid>
+          {isMobile && (
+            <Grid>
+              <Grid
+                container
+                wrap="nowrap"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Grid>
+                  <IconButton
+                    sx={(theme) => ({
+                      marginRight: theme.spacing(2),
+                      marginBottom: theme.spacing(-3),
+                    })}
+                    onClick={onClose}
+                    className="crossIcon"
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                </Grid>
 
-              <Grid>
-                {!isMobile && (
-                  <Box paddingBottom={3.5}>
-                    <BreadCrumbs
-                      item={[
-                        { name: `Profile`, onClick: onClose },
-                        { name: "Create Profile" },
-                      ]}
-                    />
-                  </Box>
-                )}
-                <Typography
-                  variant={isMobile ? "subtitle1" : "h4"}
-                  sx={(theme) => ({
-                    display: "flex",
-                    alignItems: "center",
-                    color: theme.text.secondary,
-                  })}
-                >
-                  Create Profile
-                </Typography>
+                <Grid>
+                  {!isMobile && (
+                    <Box paddingBottom={3.5}>
+                      <BreadCrumbs
+                        item={[
+                          { name: `Profile`, onClick: onClose },
+                          { name: "Create Profile" },
+                        ]}
+                      />
+                    </Box>
+                  )}
+                  <Typography
+                    variant={isMobile ? "subtitle1" : "h4"}
+                    sx={(theme) => ({
+                      display: "flex",
+                      alignItems: "center",
+                      color: theme.text.secondary,
+                    })}
+                  >
+                    Create Profile
+                  </Typography>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
+          )}
           {!isMobile && (
             <Grid
               sx={{
-                width: "50%",
+                width:isMobile? "50%":"100%",
               }}
             >
               <BasicStepper
@@ -126,20 +131,22 @@ export function CreateProfileHeader({
               />
             </Grid>
           )}
-          <Grid>
-            <Button
-              disabled={isBtnLoading}
-              onClick={handleSaveAndNext}
-              size="small"
-              variant="outlined"
-            >
-              {isBtnLoading ? (
-                <Loader color="secondary" size={24} type="button" />
-              ) : (
-                "Save & Exit"
-              )}
-            </Button>
-          </Grid>
+          {isMobile && (
+            <Grid>
+              <Button
+                disabled={isBtnLoading}
+                onClick={handleSaveAndNext}
+                size="small"
+                variant="outlined"
+              >
+                {isBtnLoading ? (
+                  <Loader color="secondary" size={24} type="button" />
+                ) : (
+                  "Save & Exit"
+                )}
+              </Button>
+            </Grid>
+          )}
         </Grid>
         {isMobile && (
           <Box className="stepBox">

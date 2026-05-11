@@ -1,8 +1,20 @@
 import StarRating from "@Components/StarRating";
 import UploadImage from "@Components/UploadImage";
-import { Box, Button, styled, Typography, useMediaQuery } from "@mui/material";
+import { ChevronLeftIconDarkBlack, LeftArrow } from "@Icons/LeftArrow";
+import {
+  Box,
+  Button,
+  Divider,
+  Drawer,
+  IconButton,
+  styled,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import { Address } from "@Primitives/Address";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import ImageCard from "./ImageCard";
 const ratingLabels = {
   1: { text: "Terrible", emoji: "😡" },
   2: { text: "Bad", emoji: "😕" },
@@ -12,7 +24,7 @@ const ratingLabels = {
 };
 const StyleWrite = styled(Box)<{ isMobile: boolean }>(
   ({ theme, isMobile }) => ({
-    padding: isMobile && theme.spacing(0, 10),
+    // padding: isMobile && theme.spacing(0, 10),
     ".fW500": {
       fontWeight: 500,
     },
@@ -21,6 +33,21 @@ const StyleWrite = styled(Box)<{ isMobile: boolean }>(
     },
     ".mt20": {
       marginTop: theme.spacing(10),
+    },
+    ".writeReviewBox": {
+      ...(isMobile && {
+        padding: theme.spacing(5, 5, 5, 2.5),
+      }),
+      ...(!isMobile && {
+        padding: theme.spacing(10, 10, 0, 10),
+      }),
+    },
+    '.contentData':{
+       ...(isMobile&&{
+           height:'calc(100vh - 60px)',
+          overflowY:"auto",
+            marginBottom: theme.spacing(10),
+       })
     },
     ".main": {
       display: "flex",
@@ -31,6 +58,7 @@ const StyleWrite = styled(Box)<{ isMobile: boolean }>(
       display: "flex",
       flexDirection: "column",
       gap: theme.spacing(10),
+
     },
     ".header": {
       display: "flex",
@@ -78,61 +106,127 @@ const StyleWrite = styled(Box)<{ isMobile: boolean }>(
   }),
 );
 function WriteReview() {
+    const [images, setImages] = React.useState([]);
+  
   const isMobile = useMediaQuery((theme) => theme.breakpoints.only("xs"));
   const [rating, setRating] = useState(1);
-  return (
-    <StyleWrite isMobile={isMobile}>
-      <Box className="main">
-        <Box className="content">
-          <Typography variant="h3" className="fW500 mt20">
-            Write Review
-          </Typography>
-          <Box className="header">
-            <img
-              className="image"
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiNcCdGom-PPruozY501VScVdQTMfQFlAVQQ&s"
-            />
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isModal = location.state?.modal;
+
+  const handleClose = () => {
+    navigate(-1);
+  };
+
+   const handleUploadImage = useCallback((file: any) => {
+      setImages((prev) => [...prev, ...file]);
+    }, []);
+  const content = () => {
+    return (
+      <StyleWrite isMobile={isMobile}>
+        <Box className="main">
+          <Box className="content">
             <Box>
-              <Typography variant="h5" className="fS20">
-                Kulkarni Guruji Dharmik Vidhi Kendra
+              <Box className="writeReviewBox header">
+                {isMobile && (
+                  <IconButton onClick={handleClose}>
+                    <ChevronLeftIconDarkBlack />
+                  </IconButton>
+                )}
+                <Typography variant="h3" className="fW500">
+                  Write Review
+                </Typography>
+              </Box>
+              {isMobile && <Divider />}
+            </Box>
+            <Box className="content contentData" padding={isMobile&&7.5} paddingTop={0}>
+              <Box className="header">
+                <img
+                  className="image"
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiNcCdGom-PPruozY501VScVdQTMfQFlAVQQ&s"
+                />
+                <Box>
+                  <Typography variant="h5" className="fS20">
+                    Kulkarni Guruji Dharmik Vidhi Kendra
+                  </Typography>
+                  <Typography variant="body1" className="subHeadingText">
+                    Borivali West
+                  </Typography>
+                </Box>
+              </Box>
+              <Typography variant="h5" className="fW500">
+                How would you rate your experience?
               </Typography>
-              <Typography variant="body1" className="subHeadingText">
-                Borivali West
+              <StarRating
+                value={rating}
+                onChange={(e, newValue) => setRating(newValue)}
+              />
+              <Box className="ratingBox">
+                <Typography variant="h5" className=" fW500">
+                  {ratingLabels[rating]?.text}
+                </Typography>
+                <span>{ratingLabels[rating]?.emoji}</span>
+              </Box>
+              <Box className="experience">
+                <Typography variant="body1" className="fS20">
+                  Tell us about your experience
+                </Typography>
+
+                <Address
+                  minRows={5}
+                  placeholder="Tell us about your experience"
+                />
+              </Box>
+              <Typography variant="body1" className="fS20 fW500">
+                Upload Photos
               </Typography>
+              <UploadImage onChange={handleUploadImage} />
+
+       <Box display={"flex"} flexWrap={"wrap"} gap={5}>
+                 {images.map((val: { preview: string }) => {
+            return (
+              <ImageCard
+                key={val.preview}
+                link={val.preview}
+                handleCrossIcon={() => {
+                  setImages((prev) => {
+                    return prev.filter(
+                      (img: { preview: string }) => img.preview !== val.preview,
+                    );
+                  });
+                }}
+              />
+            );
+          })}
+       </Box>
+              <Box className="submitBox">
+                <Button className="submitBtn" variant="contained">
+                  Submit Review
+                </Button>
+              </Box>
             </Box>
           </Box>
-          <Typography variant="h5" className="fW500">
-            How would you rate your experience?
-          </Typography>
-          <StarRating
-            value={rating}
-            onChange={(e, newValue) => setRating(newValue)}
-          />
-          <Box className="ratingBox">
-            <Typography variant="h5" className=" fW500">
-              {ratingLabels[rating]?.text}
-            </Typography>
-            <span>{ratingLabels[rating]?.emoji}</span>
-          </Box>
-          <Box className="experience">
-            <Typography variant="body1" className="fS20">
-              Tell us about your experience
-            </Typography>
-
-            <Address minRows={5} placeholder="Tell us about your experience" />
-          </Box>
-          <Typography variant="body1" className="fS20">
-            Upload Photos
-          </Typography>
-          <UploadImage />
-          <Box className="submitBox">
-            <Button className="submitBtn" variant="contained">
-              Submit Review
-            </Button>
-          </Box>
         </Box>
-      </Box>
-    </StyleWrite>
+      </StyleWrite>
+    );
+  };
+
+  if (!isMobile) {
+    return content();
+  }
+  return (
+    <Drawer
+      sx={{
+        ".MuiPaper-root": {
+          width: "100vw",
+        },
+      }}
+      anchor="right"
+      open={isModal && isMobile}
+      onClose={handleClose}
+    >
+      {content()}
+    </Drawer>
   );
 }
 

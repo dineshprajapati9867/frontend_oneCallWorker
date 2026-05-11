@@ -1,13 +1,23 @@
-import Navbar from "@Views/Navbar";
-import React from "react";
+//import Navbar from "@Views/Navbar";
+import React, { lazy, Suspense, useState } from "react";
 import homePage from "@Assets/Images/homePage.png";
-import { Box, Button, styled, Typography } from "@mui/material";
+import callDirectly from "@Assets/Images/callDirectly.png";
+import chooseService from "@Assets/Images/chooseService.png";
+import bar from "@Assets/Images/bar.svg";
+//import circle from "@Assets/Images/circle.png";
+
+import { Box, Button, styled, Typography, useMediaQuery } from "@mui/material";
 import { hooks } from "@Utils/index";
 import { ServiceCategoryCard, WorkerCard } from "@Components/index";
-import ProfileDrawer from "@Views/User/components/ProfileDrawer";
 import { useNavigate } from "react-router-dom";
-import WorkerCardSkeleton from "@Components/Card/WorkerCardSkelton";
-const HomeStyle = styled(Box)<{isMobile:boolean}>(({ theme ,isMobile}) => ({
+import { ServiceCategoryCardSkeleton } from "@Components/Card";
+//import PopularCategoriesModal from "@Views/PopularCategoriesModal";
+import { serviceCategoryI } from "@Utils/interfaces";
+
+const PopularCategoriesModal = lazy(
+  () => import("@Views/PopularCategoriesModal"),
+);
+const HomeStyle = styled(Box)<{ isMobile: boolean }>(({ theme, isMobile }) => ({
   padding: theme.spacing(5),
 
   [theme.breakpoints.up("md")]: {
@@ -17,8 +27,8 @@ const HomeStyle = styled(Box)<{isMobile:boolean}>(({ theme ,isMobile}) => ({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    height:"40vh",
-    overflow:"hideen",
+    //height:"40vh",
+    overflow: "hideen",
     ".heading": {
       fontSize: "2.5vmax",
       whiteSpace: "nowrap",
@@ -51,67 +61,158 @@ const HomeStyle = styled(Box)<{isMobile:boolean}>(({ theme ,isMobile}) => ({
   //    }
   //   },
   ".imageContainer": {
-    display: "flex",
-    alignItems: "center",
-    gap:isMobile?theme.spacing(12): theme.spacing(15),
-    
-    flexWrap: "wrap",
-    margin: theme.spacing(15, 0),
+    display: "grid",
+    gridTemplateColumns: isMobile ? "repeat(4, 1fr)" : "repeat(7,1fr)",
+    alignItems: "start",
+    gap: isMobile ? theme.spacing(6) : theme.spacing(15),
+    margin: isMobile ? theme.spacing(10, 0) : theme.spacing(15, 0),
+
+    ".popularCategories": {
+      cursor: "pointer",
+      width: isMobile ? "100%" : "150px",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+
+      ".imageBox": {
+        padding: isMobile ? 0 : theme.spacing(15),
+        border: isMobile ? "none" : `1px solid`,
+        borderRadius: isMobile ? 0 : theme.spacing(7),
+        transition: "all 0.3s ease",
+        "&:hover": {
+          boxShadow: isMobile ? "none" : "0px 2px 10px rgba(0,0,0,0.1)",
+        },
+      },
+
+      ".image": {
+        width: isMobile ? 45 : 80,
+        height: isMobile ? 45 : 80,
+        objectFit: "cover",
+        borderRadius: isMobile ? theme.spacing(2) : theme.spacing(7),
+      },
+
+      ".service-name": {
+        marginTop: theme.spacing(3),
+        textAlign: "center",
+        fontWeight: 500,
+        fontSize: isMobile ? theme.spacing(5) : theme.spacing(8),
+        lineHeight: 1.2,
+      },
+    },
   },
   ".howItWork": {
+    marginTop: theme.spacing(20),
+
+    ".heading": {
+      marginBottom: theme.spacing(20),
+      ...(isMobile && {
+        fontSize: `${theme.spacing(14)} !important`,
+      }),
+    },
+
     ".stepBox": {
       display: "flex",
-      alignItems: "center",
-      gap: theme.spacing(10),
+      flexDirection: isMobile ? "column" : "row",
       justifyContent: "space-evenly",
+      gap: isMobile && theme.spacing(20),
+    },
+    ".stepCard": {
+      position: "relative",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
     },
 
     ".step": {
-      marginTop: theme.spacing(10),
-      width: "82px",
-      height: "82px",
+      width: isMobile ? 65 : 82,
+      height: isMobile ? 65 : 82,
       color: "white",
-      backgroundColor: "rgba(255, 0, 138, 0.5)",
-      fontSize: theme.spacing(25),
+      backgroundColor: "rgba(32, 48, 102, 0.95)",
+      fontSize: isMobile ? theme.spacing(18) : theme.spacing(25),
+      fontWeight: 700,
       borderRadius: theme.spacing(7),
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      position: "relative",
-      zIndex: 1,
+      position: "absolute",
+      top: theme.spacing(-8),
+      left: "50%",
+      transform: "translateX(-50%)",
+      zIndex: 2,
       "&::before": {
-        content: "''",
+        content: '""',
         position: "absolute",
         width: "100%",
         height: "100%",
         borderRadius: theme.spacing(7),
-        backgroundColor: "rgba(255, 0, 138, 0.5)",
+        backgroundColor: "rgba(32, 48, 102, 0.45)",
         transform: "rotate(15deg)",
         zIndex: -1,
       },
+
       "&::after": {
         content: '""',
         position: "absolute",
-        width: "2px",
-        height: "51px",
-        background: "rgb(255, 0, 138)",
-        bottom: "-70px",
+        width: "3px",
+        height: theme.spacing(18),
+        backgroundColor: "rgba(32, 48, 102, 0.8)",
+        bottom: theme.spacing(-18),
         left: "50%",
         transform: "translateX(-50%)",
       },
     },
+
+    ".image": {
+      width: isMobile ? "100%" : 260,
+      marginTop: theme.spacing(isMobile ? 45 : 55),
+      height: theme.spacing(90),
+      objectFit: "contain",
+    },
+
+    ".stepTitle": {
+      marginTop: theme.spacing(10),
+      fontWeight: 700,
+      textAlign: "center",
+      color: theme.text.primary,
+      ...(isMobile && {
+        fontSize: `${theme.spacing(9)} !important`,
+      }),
+    },
+
+    ".stepDescription": {
+      marginTop: theme.spacing(4),
+      textAlign: "center",
+      color: theme.text.darkGrey,
+      lineHeight: 1.7,
+      maxWidth: theme.spacing(90),
+      ...(isMobile && {
+        fontSize: `${theme.spacing(6)} !important`,
+      }),
+    },
   },
 }));
 function HomePage() {
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.only("xs"));
+  const [isPopularCategoriesModalOpen, setIsPopularCategoriesModalOpen] =
+    useState(false);
   const navigate = useNavigate();
   const { useGetAllWorkerList } = hooks.useMisc();
-  const { data: WorkersListData } = useGetAllWorkerList();
-  const { isMobile } = hooks.useResponsive();
+  const limit = isPopularCategoriesModalOpen ? 100 : isMobile ? 15 : 13;
+
+  const { data: WorkersListData, isLoading: isWorkersListDataLoading } =
+    useGetAllWorkerList(limit);
+
+  const handleClosePopularCategoriesModal = () => {
+    setIsPopularCategoriesModalOpen(false);
+  };
+  const handleOpenPopularCategoriesModal = () => {
+    setIsPopularCategoriesModalOpen(true);
+  };
   return (
     <>
       <HomeStyle isMobile={isMobile}>
         {!isMobile && (
-          <Box className="main" >
+          <Box className="main">
             <Box className="leftSide">
               <Typography className="heading" variant="h1">
                 Find Skilled Workers Near You
@@ -124,7 +225,7 @@ function HomePage() {
                 Find Worker
               </Button> */}
             </Box>
-            <img className="image" src={homePage} />
+            <img loading="lazy"  className="image" src={homePage} />
           </Box>
         )}
         {/* {isMobile && (
@@ -135,28 +236,87 @@ function HomePage() {
           <Button className="viewBtn" variant="outlined">View all Categories</Button>
           </Box>
         )} */}
+
         <Box className="imageContainer">
-          {WorkersListData?.map((val) => {
-            return (
-              <ServiceCategoryCard
-                handleClick={() => {
-                  navigate(`/workers/${val.title.split(" ").join("-")}`);
-                }}
-                title={val.title}
-                url={val.image_kit_url}
-              />
-            );
-          })}
+          {isWorkersListDataLoading
+            ? Array.from({ length: limit }).map((_, index) => (
+                <ServiceCategoryCardSkeleton key={index} />
+              ))
+            : WorkersListData?.map((val: serviceCategoryI) => {
+                return (
+                  <ServiceCategoryCard
+                    handleClick={() => {
+                      navigate(`/workers/${val.title.split(" ").join("-")}`);
+                    }}
+                    title={val.title}
+                    url={val.image_kit_url}
+                  />
+                );
+              })}
+          <Box
+            className="popularCategories"
+            onClick={handleOpenPopularCategoriesModal}
+          >
+            <Box className="imageBox">
+              <img loading="lazy"  src={bar} className="image" />
+            </Box>
+            <Typography
+              className="service-name"
+              variant={isMobile ? "body1" : "h6"}
+            >
+              Popular Categories
+            </Typography>
+          </Box>
         </Box>
 
         <Box className="howItWork">
-          <Typography variant="h1">How It Works?</Typography>
+          <Typography className="heading" variant="h1">
+            How It Works?
+          </Typography>
+
           <Box className="stepBox">
-            <Box className="step">01</Box>
-            <Box className="step">02</Box>
+            <Box className="stepCard">
+              <Box className="step">01</Box>
+
+              <img loading="lazy"   className="image" src={chooseService} alt="Choose Service" />
+
+              <Typography className="stepTitle" variant="h4">
+                Choose a Service
+              </Typography>
+
+              <Typography className="stepDescription" variant="body1">
+                Select the type of worker you need.
+              </Typography>
+            </Box>
+
+            <Box className="stepCard">
+              <Box className="step" left={"54% !important"}>
+                02
+              </Box>
+
+              <img loading="lazy"  className="image" src={callDirectly} alt="Contact Worker" />
+
+              <Typography className="stepTitle" variant="h4">
+                Contact Worker
+              </Typography>
+
+              <Typography className="stepDescription" variant="body1">
+                Call directly with nearby workers.
+              </Typography>
+            </Box>
           </Box>
         </Box>
       </HomeStyle>
+      <Suspense fallback={"Loading"}>
+        {isPopularCategoriesModalOpen && (
+          <PopularCategoriesModal
+            open={isPopularCategoriesModalOpen}
+            handleClose={handleClosePopularCategoriesModal}
+            categories={WorkersListData}
+            isLoading={isWorkersListDataLoading}
+          />
+        )}
+      </Suspense>{" "}
     </>
   );
 }

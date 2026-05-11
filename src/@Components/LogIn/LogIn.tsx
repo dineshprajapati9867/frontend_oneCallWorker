@@ -387,6 +387,7 @@ function LogIn({ open, onClose }: PropsI) {
               width: "100%",
               borderRadius: theme.spacing(7.5),
               margin: "0",
+              overflow:"hidden"
             },
           })}
           slots={{ transition: Slide }}

@@ -16,3 +16,12 @@ export const getAllWorkersBasedOnSkill = (
   getApi(
     `${API_SERVER_URL}/workers?skill=${skill}&page=${page}&limit=${limit}`,
   );
+
+
+
+  /**
+   *  get the Profile user 
+   */
+  
+  // api/misc.ts
+export const getProfileUser = () => getApi(`${API_SERVER_URL}/profile/get-profile`);

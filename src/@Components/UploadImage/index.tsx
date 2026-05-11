@@ -1,8 +1,8 @@
-import { styled, Box, Input } from "@mui/material";
+import { styled, Box } from "@mui/material";
 import AddAPhotoOutlinedIcon from "@mui/icons-material/AddAPhotoOutlined";
-import React, { useRef } from "react";
-
-
+import { useDropzone } from "react-dropzone";
+import { hooks } from "@Utils/index";
+import React, { memo } from "react";
 const UploadContainer = styled(Box)(({ theme }) => ({
   width: theme.spacing(40),
   height: theme.spacing(40),
@@ -19,32 +19,47 @@ const UploadContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-interface PropsI{
-    onChange:(e: React.ChangeEvent<HTMLInputElement>)=>void
+interface PropsI {
+  onChange?: (files: any[]) => void;
 }
+const maxSize = 5242880;
 
-function UploadImage({ onChange }: PropsI) {
-  const inputRef = useRef<HTMLInputElement | null>(null);
+function UploadImage({ onChange}: PropsI) {
+  const { ShowCautionSnackBar } = hooks.useSnackBar();
 
-  const handleClick = () => {
-    inputRef.current?.click();
-  };
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: `.png, .jpg`,
+    multiple: true,
+    maxSize,
+    onDrop: (acceptedFiles) => {
+      const newFiles = acceptedFiles.map((file) => ({
+        file,
+        url: URL.createObjectURL(file),
+      }));
+
+       onChange?.(newFiles);
+    },
+    onDropRejected: (err) => {
+      if (err[0].errors[0].code === "file-too-large") {
+        ShowCautionSnackBar("File should not exceed more than 5mb!");
+      }
+      if (err[0].errors[0].code === "file-invalid-type") {
+        ShowCautionSnackBar(
+          "Could not read the selected file. Please upload only JPG or PNG format file!",
+        );
+      }
+    },
+  });
 
   return (
-    <>
-      <UploadContainer onClick={handleClick}>
+    <Box {...getRootProps()}>
+      <UploadContainer>
         <AddAPhotoOutlinedIcon />
       </UploadContainer>
 
-      {/* hidden input */}
-      <input
-        type="file"
-        hidden
-        ref={inputRef}
-        onChange={onChange}
-      />
-    </>
+      <input {...getInputProps()} />
+    </Box>
   );
 }
 
-export default UploadImage;
+export default memo(UploadImage);

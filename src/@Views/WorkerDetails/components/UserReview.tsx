@@ -7,11 +7,9 @@ import {
   IconButton,
   styled,
   Button,
-  Stack,
   useMediaQuery,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import ReplyOutlinedIcon from "@mui/icons-material/ReplyOutlined";
@@ -22,9 +20,9 @@ interface PropsI{
 }
 const ReviewCard = styled(Box)<{isBorder:boolean,isMobile:boolean}>(({ theme,isBorder ,isMobile}) => ({
   padding: theme.spacing(10, 2),
-  width:"100%",
-  borderTop:isBorder&& `1px solid ${theme.misc.borderColor}`,
-  borderBottom:isBorder&&  `1px solid ${theme.misc.borderColor}`,
+ // width:"100%",
+  // borderTop:isBorder&& `1px solid ${theme.misc.borderColor}`,
+  // borderBottom:isBorder&&  `1px solid ${theme.misc.borderColor}`,
 
   display: "flex",
   flexDirection: "column",

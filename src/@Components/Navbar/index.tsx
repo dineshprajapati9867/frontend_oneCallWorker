@@ -14,7 +14,7 @@ const NavbarStyle = styled(Box)<{ isMobile: boolean }>(
     position: "sticky",
     top: "0px",
     backgroundColor: theme.palette.primary.contrastText,
-    zIndex: 1,
+    zIndex: 10,
     ".navbarTop": {
       height: isMobile ? theme.spacing(27.5) : theme.spacing(40),
       borderBottom: !isMobile && `1px solid ${theme.misc.borderColor}`,
@@ -120,23 +120,22 @@ export default function Navbar() {
           {!isMobile && (
             <Box width={"40%"}>
               <SearchWithMic
-                onClickOnDropdown={(value) => {
-                  console.log("jhggh", value);
-                }}
-                 onChange={(value) => {
-    console.log("Typing:", value);
-  }}
+                // onClickOnDropdown={(value) => {
+                //   console.log("jhggh", value);
+                // }}
+  //                onChange={(value) => {
+  // }}
               />
             </Box>
           )}
           <Box className="rightSide">
-            {!isMobile && (
+            {/* {!isMobile && (
               <LanguageTranslate
                 i18n={i18n}
                 handleGetCurrentLanguage={handleGetCurrentLanguage}
               />
-            )}
-            {!isMobile && (
+            )} */}
+            {/* {!isMobile && (
               <Box className="freeListing">
                 <Typography className="workerText">WORKER</Typography>
 
@@ -151,7 +150,7 @@ export default function Navbar() {
                   </Typography>
                 </Button>
               </Box>
-            )}
+            )} */}
             {(user && token) || isMobile ? (
               <Avatar
                 sx={{ cursor: "pointer" }}

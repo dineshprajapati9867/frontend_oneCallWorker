@@ -10,6 +10,7 @@ import {
   RadioGroup,
   styled,
   Typography,
+  Grid,
 } from "@mui/material";
 import { CheckBox, SearchableDropDown, TextInput } from "@Primitives/index";
 import { hooks } from "@Utils/index";
@@ -21,33 +22,33 @@ interface PropsI {
   watch: any;
   setValue: any;
 }
-const PersonalStyled = styled(Box)<{ isMobile: boolean }>(
+const PersonalStyled = styled(Grid)<{ isMobile: boolean }>(
   ({ theme, isMobile }) => ({
-    display: "flex",
-    flexDirection: "column",
-    gap: theme.spacing(12),
-    width: isMobile ? "90%" : theme.spacing(260),
-    position: "relative",
+    // display: "flex",
+    // flexDirection: "column",
+    // gap: theme.spacing(12),
+    // width: isMobile ? "90%" : theme.spacing(260),
     ".logo": {
-      marginBottom: theme.spacing(7.5),
-      marginTop: theme.spacing(2.5),
+      marginBottom: theme.spacing(7.6),
+      marginTop: theme.spacing(2.6),
     },
     ".checkBox": {
       position: "absolute",
       right: "0",
+      bottom: "-30px",
       ".MuiFormControlLabel-root": {
         marginRight: "0px",
       },
     },
-    '.formHelperBox': {
-      display: 'flex',
-      '.MuiFormHelperText-root': {
-        marginTop: '0px',
+    ".formHelperBox": {
+      display: "flex",
+      ".MuiFormHelperText-root": {
+        marginTop: "0px",
         marginLeft: theme.spacing(1.25),
-        fontSize: theme.spacing(6)
-      }
-    }
-  })
+        fontSize: theme.spacing(6),
+      },
+    },
+  }),
 );
 const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
   const { isMobile } = hooks.useResponsive();
@@ -59,7 +60,8 @@ const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
     name: "logo",
     control: control,
   });
-  //const logo = watch("logo");
+  
+
   const handleSameAsMobileNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
       setValue("whatsApp_number", mobileNnumber);
@@ -81,8 +83,13 @@ const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
   };
 
   return (
-    <PersonalStyled isMobile={isMobile}>
-      <Box className="logo">
+    <PersonalStyled
+      container
+      columnSpacing={10}
+      rowSpacing={8}
+      isMobile={isMobile}
+    >
+      <Grid size={16} className="logo">
         <Controller
           name="logo"
           control={control}
@@ -91,100 +98,109 @@ const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
             <DragAndDropAvatar onChange={onChange} displayPicture={logo} />
           </>
           )}
-
         />
-      </Box>
-      <Controller
-        name="first_name"
-        control={control}
-        rules={{
-          required: "First name is required",
-          validate: spaceNotAllowed,
-        }}
-        render={({ field, fieldState: { error } }) => (
-          <TextInput
-            {...field}
-            label="First Name*"
-            error={!!error}
-            helperText={error ? error.message : null}
-            placeholder="Enter First Name"
-          />
-        )}
-      />
-      <Controller
-        name="last_name"
-        control={control}
-        rules={{
-          required: "Last name is required",
-          validate: spaceNotAllowed,
-        }}
-        render={({ field, fieldState: { error } }) => (
-          <TextInput
-            {...field}
-            label="Last Name*"
-            error={!!error}
-            helperText={error ? error.message : null}
-            placeholder="Enter Last Name"
-          />
-        )}
-      />
-      <Controller
-        name="email"
-        control={control}
-        rules={{
-          required: "Email is required",
-          pattern: {
-            value: pattern.email,
-            message: "Enter a valid email address",
-          },
-        }}
-        render={({ field, fieldState: { error } }) => (
-          <TextInput
-            {...field}
-            label="Email ID*"
-            error={!!error}
-            helperText={error ? error.message : null}
-            placeholder="Enter Email ID"
-          />
-        )}
-      />
-      <Controller
-        name="mobile_number"
-        control={control}
-        rules={{
-          required: "Mobile Number is required",
-        
-          validate: (val) => {
-            if (!pattern.mobile.test(val)) {
-              return "Enter valid mobile number"
-            }
-            return undefined
-          }
-        }}
-        render={({ field, fieldState: { error } }) => (
-          <TextInput
-            {...field}
-            label="Mobile Number*"
-            error={!!error}
-            helperText={error ? error.message : null}
-            placeholder="Enter Mobile Number"
-            inputProps={{
-              maxLength: 10,
-            }}
-          />
-        )}
-      />
-      <Box>
+      </Grid>
+      <Grid size={{ xs: 12, md: 6 }}>
+        <Controller
+          name="first_name"
+          control={control}
+          rules={{
+            required: "First name is required",
+            validate: spaceNotAllowed,
+          }}
+          render={({ field, fieldState: { error } }) => (
+            <TextInput
+              {...field}
+              label="First Name*"
+              error={!!error}
+              helperText={error ? error.message : null}
+              placeholder="Enter First Name"
+            />
+          )}
+        />
+      </Grid>
+      <Grid size={{ xs: 12, md: 6 }}>
+        <Controller
+          name="last_name"
+          control={control}
+          rules={{
+            required: "Last name is required",
+            validate: spaceNotAllowed,
+          }}
+          render={({ field, fieldState: { error } }) => (
+            <TextInput
+              {...field}
+              label="Last Name*"
+              error={!!error}
+              helperText={error ? error.message : null}
+              placeholder="Enter Last Name"
+            />
+          )}
+        />
+      </Grid>
+      <Grid size={{ xs: 12, md: 6 }}>
+        <Controller
+          name="email"
+          control={control}
+          rules={{
+            required: "Email is required",
+            pattern: {
+              value: pattern.email,
+              message: "Enter a valid email address",
+            },
+          }}
+          render={({ field, fieldState: { error } }) => (
+            <TextInput
+              {...field}
+              label="Email ID*"
+              error={!!error}
+              helperText={error ? error.message : null}
+              placeholder="Enter Email ID"
+            />
+          )}
+        />
+      </Grid>
+
+      <Grid size={{ xs: 12, md: 6 }}>
+        <Controller
+          name="mobile_number"
+          control={control}
+          rules={{
+            required: "Mobile Number is required",
+
+            validate: (val) => {
+              if (!pattern.mobile.test(val)) {
+                return "Enter valid mobile number";
+              }
+              return undefined;
+            },
+          }}
+          render={({ field, fieldState: { error } }) => (
+            <TextInput
+              {...field}
+              label="Mobile Number*"
+              error={!!error}
+              helperText={error ? error.message : null}
+              placeholder="Enter Mobile Number"
+              inputProps={{
+                maxLength: 10,
+              }}
+            />
+          )}
+        />
+      </Grid>
+
+      <Grid size={{ xs: 12, md: 6 }} position={"relative"}>
         <Controller
           name="whatsApp_number"
           control={control}
           rules={{
             validate: (val) => {
               if (val?.length === 10 && !pattern.mobile.test(val)) {
-                return "Enter valid mobile number"
+                return "Enter valid mobile number";
               }
-              return undefined
-            }
+              return undefined;
+            },
           }}
           render={({ field, fieldState: { error } }) => (
             <TextInput
@@ -206,51 +222,56 @@ const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
             label="Same As Mobile Number"
           />
         </Box>
-      </Box>
-      <Controller
-        name="languages"
-        control={control}
-        render={({ field, fieldState: { error } }) => (
-          <SearchableDropDown
-            {...field}
-            label="Select Your Languages"
-            placeholder="Select Your Languages"
-            options={allIndianLanguage}
-            isMulti={true}
-            toolTipText="Select languages in which you can talk to customers"
-            isTooltipIcon={true}
-          />
-        )}
-      />
-      <Controller
-        name="age"
-        control={control}
-        rules={{
-          required: "Age name is required",
-        }}
-        render={({ field, fieldState: { error } }) => (
-          <TextInput
-            {...field}
-            label="Age*"
-            placeholder="Enter Your Age"
-            error={!!error}
-            helperText={error ? error.message : null}
-            inputProps={{
-              maxLength: 2
-            }}
-          />
-        )}
-      />
-      <Box>
+      </Grid>
+      <Grid size={{ xs: 12, md: 6 }}>
+        <Controller
+          name="languages"
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <SearchableDropDown
+              {...field}
+              label="Select Your Languages"
+              placeholder="Select Your Languages"
+              options={allIndianLanguage}
+              isMulti={true}
+              toolTipText="Select languages in which you can talk to customers"
+              isTooltipIcon={true}
+            />
+          )}
+        />
+      </Grid>
+
+      <Grid size={{ xs: 12, md: 6 }}>
+        <Controller
+          name="age"
+          control={control}
+          rules={{
+            required: "Age name is required",
+          }}
+          render={({ field, fieldState: { error } }) => (
+            <TextInput
+              {...field}
+              label="Age*"
+              placeholder="Enter Your Age"
+              error={!!error}
+              helperText={error ? error.message : null}
+              inputProps={{
+                maxLength: 2,
+              }}
+            />
+          )}
+        />
+      </Grid>
+      <Grid size={{ xs: 12, md: 6 }}>
         <Controller
           name="gender"
           control={control}
           defaultValue=""
           rules={{
-            required: "Select a gender"
+            required: "Select a gender",
           }}
           render={({ field, fieldState: { error } }) => (
-            <FormControl error={!!error} >
+            <FormControl error={!!error}>
               <Typography variant="h6">Gender*</Typography>
 
               <RadioGroup row {...field}>
@@ -270,14 +291,16 @@ const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
                   label="Other"
                 />
               </RadioGroup>
-              {error && <Box className="formHelperBox">
-                <ErrorIcon />
-                <FormHelperText>{error.message}</FormHelperText>
-              </Box>}
+              {error && (
+                <Box className="formHelperBox">
+                  <ErrorIcon />
+                  <FormHelperText>{error.message}</FormHelperText>
+                </Box>
+              )}
             </FormControl>
           )}
         />
-      </Box>
+      </Grid>
     </PersonalStyled>
   );
 };

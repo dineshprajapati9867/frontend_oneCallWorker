@@ -1,4 +1,4 @@
-import { getApi, postApi } from "@Utils/config/apis";
+import { deleteApi, getApi, postApi } from "@Utils/config/apis";
 
 const API_SERVER_URL=process.env.REACT_APP_API_SERVER_URL
 // get the address
@@ -27,9 +27,9 @@ export function forwardGeocoding(query:string) {
  *  Get All  worker list imageUrl  and title
  */
 
-export function getAllWorkerList(){
+export function getAllWorkerList(limit:number){
     return getApi(
-      `${API_SERVER_URL}/upload/public/get_all_image`
+      `${API_SERVER_URL}/upload/public/get_all_image?limit=${limit}`
     )
 }
 
@@ -54,4 +54,22 @@ export function saveGoogleUser(data){
 
 export function getPostalCode(pincode:string){
   return getApi(`${API_SERVER_URL}/postal-code/${pincode}`)
+}
+
+
+/**
+ *  upload image to s3 , single or multiple
+ */
+
+export function uploadImageToS3(data){
+  return postApi(`${API_SERVER_URL}/s3/s3-upload/multiple`,data)
+}
+
+
+/**
+ *  delete image from s3 , single or multiple
+ */
+
+export function deleteImageFromS3(data){
+  return postApi(`${API_SERVER_URL}/s3/s3-upload/multiple`,data)
 }
