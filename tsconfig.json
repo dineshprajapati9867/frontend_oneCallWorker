@@ -25,31 +25,32 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "paths": {
-      "@Primitives/*": ["@Primitives/*"],
-      "@Primitives": ["@Primitives"],
-      "@Icons/*": ["@Assets/@Icons/*"],
-      "@Icons": ["@Assets/@Icons"],
-      "@Assets/*": ["@Assets/*"],
-      "@Assets": ["@Assets"],
-      "@Utils/*": ["@Utils/*"],
-      "@Utils": ["@Utils"],
-      "@Views/*": ["@Views/*"],
-      "@Views": ["@Views"],
-      "@Components/*": ["@Components/*"],
-      "@Components": ["@Components"],
-      "@AdminComponents/*": ["@Components/Admin/*"],
-      "@AdminComponents": ["@Components/Admin"],
-      "@AdminPrimitives/*": ["@Primitives/Admin/*"],
-      "@AdminPrimitives": ["@Primitives/Admin"],
-      "@Hooks/*": ["@Hooks/*"],
-      "@Hooks": ["@Hooks"],
-      "@Types/*": ["@Types/*"],
-      "@Types": ["@Types"],
-      "@Constants/*": ["@Constants/*"],
-      "@Constants": ["@Constants"],
-      "@AnimationJSON":["@AnimationJSON"]
-    }
+  "paths": {
+  "@Primitives/*": ["@Primitives/*"],
+  "@Primitives": ["@Primitives"],
+  "@Icons/*": ["@Assets/@Icons/*"],
+  "@Icons": ["@Assets/@Icons"],
+  "@Assets/*": ["@Assets/*"],
+  "@Assets": ["@Assets"],
+  "@Utils/*": ["@Utils/*"],
+  "@Utils": ["@Utils"],
+  "@Views/*": ["@Views/*"],
+  "@Views": ["@Views"],
+  "@Components/*": ["@Components/*"],
+  "@Components": ["@Components"],
+  "@AdminComponents/*": ["@Components/Admin/*"],
+  "@AdminComponents": ["@Components/Admin"],
+  "@AdminPrimitives/*": ["@Primitives/Admin/*"],
+  "@AdminPrimitives": ["@Primitives/Admin"],
+  "@Hooks/*": ["@Hooks/*"],
+  "@Hooks": ["@Hooks"],
+  "@Types/*": ["@Types/*"],
+  "@Types": ["@Types"],
+  "@Constants/*": ["@Constants/*"],
+  "@Constants": ["@Constants"],
+  "@AnimationJSON/*": ["@AnimationJSON/*"],
+  "@AnimationJSON": ["@AnimationJSON"]
+}
   },
   "include": [
     "src/**/*",
@@ -58,7 +59,7 @@
   ],
   "exclude": [
     "node_modules",
-    "dist",
+    "dist"
   ]
 
 }
