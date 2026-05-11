@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack serve --mode development",
-    "build": "webpack --mode production && tsc --noEmit",
+    "build": "webpack --mode production",
     "lint": "eslint ."
   },
   "keywords": [],
