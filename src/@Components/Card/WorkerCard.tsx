@@ -61,7 +61,7 @@ const WorkerCardStyle = styled(Box)<{ isMobile: boolean }>(
       objectFit: "cover",
     },
     ".ratingBox": {
-      gap: theme.spacing(6),
+      gap: theme.spacing(isMobile ? 3 : 6),
     },
     ".commonIconStyle": {
       width: theme.spacing(7.5),
@@ -122,16 +122,29 @@ const WorkerCard = () => {
           startIcon={<CallMuiIcon className="commonIconStyle" />}
           onClick={(e: React.MouseEvent<HTMLElement>) => {
             e.stopPropagation();
+            window.location.href = "tel:7039824822";  
           }}
         >
-          7039824822
+          7039824833
         </Button>
-        <Button
+        {/* <Button
           variant="outlined"
           startIcon={<ChatMuiIcon />}
           className="btn enquiryBtn"
         >
           Send Enquiry
+        </Button> */}
+        <Button
+          className="btn"
+          variant="outlined"
+          startIcon={<WhatsAppIcon width={15} height={15} />}
+          onClick={(e: React.MouseEvent<HTMLElement>) => {
+            e.stopPropagation();
+            window.open("https://wa.me/7039824933", "_blank");
+             (e.currentTarget as HTMLButtonElement).blur();
+          }}
+        >
+          WhatsApp
         </Button>
       </>
     );
@@ -182,13 +195,13 @@ const WorkerCard = () => {
             {!isMobile && (
               <Box className="btnGroup">
                 <ButtonGroups />
-                <Button
+                {/* <Button
                   className="btn"
                   variant="outlined"
                   startIcon={<WhatsAppIcon width={15} height={15} />}
                 >
                   WhatsApp
-                </Button>
+                </Button> */}
               </Box>
             )}
           </Box>

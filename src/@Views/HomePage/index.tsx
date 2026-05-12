@@ -66,7 +66,7 @@ const HomeStyle = styled(Box)<{ isMobile: boolean }>(({ theme, isMobile }) => ({
     alignItems: "start",
     gap: isMobile ? theme.spacing(6) : theme.spacing(15),
     margin: isMobile ? theme.spacing(10, 0) : theme.spacing(15, 0),
-
+    justifyContent: "center",
     ".popularCategories": {
       cursor: "pointer",
       width: isMobile ? "100%" : "150px",
@@ -207,7 +207,7 @@ function HomePage() {
   };
   const handleOpenPopularCategoriesModal = () => {
     setIsPopularCategoriesModalOpen(true);
-  };
+  };  
   return (
     <>
       <HomeStyle isMobile={isMobile}>
@@ -225,7 +225,7 @@ function HomePage() {
                 Find Worker
               </Button> */}
             </Box>
-            <img loading="lazy"  className="image" src={homePage} />
+            <img loading="lazy" className="image" src={homePage} />
           </Box>
         )}
         {/* {isMobile && (
@@ -245,6 +245,7 @@ function HomePage() {
             : WorkersListData?.map((val: serviceCategoryI) => {
                 return (
                   <ServiceCategoryCard
+                  key={val._id}
                     handleClick={() => {
                       navigate(`/workers/${val.title.split(" ").join("-")}`);
                     }}
@@ -253,20 +254,22 @@ function HomePage() {
                   />
                 );
               })}
-          <Box
-            className="popularCategories"
-            onClick={handleOpenPopularCategoriesModal}
-          >
-            <Box className="imageBox">
-              <img loading="lazy"  src={bar} className="image" />
-            </Box>
-            <Typography
-              className="service-name"
-              variant={isMobile ? "body1" : "h6"}
+          {WorkersListData?.[0] && !isWorkersListDataLoading && (
+            <Box
+              className="popularCategories"
+              onClick={handleOpenPopularCategoriesModal}
             >
-              Popular Categories
-            </Typography>
-          </Box>
+              <Box className="imageBox">
+                <img loading="lazy" src={bar} className="image" />
+              </Box>
+              <Typography
+                className="service-name"
+                variant={isMobile ? "body1" : "h6"}
+              >
+                Popular Categories
+              </Typography>
+            </Box>
+          )}
         </Box>
 
         <Box className="howItWork">
@@ -278,7 +281,12 @@ function HomePage() {
             <Box className="stepCard">
               <Box className="step">01</Box>
 
-              <img loading="lazy"   className="image" src={chooseService} alt="Choose Service" />
+              <img
+                loading="lazy"
+                className="image"
+                src={chooseService}
+                alt="Choose Service"
+              />
 
               <Typography className="stepTitle" variant="h4">
                 Choose a Service
@@ -294,7 +302,12 @@ function HomePage() {
                 02
               </Box>
 
-              <img loading="lazy"  className="image" src={callDirectly} alt="Contact Worker" />
+              <img
+                loading="lazy"
+                className="image"
+                src={callDirectly}
+                alt="Contact Worker"
+              />
 
               <Typography className="stepTitle" variant="h4">
                 Contact Worker

@@ -11,9 +11,10 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { BasicStepper, Loader } from "@Primitives";
-import { CloseIcon } from "@Icons";
+import { CrossBigIcon } from "@Icons";
 import BreadCrumbs from "@Components/BreadCrumbs";
 import { hooks } from "@Utils/index";
+import { ChevronLeftIconDarkBlack } from "@Icons/LeftArrow";
 
 export interface PropI {
   steps: string[];
@@ -89,7 +90,7 @@ export function CreateProfileHeader({
                     onClick={onClose}
                     className="crossIcon"
                   >
-                    <CloseIcon />
+                    {isMobile?<ChevronLeftIconDarkBlack />: <CrossBigIcon />}
                   </IconButton>
                 </Grid>
 

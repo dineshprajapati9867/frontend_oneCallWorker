@@ -228,8 +228,6 @@ export default function SearchWithMic({ onClickOnDropdown, onChange }: PropsI) {
         {listening ? (
           <Box
             position={"absolute"}
-            top={0}
-            left={0}
             className="HorizonatDotsLoading"
           >
             <HorizonatDotsLoading />
@@ -263,61 +261,58 @@ export default function SearchWithMic({ onClickOnDropdown, onChange }: PropsI) {
   };
   return (
     <MainBox>
-                <ClickAwayListener onClickAway={()=>setOpenDropDown(false)}>
-
-      <Box className="searchInput">
-        <CustomInputStyled
-          placeholder="Search"
-          value={searchText}
-          onChange={(e) => {
-            const value = e.target.value;
-            setSearchText(value);
-            onChange?.(value);
-          }}
-          onFocus={() => setOpenDropDown(true)}
-          endAdornment={
-            <InputAdornment position="end">
-              {searchText && (
-                <IconButton onClick={() => setSearchText("")}>
-                  <BlackSmallCrossIcon />
+      <ClickAwayListener onClickAway={() => setOpenDropDown(false)}>
+        <Box className="searchInput">
+          <CustomInputStyled
+            placeholder="Search"
+            value={searchText}
+            onChange={(e) => {
+              const value = e.target.value;
+              setSearchText(value);
+              onChange?.(value);
+            }}
+            onFocus={() => setOpenDropDown(true)}
+            endAdornment={
+              <InputAdornment position="end">
+                {searchText && (
+                  <IconButton onClick={() => setSearchText("")}>
+                    <BlackSmallCrossIcon />
+                  </IconButton>
+                )}
+                <IconButton onClick={handleMicClick}>
+                  <MicMuiIcon className="micIcon" />
                 </IconButton>
-              )}
-              <IconButton onClick={handleMicClick}>
-                <MicMuiIcon className="micIcon" />
-              </IconButton>
-              <button className="searchIcon">
-                <SearchMuiIcon width={24} height={24} />
-              </button>
-            </InputAdornment>
-          }
-        />
-        {openDropDown && (
+                <button className="searchIcon">
+                  <SearchMuiIcon width={24} height={24} />
+                </button>
+              </InputAdornment>
+            }
+          />
+          {openDropDown && (
+            <Box className="dropDownBox">
+              <Typography className="title">TRENDING SEARCHES</Typography>
 
-         
-          <Box className="dropDownBox">
-            <Typography className="title">TRENDING SEARCHES</Typography>
-
-            {skills.slice(0, 11).map((item) => (
-              <Box
-                key={item.id}
-                className="item"
-                onClick={() => {
-                  onClickOnDropdown(item.value);
-                  setSearchText(item.value);
-                  setOpenDropDown(false);
-                }}
-              >
-                <TrendingUpIconMui className="iconBox" fontSize="large" />
-                <Box>
-                  <Typography className="name">{item.label}</Typography>
-                  <Typography className="category">Category</Typography>
+              {skills.slice(0, 11).map((item) => (
+                <Box
+                  key={item.id}
+                  className="item"
+                  onClick={() => {
+                    onClickOnDropdown(item.value);
+                    setSearchText(item.value);
+                    setOpenDropDown(false);
+                  }}
+                >
+                  <TrendingUpIconMui className="iconBox" fontSize="large" />
+                  <Box>
+                    <Typography className="name">{item.label}</Typography>
+                    <Typography className="category">Category</Typography>
+                  </Box>
                 </Box>
-              </Box>
-            ))}
-          </Box>
-        )}
-      </Box>
-        </ClickAwayListener>
+              ))}
+            </Box>
+          )}
+        </Box>
+      </ClickAwayListener>
       {isMobile ? (
         <Drawer
           open={open}

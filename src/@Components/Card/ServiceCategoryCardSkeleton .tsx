@@ -9,7 +9,7 @@ import {
 const StyledSkeletonCard = styled(Box)<{
   isMobile: boolean;
 }>(({ isMobile }) => ({
-  width: isMobile ? "22%" : "150px",
+  width: isMobile ? "100%" : "150px",
 
   display: "flex",
   flexDirection: "column",

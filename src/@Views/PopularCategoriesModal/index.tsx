@@ -15,6 +15,7 @@ import { IKImage } from "imagekitio-react";
 import { serviceCategoryI } from "@Utils/interfaces";
 import { Loader } from "@Primitives/Loader";
 import searchNotFound from "@Assets/Images/search_notfound.svg";
+import { ChevronLeftIconDarkBlack } from "@Icons/LeftArrow";
 interface PropI {
   open: boolean;
   handleClose: () => void;
@@ -102,6 +103,7 @@ const PopularCategoriesModal = ({
       item.title.toLowerCase().includes(searchText.toLowerCase()),
     );
   }, [categories, searchText]);
+
   return (
     <StyledModalContainer
       open={open}
@@ -113,7 +115,7 @@ const PopularCategoriesModal = ({
       <Box className="header">
         <Box className="titleBox">
           <IconButton onClick={handleClose}>
-            <CrossBigIcon />
+           {isMobile?<ChevronLeftIconDarkBlack />: <CrossBigIcon />}
           </IconButton>
 
           <Typography variant="h5" fontWeight={600}>
