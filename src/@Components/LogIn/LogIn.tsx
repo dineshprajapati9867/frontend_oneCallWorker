@@ -24,7 +24,7 @@ import React, { useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import ocw_logo from "@Assets/Images/ocw_logo.png";
 import axios from "axios";
-import { OTPInput } from "input-otp";
+import OtpInput from "react-otp-input";
 
 interface PropsI {
   open: boolean;
@@ -85,7 +85,7 @@ const LoginStyle = styled(Box)<{ isMobile: boolean }>(
     },
     ".inputStart": {
       ".MuiTypography-body1": {
-        fontSize: theme.spacing(9),
+        fontSize: `${theme.spacing(9)} !important`,
         fontWeight: 500,
       },
     },
@@ -118,7 +118,7 @@ const LoginStyle = styled(Box)<{ isMobile: boolean }>(
     ".googleBtn": {
       borderRadius: theme.spacing(3.5),
     },
-  })
+  }),
 );
 
 const LoginOtp = styled(Box)<{ isMobile }>(({ theme, isMobile }) => ({
@@ -138,12 +138,12 @@ const LoginOtp = styled(Box)<{ isMobile }>(({ theme, isMobile }) => ({
       fontWeight: 600,
     },
   },
-  ".otp": {
-    display: "flex",
-    alignItems: "center",
-    gap: theme.spacing(6),
-    marginTop: theme.spacing(7.5),
-  },
+  // ".otp": {
+  //   display: "flex",
+  //   alignItems: "center",
+  //   gap: theme.spacing(6),
+  //   marginTop: theme.spacing(7.5),
+  // },
   ".otpBox": {
     width: `${theme.spacing(isMobile ? 20 : 28)} !important`,
     height: theme.spacing(isMobile ? 25 : 34.5),
@@ -152,12 +152,14 @@ const LoginOtp = styled(Box)<{ isMobile }>(({ theme, isMobile }) => ({
     borderRadius: theme.spacing(4),
     fontSize: theme.spacing(9),
     fontWeight: 600,
-
+marginRight:theme.spacing(5),
     "&:focus": {
       border: `2px solid ${theme.palette.primary.main}`,
       outline: "none",
     },
+    
   },
+  
   ".bottomText": {
     display: "flex",
     alignItems: "center",
@@ -179,11 +181,11 @@ const LoginOtp = styled(Box)<{ isMobile }>(({ theme, isMobile }) => ({
     borderRadius: theme.spacing(3.5),
     maxHeight: theme.spacing(20),
   },
-  '.editBox': {
+  ".editBox": {
     display: "flex",
     alignItems: "center",
     gap: theme.spacing(2),
-  }
+  },
 }));
 
 function LogIn({ open, onClose }: PropsI) {
@@ -224,7 +226,10 @@ function LogIn({ open, onClose }: PropsI) {
               control={control}
               rules={{
                 validate: (val) => {
-                  if (!validationPatterns.pattern.mobile.test(val) && val.length === 10) {
+                  if (
+                    !validationPatterns.pattern.mobile.test(val) &&
+                    val.length === 10
+                  ) {
                     return "Please enter valid mobile number";
                   }
                   return undefined;
@@ -274,7 +279,7 @@ function LogIn({ open, onClose }: PropsI) {
             {/* Terms & Conditions */}
             <Box className="tnc">
               <Box className="checkbox">
-                <Checkbox size="small" defaultChecked />
+                <Checkbox disabled size="small" defaultChecked />
                 <Typography variant="body2">
                   I Agree to Terms and Conditions{" "}
                 </Typography>
@@ -334,20 +339,13 @@ function LogIn({ open, onClose }: PropsI) {
                   field: { onChange, value, ref, ...rest },
                   fieldState: { error },
                 }) => (
-                  <OTPInput
-                    onChange={onChange}
+                  <OtpInput
                     value={value}
-                    maxLength={6}
-                    // renderInput={(props) => <input {...props} />}
-                    render={({ slots }) => (
-                      <Box className="otp">
-                        {slots.map((slot, i) => (
-                          <input className="otpBox" key={i} {...slot} />
-                        ))}
-                      </Box>
+                    onChange={onChange}
+                    numInputs={6}
+                    renderInput={(props,i) => (
+                      <input type="number" autoFocus={i === 0} {...props} className="otpBox" />
                     )}
-                  // containerStyle="otp"
-                  //inputStyle="otpBox"
                   />
                 )}
               />
@@ -371,11 +369,16 @@ function LogIn({ open, onClose }: PropsI) {
   return (
     <>
       {isMobile ? (
-        <Drawer open={open} onClose={onClose} anchor="bottom" sx={{
-          "& .MuiDrawer-paper": {
-            borderRadius: "15px 15px 0 0"
-          },
-        }} >
+        <Drawer
+          open={open}
+          onClose={onClose}
+          anchor="bottom"
+          sx={{
+            "& .MuiDrawer-paper": {
+              borderRadius: "15px 15px 0 0",
+            },
+          }}
+        >
           <ContentData />
         </Drawer>
       ) : (
@@ -387,7 +390,7 @@ function LogIn({ open, onClose }: PropsI) {
               width: "100%",
               borderRadius: theme.spacing(7.5),
               margin: "0",
-              overflow:"hidden"
+              overflow: "hidden",
             },
           })}
           slots={{ transition: Slide }}

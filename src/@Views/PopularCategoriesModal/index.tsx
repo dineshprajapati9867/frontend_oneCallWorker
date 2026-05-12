@@ -42,7 +42,8 @@ const StyledModalContainer = styled(Drawer)<{ isMobile: boolean }>(
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
-
+         position:"sticky",
+       top:0,
       marginBottom: theme.spacing(8),
 
       [theme.breakpoints.down("sm")]: {
@@ -57,7 +58,11 @@ const StyledModalContainer = styled(Drawer)<{ isMobile: boolean }>(
         alignItems: "center",
       },
     },
-
+    ".allImageBox": {
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fill, minmax(80px, 1fr))",
+      gap: theme.spacing(isMobile ? 2 : 10),
+    },
     ".image": {
       width: isMobile ? 45 : 60,
       height: isMobile ? 45 : 60,
@@ -81,7 +86,7 @@ const StyledModalContainer = styled(Drawer)<{ isMobile: boolean }>(
     },
 
     ".notFoundImage": {
-      width: isMobile ? 180 : 250,
+      width: "80%",
     },
     ".emptyText": {
       marginTop: theme.spacing(5),
@@ -115,7 +120,7 @@ const PopularCategoriesModal = ({
       <Box className="header">
         <Box className="titleBox">
           <IconButton onClick={handleClose}>
-           {isMobile?<ChevronLeftIconDarkBlack />: <CrossBigIcon />}
+            {isMobile ? <ChevronLeftIconDarkBlack /> : <CrossBigIcon />}
           </IconButton>
 
           <Typography variant="h5" fontWeight={600}>
@@ -123,7 +128,7 @@ const PopularCategoriesModal = ({
           </Typography>
         </Box>
 
-        <Box width={isMobile?"100%":'50%'}>
+        <Box width={isMobile ? "100%" : "50%"}>
           <SearchWithFilter
             handleSearchValue={(e: React.ChangeEvent<HTMLInputElement>) => {
               const val = e.target.value;
@@ -134,41 +139,38 @@ const PopularCategoriesModal = ({
           />
         </Box>
       </Box>
-      <Box
-        display={"flex"}
-        flexWrap={"wrap"}
-        gap={7.5}
-        justifyContent={isMobile ? "center" : "normal"}
-      >
+      <Box>
         {isLoading ? (
           <Box textAlign={"center"} width={"100%"}>
             <Loader type="table" />
           </Box>
-        ) : filteredCategories.length > 0 ? (
-          filteredCategories?.map((val: serviceCategoryI) => (
-            <Box
-              className="card"
-              key={val._id}
-              onClick={() => {
-                navigate(`/workers/${val.title.split(" ").join("-")}`);
-              }}
-            >
-              <Box className="imageBox">
-                <IKImage
-                  loading="lazy"
-                  src={val.image_kit_url}
-                  alt={val.title}
-                  className="image"
-                />
-              </Box>
-              <Typography
-                className="service-name"
-                variant={isMobile ? "body1" : "h6"}
+        ) : filteredCategories?.length > 0 ? (
+          <Box className="allImageBox">
+            {filteredCategories?.map((val: serviceCategoryI) => (
+              <Box
+                className="card"
+                key={val._id}
+                onClick={() => {
+                  navigate(`/workers/${val.title.split(" ").join("-")}`);
+                }}
               >
-                {val.title}
-              </Typography>
-            </Box>
-          ))
+                <Box className="imageBox">
+                  <IKImage
+                    loading="lazy"
+                    src={val.image_kit_url}
+                    alt={val.title}
+                    className="image"
+                  />
+                </Box>
+                <Typography
+                  className="service-name"
+                  variant={isMobile ? "body1" : "h6"}
+                >
+                  {val.title}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
         ) : (
           <Box className="emptyBox">
             <img
