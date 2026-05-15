@@ -27,6 +27,7 @@ import StarRating from "@Components/StarRating";
 import { useNavigate } from "react-router-dom";
 import CircleDaySelector from "@Components/CircleDaySelector";
 import { days } from "@Constants/Home";
+import { ImagePreview } from "@Primitives/ImagePreviewModal/imagePreview";
 
 const contactData = [
   {
@@ -239,14 +240,75 @@ export default function WorkerDetails() {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.only("xs"));
   const navigate = useNavigate();
   const [isCopy, setIsCopy] = useState(false);
+  const [isOpenImagePreview, setIsOpenImagePreview] = useState(false);
   const handleRating = () => {
-    navigate("/worker/write-review/9876567",{state:{modal:true}});
+    navigate("/worker/write-review/9876567", { state: { modal: true } });
   };
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
     setIsCopy(true);
   };
+
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const images = [
+    {
+      attachmentUrl:
+        "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d",
+      attachments: "Nature",
+      length: 1,
+    },
+    {
+      attachmentUrl:
+        "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
+      attachments: "Girl",
+      length: 1,
+    },
+    {
+      attachmentUrl:
+        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e",
+      attachments: "Boy",
+      length: 1,
+    },
+    {
+      attachmentUrl:
+        "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d",
+      attachments: "Nature",
+      length: 1,
+    },
+    {
+      attachmentUrl:
+        "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
+      attachments: "Girl",
+      length: 1,
+    },
+    {
+      attachmentUrl:
+        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e",
+      attachments: "Boy",
+      length: 1,
+    },
+    {
+      attachmentUrl:
+        "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d",
+      attachments: "Nature",
+      length: 1,
+    },
+    {
+      attachmentUrl:
+        "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
+      attachments: "Girl",
+      length: 1,
+    },
+    {
+      attachmentUrl:
+        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e",
+      attachments: "Boy",
+      length: 1,
+    },
+  ];
+
   return (
     <DetailsStyle isMobile={isMobile}>
       <Box className="header">
@@ -367,6 +429,9 @@ export default function WorkerDetails() {
               <ImageCard
                 name="By Owner"
                 link="https://wallpapers.com/images/hd/link-hd-wallpaper-and-background-image-71mfep3ai8bib1mn.jpg"
+                handleClickImage={() => {
+                  setIsOpenImagePreview(true);
+                }}
               />
               <ImageCard
                 name="By User"
@@ -463,7 +528,10 @@ export default function WorkerDetails() {
                 <Typography className="pB10" variant="h4">
                   Start your Review
                 </Typography>
-                <StarRating onClick={handleRating} size={isMobile ? "medium" : "large"} />
+                <StarRating
+                  onClick={handleRating}
+                  size={isMobile ? "medium" : "large"}
+                />
               </Box>
             </Box>
           </Box>
@@ -524,6 +592,15 @@ export default function WorkerDetails() {
         <UserReview />
       </Box>
       <Divider />
+
+      {isOpenImagePreview && (
+        <ImagePreview
+          open={isOpenImagePreview}
+          close={() => setIsOpenImagePreview(false)}
+          previewImageUrl={images}
+          index={selectedIndex}
+        />
+      )}
     </DetailsStyle>
   );
 }

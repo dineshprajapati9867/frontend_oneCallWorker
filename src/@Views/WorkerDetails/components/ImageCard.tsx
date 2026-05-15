@@ -12,6 +12,7 @@ interface PropsI {
   name?: string;
   total?: string | number;
   handleCrossIcon?: (val: string) => void;
+  handleClickImage?: () => void;
 }
 const ContainerStyled = styled(Box)<{ isMobile: boolean }>(
   ({ theme, isMobile }) => ({
@@ -31,7 +32,7 @@ const ContainerStyled = styled(Box)<{ isMobile: boolean }>(
       position: "absolute",
       top: 0,
       right: 0,
-        zIndex: 2,
+      zIndex: 2,
     },
     ".image": {
       width: "100%",
@@ -50,11 +51,17 @@ const ContainerStyled = styled(Box)<{ isMobile: boolean }>(
   }),
 );
 
-const ImageCard = ({ link, name, total, handleCrossIcon }: PropsI) => {
+const ImageCard = ({
+  link,
+  name,
+  total,
+  handleCrossIcon,
+  handleClickImage,
+}: PropsI) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.only("xs"));
 
   return (
-    <ContainerStyled isMobile={isMobile}>
+    <ContainerStyled isMobile={isMobile} onClick={handleClickImage}>
       {handleCrossIcon && (
         <IconButton
           onClick={() => {

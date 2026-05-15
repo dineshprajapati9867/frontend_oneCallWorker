@@ -40,6 +40,7 @@ const StyleWrite = styled(Box)<{ isMobile: boolean }>(
       }),
       ...(!isMobile && {
         padding: theme.spacing(10, 10, 0, 10),
+        paddingLeft:0
       }),
     },
     ".contentData": {
