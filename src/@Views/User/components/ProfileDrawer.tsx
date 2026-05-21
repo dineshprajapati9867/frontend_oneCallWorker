@@ -106,7 +106,7 @@ const ProfileDrawer = ({ open, onClose }: PrposI) => {
     useState<NotificationPermission>(Notification.permission);
   const {
     handleOpenLogin,
-    
+
     handleCloseProfileDrawer,
   } = hooks.useUser();
   const navigate = useNavigate();
@@ -146,16 +146,17 @@ const ProfileDrawer = ({ open, onClose }: PrposI) => {
       icon: <ProfileIcon />,
       onClick: () => {
         navigate("/personal-details/8767", { state: { modal: true } });
-handleCloseProfileDrawer()
+        handleCloseProfileDrawer();
       },
     },
     {
       id: 2,
       label: "Saved",
       icon: <BookmarkIconMui />,
-      // onClick: () => {
-      //   navigate("personal-details/98765456789")
-      // },
+      onClick: () => {
+        navigate("/saved-items",{state:{modal:true}});
+        handleCloseProfileDrawer();
+      },
     },
     {
       id: 3,

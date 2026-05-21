@@ -7,6 +7,7 @@ import WorkerDetails  from "@Views/WorkerDetails";
 import ReviewComments from "@Views/WorkerDetails/components/ReviewComments";
 import WriteReview from "@Views/WorkerDetails/components/WriteReview";
 import CreateProfileModal from "@Views/CreateProfileModal";
+import SavedWorkers from "@Views/SavedWorkers";
 export const HomeLayouts: {
   name: string;
   path: string;
@@ -41,6 +42,11 @@ export const HomeLayouts: {
     name: "CreateProfileModal",
     path: "personal-details/:id",
     Component: CreateProfileModal,
+  },
+  {
+    name: "SavedWorkers",
+    path: "saved-items",
+    Component: SavedWorkers,
   },
 ];
 

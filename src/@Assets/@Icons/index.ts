@@ -58,7 +58,6 @@ import { PencilIcon } from './PencilIcon';
 import { SpocIdentificationIcon } from './SpocIdentificationIcon';
 import { BlackEmailIcon, EmailOutlined, EmailIcon, RedEmailIcon } from './EmailIcon';
 import { BlockIcon, BlackBlockIcon } from './BlockIcon';
-import { CompanyIcon } from './CompanyIcon';
 import { DownloadIcon, BlackDownloadIcon } from './DownloadIcon';
 import { CopyIcon } from './CopyIcon';
 import {
@@ -343,7 +342,6 @@ export {
   ReactiveIcon,
   EditUnderLineIcon,
   RefreshIcon,
-  CompanyIcon,
   SmallInfoIcon,
   InfoIconSmall,
   BulkFileUploadIcon,

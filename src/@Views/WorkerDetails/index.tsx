@@ -45,6 +45,7 @@ const contactData = [
 ];
 const DetailsStyle = styled(Box)<{ isMobile: boolean }>(
   ({ theme, isMobile }) => ({
+    overflowX:"hidden",
     ".mX10": {
       margin: theme.spacing(0, 10),
     },

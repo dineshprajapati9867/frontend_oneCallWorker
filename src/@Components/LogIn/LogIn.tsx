@@ -152,14 +152,13 @@ const LoginOtp = styled(Box)<{ isMobile }>(({ theme, isMobile }) => ({
     borderRadius: theme.spacing(4),
     fontSize: theme.spacing(9),
     fontWeight: 600,
-marginRight:theme.spacing(5),
+    marginRight: theme.spacing(5),
     "&:focus": {
       border: `2px solid ${theme.palette.primary.main}`,
       outline: "none",
     },
-    
   },
-  
+
   ".bottomText": {
     display: "flex",
     alignItems: "center",
@@ -240,9 +239,10 @@ function LogIn({ open, onClose }: PropsI) {
                 fieldState: { error },
               }) => (
                 <TextField
+                  type="number"
                   fullWidth
                   value={value}
-                  placeholder="Enter Mobile Number*"
+                  placeholder="Enter Mobile Number"
                   className="mobileInput"
                   InputProps={{
                     startAdornment: (
@@ -340,11 +340,17 @@ function LogIn({ open, onClose }: PropsI) {
                   fieldState: { error },
                 }) => (
                   <OtpInput
+                    inputType="number"
                     value={value}
                     onChange={onChange}
                     numInputs={6}
-                    renderInput={(props,i) => (
-                      <input type="number" autoFocus={i === 0} {...props} className="otpBox" />
+                    renderInput={(props, i) => (
+                      <input
+                        type="number"
+                        autoFocus={i === 0}
+                        {...props}
+                        className="otpBox"
+                      />
                     )}
                   />
                 )}
@@ -391,6 +397,10 @@ function LogIn({ open, onClose }: PropsI) {
               borderRadius: theme.spacing(7.5),
               margin: "0",
               overflow: "hidden",
+            },
+            "& .MuiDialog-container": {
+              background: " rgba(0, 0, 0, 0.06)",
+              backdropFilter: "blur(10px)",
             },
           })}
           slots={{ transition: Slide }}
