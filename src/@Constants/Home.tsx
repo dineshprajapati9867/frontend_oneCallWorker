@@ -54,14 +54,10 @@ const allIndianLanguage = [
 ];
 
 const skills = [
-  // { id: 1, label: "Painter", value: "Painter" },
-  // { id: 2, label: "Plumber", value: "Plumber" },
-  // { id: 3, label: "Electrician", value: "Electrician" },
   { id: 4, label: "AC Repair Technician", value: "AC Repair Technician" },
   { id: 5, label: "Painter", value: "Painter" },
   { id: 6, label: "Plumber", value: "Plumber" },
   { id: 7, label: "Truck Driver", value: "Truck Driver" },
-  { id: 8, label: "Baby Sitters", value: "Baby Sitters" },
   { id: 9, label: "Security Guard", value: "Security Guard" },
   { id: 10, label: "Cooks", value: "Cooks" },
   { id: 11, label: "Carpenter", value: "Carpenter" },
@@ -69,7 +65,6 @@ const skills = [
   { id: 13, label: "Bike Mechanic", value: "Bike Mechanic" },
   { id: 14, label: "Driver", value: "Driver" },
   { id: 15, label: "Male Mehendi Artist", value: "Male Mehendi Artist" },
-  { id: 15, label: "Female Mehendi Artist", value: "Female Mehendi Artist" },
   { id: 16, label: "Welder ", value: "Welder " },
   { id: 17, label: "Photographer", value: "Photographer" },
   { id: 18, label: "Pandit", value: "Pandit" },
@@ -79,8 +74,7 @@ const skills = [
   { id: 22, label: "CCTV Installation", value: "CCTV Installation" },
   { id: 23, label: "Refrigerator Technician", value: "Refrigerator Technician" },
   { id: 24, label: "Electrician", value: "Electrician" },
-  { id: 25, label: "Male Tailor", value: "Male Tailor" },
-  { id: 25, label: "Female Tailor", value: "Female Tailor" },
+  { id: 25, label: "Tailor", value: "Tailor" },
 ];
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 

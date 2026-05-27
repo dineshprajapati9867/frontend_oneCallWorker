@@ -22,7 +22,7 @@ const MiscContext = createContext<MiscI>({} as MiscI);
 export const useMisc = () => useContext(MiscContext);
 
 function useMiscProvider() {
-  const { ShowErrorSnackBar, ShowSuccessSnackBar } = hooks.useSnackBar();
+  const { ShowErrorSnackBar } = hooks.useSnackBar();
   const [isUploadFileLoading, setIsUploadFileLoading] = useState(false);
 
   /**
@@ -47,11 +47,11 @@ function useMiscProvider() {
             file_name: r.file_name,
           })) || [];
 
-        if (uploadedFiles.length) {
-          ShowSuccessSnackBar(
-            `${uploadedFiles.length} file(s) uploaded successfully`,
-          );
-        }
+        // if (uploadedFiles.length) {
+        //   ShowSuccessSnackBar(
+        //     `${uploadedFiles.length} file(s) uploaded successfully`,
+        //   );
+        // }
 
         return uploadedFiles;
       } catch (err: any) {

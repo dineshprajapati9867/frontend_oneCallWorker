@@ -1,9 +1,7 @@
-import BreadCrumbs from "@Components/BreadCrumbs";
 import { Box, Drawer, styled, useMediaQuery } from "@mui/material";
-import { BasicModal } from "@Primitives/index";
 import React, { Activity } from "react";
 import { CreateProfileHeader } from "./Components/CreateProfileHeader";
-import { hooks } from "@Utils/index";
+import { hooks, interfaces } from "@Utils/index";
 import PersonalInformation from "./Components/PersonalInformation";
 import { useForm } from "react-hook-form";
 import { CreateProfileFooter } from "./Components/CreateProfileFooter";
@@ -33,13 +31,7 @@ const CreateProfileModal = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const isModal = location.state?.modal;
-  const {
-    control,
-    watch,
-    setValue,
-    handleSubmit,
-    formState: { isValid },
-  } = useForm({
+  const { control, watch, setValue, handleSubmit } = useForm({
     mode: "onChange",
   });
   const {
@@ -49,16 +41,53 @@ const CreateProfileModal = () => {
     handleNextForCreateProfile,
     handleCreateProfile,
     isCreateProfilePending,
-    useGetProfileData
+    useGetProfileData,
   } = hooks.useUser();
-  const {data}=useGetProfileData();
-  
-  const onSubmit = (data) => {
+  const { isUploadFileLoading } = hooks.useMisc();
+  const { data } = useGetProfileData();
+
+  const onSubmit = (data: interfaces.createProfileI) => {
     handleCreateProfile(data);
   };
 
   const handleClose = () => {
     navigate(-1);
+  };
+
+  const IsButtonDisabled = () => {
+    if (activeStep === 1) {
+      return (
+        !watch("profile") ||
+        !watch("first_name") ||
+        !watch("last_name") ||
+        !watch("email") ||
+        !watch("mobile_number") ||
+        !watch("age") ||
+        !watch("gender")
+      );
+    }
+
+    if (activeStep === 2) {
+      return (
+        !watch("skills")?.length ||
+        !watch("experience") ||
+        !watch("days")?.length
+      );
+    }
+
+    if (activeStep === 3) {
+      if (isCreateProfilePending || isUploadFileLoading) {
+        return true;
+      }
+      return (
+        !watch("address_one") ||
+        !watch("area") ||
+        !watch("pincode") ||
+        !watch("state") ||
+        !watch("city")
+      );
+    }
+    return false;
   };
   const content = () => {
     return (
@@ -97,7 +126,7 @@ const CreateProfileModal = () => {
           activeStep={activeStep}
           handleBack={handleBackForCreateProfile}
           handleNext={handleNextForCreateProfile}
-          isButtonDisabled={!isValid}
+          isButtonDisabled={IsButtonDisabled()}
         />
       </ProfileStyled>
     );

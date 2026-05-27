@@ -91,7 +91,7 @@ const PersonalInformation = ({ control, watch, setValue }: PropsI) => {
     >
       <Grid size={16} className="logo">
         <Controller
-          name="logo"
+          name="profile"
           control={control}
           render={({ field: { onChange, } }) => (<>
 

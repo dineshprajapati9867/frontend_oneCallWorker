@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
-import { hooks } from "..";
+import { hooks, interfaces } from "..";
 import { useMutation, useQuery, UseQueryResult } from "@tanstack/react-query";
 import {
   createProfileUser,
@@ -19,7 +19,7 @@ interface userI {
   openLogin: boolean;
   handleOpenLogin: () => void;
   handleCloseLogin: () => void;
-  handleCreateProfile: (data) => void;
+  handleCreateProfile: (data:interfaces.createProfileI) => void;
   isCreateProfilePending: boolean;
   useGetAllWorkersBasedOnSkill: (
     skill: string,
