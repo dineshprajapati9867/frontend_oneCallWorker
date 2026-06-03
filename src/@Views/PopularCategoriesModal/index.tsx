@@ -151,7 +151,7 @@ const PopularCategoriesModal = ({
                 className="card"
                 key={val._id}
                 onClick={() => {
-                  navigate(`/workers/${val.title.split(" ").join("-")}`);
+                    navigate(`/search?q=${encodeURIComponent(val.title)}`);
                 }}
               >
                 <Box className="imageBox">

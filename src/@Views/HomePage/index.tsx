@@ -1,17 +1,13 @@
-//import Navbar from "@Views/Navbar";
 import React, { lazy, Suspense, useState } from "react";
 import homePage from "@Assets/Images/homePage.png";
 import callDirectly from "@Assets/Images/callDirectly.png";
 import chooseService from "@Assets/Images/chooseService.png";
 import bar from "@Assets/Images/bar.svg";
-//import circle from "@Assets/Images/circle.png";
-
 import { Box, Button, styled, Typography, useMediaQuery } from "@mui/material";
 import { hooks } from "@Utils/index";
 import { ServiceCategoryCard, WorkerCard } from "@Components/index";
 import { useNavigate } from "react-router-dom";
 import { ServiceCategoryCardSkeleton } from "@Components/Card";
-//import PopularCategoriesModal from "@Views/PopularCategoriesModal";
 import { serviceCategoryI } from "@Utils/interfaces";
 
 const PopularCategoriesModal = lazy(
@@ -27,7 +23,6 @@ const HomeStyle = styled(Box)<{ isMobile: boolean }>(({ theme, isMobile }) => ({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    //height:"40vh",
     overflow: "hideen",
     ".heading": {
       fontSize: "2.5vmax",
@@ -51,15 +46,6 @@ const HomeStyle = styled(Box)<{ isMobile: boolean }>(({ theme, isMobile }) => ({
       marginTop: theme.spacing(7.5),
     },
   },
-  //     '.serviceBox':{
-  //  display: "flex",
-  //  justifyContent:"space-between",
-  //    margin: theme.spacing(15,0),
-
-  //    '.viewBtn':{
-  //     borderRadius:theme.spacing(15)
-  //    }
-  //   },
   ".imageContainer": {
     display: "grid",
     gridTemplateColumns: isMobile ? "repeat(4, 1fr)" : "repeat(7,1fr)",
@@ -196,18 +182,18 @@ function HomePage() {
   const [isPopularCategoriesModalOpen, setIsPopularCategoriesModalOpen] =
     useState(false);
   const navigate = useNavigate();
-  const { useGetAllWorkerList } = hooks.useMisc();
+  const { useGetAllSkillsCategory } = hooks.useMisc();
   const limit = isPopularCategoriesModalOpen ? 100 : isMobile ? 15 : 13;
 
   const { data: WorkersListData, isLoading: isWorkersListDataLoading } =
-    useGetAllWorkerList(limit);
+    useGetAllSkillsCategory(limit);
 
   const handleClosePopularCategoriesModal = () => {
     setIsPopularCategoriesModalOpen(false);
   };
   const handleOpenPopularCategoriesModal = () => {
     setIsPopularCategoriesModalOpen(true);
-  };  
+  };
   return (
     <>
       <HomeStyle isMobile={isMobile}>
@@ -221,39 +207,28 @@ function HomePage() {
                 Finding skilled workers near you has never been this
                 easier.{" "}
               </Typography>
-              {/* <Button size="medium" className="findBtn" variant="contained">
-                Find Worker
-              </Button> */}
             </Box>
             <img loading="lazy" className="image" src={homePage} />
           </Box>
         )}
-        {/* {isMobile && (
-          <Box className="serviceBox">
-          <Typography  variant="h1">
-            Service Categories
-          </Typography> 
-          <Button className="viewBtn" variant="outlined">View all Categories</Button>
-          </Box>
-        )} */}
-
         <Box className="imageContainer">
           {isWorkersListDataLoading
             ? Array.from({ length: limit }).map((_, index) => (
-                <ServiceCategoryCardSkeleton key={index} />
-              ))
+              <ServiceCategoryCardSkeleton key={index} />
+            ))
             : WorkersListData?.map((val: serviceCategoryI) => {
-                return (
-                  <ServiceCategoryCard
+              return (
+                <ServiceCategoryCard
                   key={val._id}
-                    handleClick={() => {
-                      navigate(`/workers/${val.title.split(" ").join("-")}`);
-                    }}
-                    title={val.title}
-                    url={val.image_kit_url}
-                  />
-                );
-              })}
+                  handleClick={() => {
+                    navigate(`/search?q=${encodeURIComponent(val.title)}`);
+
+                  }}
+                  title={val.title}
+                  url={val.image_kit_url}
+                />
+              );
+            })}
           {WorkersListData?.[0] && !isWorkersListDataLoading && (
             <Box
               className="popularCategories"

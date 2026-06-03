@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useCallback } from "react";
-import { getAllWorkerList, getPostalCode } from "@Utils/controllers/misc";
-import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { getAllSkillsCategory, getPostalCode, searchWorkersBySkills } from "@Utils/controllers/misc";
+import { useQuery, UseQueryResult, keepPreviousData, useInfiniteQuery, UseInfiniteQueryResult } from "@tanstack/react-query";
 import React from "react";
 import { uploadImageToS3 } from "../controllers/misc";
 import { hooks } from "..";
@@ -10,7 +10,8 @@ interface MiscI {
   useGetPostalCode: (
     pincode: string,
   ) => UseQueryResult<{ city: string; state: string }>;
-  useGetAllWorkerList: (limit:number) => UseQueryResult<any>;
+  useGetAllSkillsCategory: (limit: number) => UseQueryResult<any>;
+  useSearchWorkersBySkills: (search: string, limit: number) => UseInfiniteQueryResult<any>;
 }
 
 interface UploadFileResponse {
@@ -64,10 +65,10 @@ function useMiscProvider() {
     [],
   );
 
-  const useGetAllWorkerList = (limit:number) => {
+  const useGetAllSkillsCategory = (limit: number) => {
     return useQuery({
       queryKey: [limit],
-      queryFn: () => getAllWorkerList(limit),
+      queryFn: () => getAllSkillsCategory(limit),
       select: (data) => data.data,
       gcTime: 0,
     });
@@ -85,6 +86,35 @@ function useMiscProvider() {
     });
   };
 
+  /**
+   *   search 
+   */
+  const useSearchWorkersBySkills = (
+    search: string,
+    limit: number = 10
+  ) => {
+    return useInfiniteQuery({
+      queryKey: ["workers", search],
+
+      queryFn: ({ pageParam = 1 }) =>
+        searchWorkersBySkills(search, pageParam, limit),
+
+      initialPageParam: 1,
+
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage.data.hasMore
+          ? allPages.length + 1
+          : undefined;
+      },
+
+      select: (data) => ({
+        ...data,
+        pages: data.pages.map((page) => page.data),
+      }),
+
+      enabled: !!search,
+    });
+  };
   return {
     /**
      * Public file upload
@@ -92,7 +122,9 @@ function useMiscProvider() {
     handleUploadImages,
     isUploadFileLoading,
     useGetPostalCode,
-    useGetAllWorkerList,
+    useGetAllSkillsCategory,
+
+    useSearchWorkersBySkills
   };
 }
 

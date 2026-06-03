@@ -8,20 +8,24 @@ export const createProfileUser = (data: any) =>
   postApi(`${API_SERVER_URL}/profile`, data);
 
 // get All worker based on skill
-export const getAllWorkersBasedOnSkill = (
-  skill: string,
-  page: number,
-  limit: number,
-) =>
-  getApi(
-    `${API_SERVER_URL}/workers?skill=${skill}&page=${page}&limit=${limit}`,
-  );
+// export const getAllWorkersBasedOnSkill = (
+//   skill: string,
+//   page: number,
+//   limit: number,
+// ) =>
+//   getApi(
+//     `${API_SERVER_URL}/workers?skill=${skill}&page=${page}&limit=${limit}`,
+//   );
 
 
 
   /**
-   *  get the Profile user 
+   *   Get logged-in user's profile
    */
   
-  // api/misc.ts
-export const getProfileUser = () => getApi(`${API_SERVER_URL}/profile/get-profile`);
+export const getMyProfile  = () => getApi(`${API_SERVER_URL}/my-profile`);
+
+ /**
+   *    Get worker details by profile id
+   */
+export const getWorkerProfile  = (id:string) => getApi(`${API_SERVER_URL}/worker-profile/${id}`);

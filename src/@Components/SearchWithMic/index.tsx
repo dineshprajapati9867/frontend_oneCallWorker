@@ -24,6 +24,7 @@ import SpeechRecognition, {
 import { HorizonatDotsLoading, MicAnimation } from "@Primitives/index";
 import { hooks } from "@Utils/index";
 import { skills } from "@Constants/Home";
+import { useLocation, useSearchParams } from "react-router-dom";
 
 interface PropsI {
   onClickOnDropdown: (value: string) => void;
@@ -156,6 +157,9 @@ const CustomInputStyled = styled(Input)(({ theme }) => ({
  * @returns A React component.
  */
 export default function SearchWithMic({ onClickOnDropdown, onChange }: PropsI) {
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
+
   const [openDropDown, setOpenDropDown] = useState(false);
   const {
     transcript,
@@ -163,14 +167,12 @@ export default function SearchWithMic({ onClickOnDropdown, onChange }: PropsI) {
     resetTranscript,
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
-
+ 
   const isMobile = useMediaQuery((theme) => theme.breakpoints.only("xs"));
   const [open, setOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const { ShowInfoSnackBar } = hooks.useSnackBar();
-  if (!browserSupportsSpeechRecognition) {
-    return alert("Browser doesn't support speech recognition.");
-  }
+
   const handleMicClick = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -197,9 +199,39 @@ export default function SearchWithMic({ onClickOnDropdown, onChange }: PropsI) {
     }
     if (!listening && transcript) {
       setOpen(false);
+        const searchValue = transcript
+      .replace(/[.,!?]/g, "")
+      .trim();
+
+    onClickOnDropdown(searchValue);
     }
   }, [listening, transcript]);
 
+  const handleSearch = () => {
+    if (!searchText.trim()) return;
+
+    onClickOnDropdown(searchText);
+    setOpenDropDown(false);
+  };
+
+  
+
+useEffect(() => {
+  if (location.pathname === "/search") {
+    setSearchText(searchParams.get("q") || "");
+  } else {
+    setSearchText("");
+  }
+}, [location.pathname, searchParams]);
+
+
+useEffect(() => {
+  if (!browserSupportsSpeechRecognition) {
+    ShowInfoSnackBar(
+      "Browser doesn't support speech recognition."
+    );
+  }
+}, [browserSupportsSpeechRecognition]);
   const renderData = () => {
     return (
       <>
@@ -271,6 +303,11 @@ export default function SearchWithMic({ onClickOnDropdown, onChange }: PropsI) {
               setSearchText(value);
               onChange?.(value);
             }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSearch();
+              }
+            }}
             onFocus={() => setOpenDropDown(true)}
             endAdornment={
               <InputAdornment position="end">
@@ -282,7 +319,7 @@ export default function SearchWithMic({ onClickOnDropdown, onChange }: PropsI) {
                 <IconButton onClick={handleMicClick}>
                   <MicMuiIcon className="micIcon" />
                 </IconButton>
-                <button className="searchIcon">
+                <button className="searchIcon" onClick={handleSearch}>
                   <SearchMuiIcon width={24} height={24} />
                 </button>
               </InputAdornment>

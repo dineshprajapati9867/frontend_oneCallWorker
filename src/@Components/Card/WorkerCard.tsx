@@ -4,16 +4,17 @@ import {
   StarMuiIcon,
   WhatsAppIcon,
   CallMuiIcon,
-  ChatMuiIcon,
+  TranslateIconMui,
 } from "@Icons/index";
 import { Box, Button, styled, Tooltip, Typography } from "@mui/material";
-import { hooks } from "@Utils/index";
+import { hooks, interfaces } from "@Utils/index";
 import { useNavigate } from "react-router-dom";
-// import VerifiedIcon from "@mui/icons-material/Verified";
-// import { VerifyAnimation } from "@Primitives/index";
 import verified from "@Assets/Images/verified.gif";
 import new_thumb from "@Assets/Images/new_thumb_icon.svg";
-// import { ToolTip } from "@Primitives/Tooltip";
+
+interface PropsI {
+  data: interfaces.createProfileI
+}
 const WorkerCardStyle = styled(Box)<{ isMobile: boolean }>(
   ({ theme, isMobile }) => ({
     ".main": {
@@ -110,7 +111,7 @@ const WorkerCardStyle = styled(Box)<{ isMobile: boolean }>(
   }),
 );
 
-const WorkerCard = () => {
+const WorkerCard = ({ data }: PropsI) => {
   const { isMobile } = hooks.useResponsive();
   const navigate = useNavigate();
   const ButtonGroups = () => {
@@ -122,10 +123,10 @@ const WorkerCard = () => {
           startIcon={<CallMuiIcon className="commonIconStyle" />}
           onClick={(e: React.MouseEvent<HTMLElement>) => {
             e.stopPropagation();
-            window.location.href = "tel:7039824822";  
+            window.location.href = "tel:7039824822";
           }}
         >
-          7039824833
+          {data.mobile_number}
         </Button>
         {/* <Button
           variant="outlined"
@@ -141,31 +142,31 @@ const WorkerCard = () => {
           onClick={(e: React.MouseEvent<HTMLElement>) => {
             e.stopPropagation();
             window.open("https://wa.me/7039824933", "_blank");
-             (e.currentTarget as HTMLButtonElement).blur();
+            (e.currentTarget as HTMLButtonElement).blur();
           }}
         >
-          WhatsApp
+          {data.whatsApp_number}
         </Button>
       </>
     );
   };
 
   const handleCard = (e) => {
-    navigate("/worker/098765678");
+    navigate(`/worker/${data._id}`);
   };
   return (
     <WorkerCardStyle isMobile={isMobile}>
       <Box className="main" onClick={handleCard}>
-        <Box display={"flex"} mb={isMobile && 5}>
+        <Box display={"flex"} alignItems={"center"} mb={isMobile && 5}>
           <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZjz0S_eXnprzunfLmYiQEBNzmWbs8_iWR5A&s"
+            src={data.profile?.url}
             alt="image"
             className="image"
           />
           <Box className="rightSide">
             <Box className="thumbBox flex">
               <img src={new_thumb} alt="thumb_image" />
-              <Typography variant="h4">Dinesh Prajapati</Typography>
+              <Typography variant="h4">{data.first_name} {data.last_name}</Typography>
             </Box>
             <Box className="ratingBox flex">
               <Box className="starRatingBox">
@@ -188,10 +189,24 @@ const WorkerCard = () => {
             <Box className="iconBox flex">
               <BlackNormalLocationIcon />
               <Typography className="font15" variant="body1">
-                MALAD WEST Malad West, Mumbai
+                {data.address_one}
               </Typography>
             </Box>
 
+
+              <Box className="iconBox flex" pl={4}>
+                Languages Spoken:  {
+                data.languages.map((val) => {
+                  return <Typography className="font15" variant="body1">
+                    {val}
+                  </Typography>
+                })
+              }
+              </Box>
+            <Box>
+
+
+            </Box>
             {!isMobile && (
               <Box className="btnGroup">
                 <ButtonGroups />

@@ -3,8 +3,9 @@ import { hooks, interfaces } from "..";
 import { useMutation, useQuery, UseQueryResult } from "@tanstack/react-query";
 import {
   createProfileUser,
-  getAllWorkersBasedOnSkill,
-  getProfileUser,
+ // getAllWorkersBasedOnSkill,
+  getMyProfile,
+  getWorkerProfile,
 } from "@Utils/controllers/user";
 import { createProfileI } from "@Utils/interfaces";
 
@@ -21,12 +22,13 @@ interface userI {
   handleCloseLogin: () => void;
   handleCreateProfile: (data:interfaces.createProfileI) => void;
   isCreateProfilePending: boolean;
-  useGetAllWorkersBasedOnSkill: (
-    skill: string,
-    page: number,
-    limit: number,
-  ) => UseQueryResult<any>;
-  useGetProfileData:()=>UseQueryResult<any>
+  // useGetAllWorkersBasedOnSkill: (
+  //   skill: string,
+  //   page: number,
+  //   limit: number,
+  // ) => UseQueryResult<any>;
+  useGetMyProfileData:()=>UseQueryResult<any>,
+  useGetWorkerDetailsById:(id:string)=>UseQueryResult<any>
 }
 
 const userContext = createContext<userI>({} as userI);
@@ -114,26 +116,36 @@ const useUserData = () => {
 
   // get All worker based on skill
 
-  const useGetAllWorkersBasedOnSkill = (
-    skill: string,
-    page: number,
-    limit: number,
+  // const useGetAllWorkersBasedOnSkill = (
+  //   skill: string,
+  //   page: number,
+  //   limit: number,
+  // ) => {
+  //   return useQuery({
+  //     queryKey: ["getAllWorkersBasedOnSkill", skill, page, limit],
+  //     queryFn: () => getAllWorkersBasedOnSkill(skill, page, limit),
+  //     enabled: !!skill,
+  //     select: (data) => data.data,
+  //   });
+  // };
+  // get All worker based on skill
+
+  const useGetMyProfileData = (
   ) => {
     return useQuery({
-      queryKey: ["getAllWorkersBasedOnSkill", skill, page, limit],
-      queryFn: () => getAllWorkersBasedOnSkill(skill, page, limit),
-      enabled: !!skill,
+      queryKey: ["getMyProfileData"],
+      queryFn: () => getMyProfile(),
+      // enabled:activeStep===1,
       select: (data) => data.data,
     });
   };
-  // get All worker based on skill
 
-  const useGetProfileData = (
+  const useGetWorkerDetailsById = (id:string
   ) => {
     return useQuery({
-      queryKey: ["useGetProfileData"],
-      queryFn: () => getProfileUser(),
-      // enabled:activeStep===1,
+      queryKey: ["getWorkerDetailsById",id],
+      queryFn: () => getWorkerProfile(id),
+      enabled:!!id,
       select: (data) => data.data,
     });
   };
@@ -151,8 +163,9 @@ const useUserData = () => {
     handleCloseLogin,
     handleCreateProfile,
     isCreateProfilePending,
-    useGetAllWorkersBasedOnSkill,
-    useGetProfileData
+    // useGetAllWorkersBasedOnSkill,
+    useGetMyProfileData,
+    useGetWorkerDetailsById
   };
 };
 

@@ -1,4 +1,4 @@
-export interface getAllWorkerListPropI {
+export interface getAllSkillsCategoryI {
   title: string;
   image_kit_url: string;
   image_kit_id: string;
@@ -11,7 +11,11 @@ export interface optionI {
 }
 
 export interface createProfileI {
-  profile:string | any
+  _id:string
+  profile:{
+        url:string,
+    file_name:string
+  }
   first_name: string;
   last_name: string;
   email: string;
@@ -31,7 +35,7 @@ export interface createProfileI {
   days: string[];
 
   address_one: string;
-  address_two: string;
+ // address_two: string;
   area: string;
   city: string;
   state: string;

@@ -24,10 +24,11 @@ import verified from "@Assets/Images/verified.gif";
 import ImageCard from "./components/ImageCard";
 import UserReview from "./components/UserReview";
 import StarRating from "@Components/StarRating";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CircleDaySelector from "@Components/CircleDaySelector";
 import { days } from "@Constants/Home";
 import { ImagePreview } from "@Primitives/ImagePreviewModal/imagePreview";
+import { hooks } from "@Utils/index";
 
 const contactData = [
   {
@@ -238,6 +239,9 @@ const DetailsStyle = styled(Box)<{ isMobile: boolean }>(
   }),
 );
 export default function WorkerDetails() {
+  const {id}=useParams();
+
+  
   const isMobile = useMediaQuery((theme) => theme.breakpoints.only("xs"));
   const navigate = useNavigate();
   const [isCopy, setIsCopy] = useState(false);
@@ -245,6 +249,9 @@ export default function WorkerDetails() {
   const handleRating = () => {
     navigate("/worker/write-review/9876567", { state: { modal: true } });
   };
+const {useGetWorkerDetailsById}=hooks.useUser();
+const {data}=useGetWorkerDetailsById(id);
+
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);

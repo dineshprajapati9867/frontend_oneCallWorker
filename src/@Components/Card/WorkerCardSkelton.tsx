@@ -60,7 +60,7 @@ const WorkerCardSkeleton = () => {
               <Box className="btnGroup">
                 <Skeleton animation="wave" variant="text" className="btn" />
                 <Skeleton animation="wave" variant="text" className="btn" />
-                <Skeleton animation="wave" variant="text" className="btn" />
+                {/* <Skeleton animation="wave" variant="text" className="btn" /> */}
               </Box>
             )}
           </Box>

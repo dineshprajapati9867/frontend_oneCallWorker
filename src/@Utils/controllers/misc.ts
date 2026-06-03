@@ -1,4 +1,4 @@
-import { deleteApi, getApi, postApi } from "@Utils/config/apis";
+import { getApi, postApi } from "@Utils/config/apis";
 
 const API_SERVER_URL=process.env.REACT_APP_API_SERVER_URL
 // get the address
@@ -27,7 +27,7 @@ export function forwardGeocoding(query:string) {
  *  Get All  worker list imageUrl  and title
  */
 
-export function getAllWorkerList(limit:number){
+export function getAllSkillsCategory(limit:number){
     return getApi(
       `${API_SERVER_URL}/upload/public/get_all_image?limit=${limit}`
     )
@@ -72,4 +72,12 @@ export function uploadImageToS3(data){
 
 export function deleteImageFromS3(data){
   return postApi(`${API_SERVER_URL}/s3/s3-upload/multiple`,data)
+}
+
+
+/**
+ *   search workers by skills
+ */
+export function searchWorkersBySkills(search:string,page:number,limit:number){
+    return getApi(`${API_SERVER_URL}/search?skills=${search}&page=${page}&limit=${limit}`)
 }

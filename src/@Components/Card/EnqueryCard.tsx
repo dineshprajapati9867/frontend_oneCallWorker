@@ -2,7 +2,7 @@ import { styled, Box, Typography, Button } from "@mui/material";
 import { TextInput } from "@Primitives/index";
 import { removeSpecialCharAndCapFirstLetter } from "@Utils/helpers";
 import React from "react";
-import { useParams } from "react-router-dom";
+import {  useSearchParams } from "react-router-dom";
 
 const EnquiryCardStyle = styled(Box)(({ theme }) => ({
   border: `1px solid ${theme.misc.borderColor}`,
@@ -30,14 +30,14 @@ const EnquiryCardStyle = styled(Box)(({ theme }) => ({
   },
 }));
 const EnquiryCard = () => {
-  const { type } = useParams();
+  const [searchParams]=useSearchParams()
 
   return (
     <EnquiryCardStyle>
       <Box>
         <Typography variant="subtitle1">
           Get the List of Top{" "}
-          <span className="type">{type.split("-").join(" ")}</span>
+          <span className="type">{searchParams.get("q")||""}</span>
         </Typography>
       </Box>
       <Typography className="des" variant="body2">

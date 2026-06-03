@@ -20,7 +20,7 @@ export const HomeLayouts: {
   },
   {
     name: "workerList",
-    path: "workers/:type",
+    path: "search",
     Component: WorkerList,
   },
   {

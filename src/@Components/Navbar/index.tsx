@@ -1,13 +1,11 @@
 import { Avatar, Box, Button, styled, Typography } from "@mui/material";
-import { useTranslation } from "react-i18next";
-import LanguageTranslate from "@Components/LanguageTranslate";
 import { languages } from "@Constants/Home";
 import { useNavigate } from "react-router-dom";
 import SearchWithMic from "@Components/SearchWithMic";
 import { hooks } from "@Utils/index";
 import ocw_logo from "@Assets/Images/ocw_logo.png";
 import React, { lazy, Suspense } from "react";
-import { TrendingUpIconMui } from "@Icons/index";
+// import { TrendingUpIconMui } from "@Icons/index";
 const LogIn = lazy(() => import("@Components/LogIn/LogIn"));
 const NavbarStyle = styled(Box)<{ isMobile: boolean }>(
   ({ theme, isMobile }) => ({
@@ -86,7 +84,7 @@ const NavbarStyle = styled(Box)<{ isMobile: boolean }>(
 );
 
 export default function Navbar() {
-  const { t, i18n } = useTranslation("navbar");
+  //const { t, i18n } = useTranslation("navbar");
   const navigate = useNavigate();
   // const [openLogin, setOpenLogin] = useState(false);
   const {
@@ -97,13 +95,17 @@ export default function Navbar() {
   } = hooks.useUser();
   const { isMobile } = hooks.useResponsive();
   // Current language display
-  const handleGetCurrentLanguage = () => {
-    const current = languages.find((lang) => lang.code === i18n.language);
-    return current.code.toLocaleUpperCase();
-  };
+  // const handleGetCurrentLanguage = () => {
+  //   const current = languages.find((lang) => lang.code === i18n.language);
+  //   return current.code.toLocaleUpperCase();
+  // };
 
   const user = JSON.parse(localStorage.getItem("user") || "null");
   const token = localStorage.getItem("token");
+
+  const handleOnClickOnDropdown=(v:string)=>{
+      navigate(`/search?q=${encodeURIComponent(v)}`);
+  }
 
   return (
     <>
@@ -120,11 +122,7 @@ export default function Navbar() {
           {!isMobile && (
             <Box width={"40%"}>
               <SearchWithMic
-                // onClickOnDropdown={(value) => {
-                //   console.log("jhggh", value);
-                // }}
-  //                onChange={(value) => {
-  // }}
+                onClickOnDropdown={handleOnClickOnDropdown}
               />
             </Box>
           )}
@@ -171,7 +169,9 @@ export default function Navbar() {
         </Box>
         {isMobile && (
           <Box className="mobileSearchInput" px={5}>
-            <SearchWithMic />
+            <SearchWithMic 
+            onClickOnDropdown={handleOnClickOnDropdown}
+            />
           </Box>
         )}
       </NavbarStyle>
