@@ -29,24 +29,12 @@ import CircleDaySelector from "@Components/CircleDaySelector";
 import { days } from "@Constants/Home";
 import { ImagePreview } from "@Primitives/ImagePreviewModal/imagePreview";
 import { hooks } from "@Utils/index";
+import { Loader } from "@Primitives/Loader";
 
-const contactData = [
-  {
-    label: "Mobile Number",
-    value: "7039824933",
-    icon: <CallMuiIcon />,
-    copyIcon: <CopyIcon />,
-  },
-  {
-    label: "WhatsApp Number",
-    value: "8765456789",
-    icon: <WhatsAppIcon width={24} height={24} />,
-    copyIcon: <CopyIcon />,
-  },
-];
+
 const DetailsStyle = styled(Box)<{ isMobile: boolean }>(
   ({ theme, isMobile }) => ({
-    overflowX:"hidden",
+    overflowX: "hidden",
     ".mX10": {
       margin: theme.spacing(0, 10),
     },
@@ -239,9 +227,7 @@ const DetailsStyle = styled(Box)<{ isMobile: boolean }>(
   }),
 );
 export default function WorkerDetails() {
-  const {id}=useParams();
-
-  
+  const { id } = useParams();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.only("xs"));
   const navigate = useNavigate();
   const [isCopy, setIsCopy] = useState(false);
@@ -249,8 +235,8 @@ export default function WorkerDetails() {
   const handleRating = () => {
     navigate("/worker/write-review/9876567", { state: { modal: true } });
   };
-const {useGetWorkerDetailsById}=hooks.useUser();
-const {data}=useGetWorkerDetailsById(id);
+  const { useGetWorkerDetailsById } = hooks.useMisc();
+  const { data: workerDetailsData, isLoading: isWorkerDetailsDataLoading } = useGetWorkerDetailsById(id);
 
 
   const handleCopy = (text: string) => {
@@ -260,136 +246,113 @@ const {data}=useGetWorkerDetailsById(id);
 
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const images = [
+
+  const contactData = [
     {
-      attachmentUrl:
-        "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d",
-      attachments: "Nature",
-      length: 1,
+      label: "Mobile Number",
+      value: workerDetailsData?.mobile_number,
+      icon: <CallMuiIcon />,
+      copyIcon: <CopyIcon />,
     },
     {
-      attachmentUrl:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
-      attachments: "Girl",
-      length: 1,
-    },
-    {
-      attachmentUrl:
-        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e",
-      attachments: "Boy",
-      length: 1,
-    },
-    {
-      attachmentUrl:
-        "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d",
-      attachments: "Nature",
-      length: 1,
-    },
-    {
-      attachmentUrl:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
-      attachments: "Girl",
-      length: 1,
-    },
-    {
-      attachmentUrl:
-        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e",
-      attachments: "Boy",
-      length: 1,
-    },
-    {
-      attachmentUrl:
-        "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d",
-      attachments: "Nature",
-      length: 1,
-    },
-    {
-      attachmentUrl:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
-      attachments: "Girl",
-      length: 1,
-    },
-    {
-      attachmentUrl:
-        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e",
-      attachments: "Boy",
-      length: 1,
+      label: "WhatsApp Number",
+      value: workerDetailsData?.whatsApp_number,
+      icon: <WhatsAppIcon width={24} height={24} />,
+      copyIcon: <CopyIcon />,
     },
   ];
-
+  const addressData = [
+    { label: "Address", value: workerDetailsData?.address_one },
+    { label: "Area", value: workerDetailsData?.area },
+...(workerDetailsData?.landmark
+    ? [{ label: "Landmark", value: workerDetailsData.landmark }]
+    : []),    { label: "Pincode", value: workerDetailsData?.pincode },
+    { label: "City", value: workerDetailsData?.city },
+    { label: "State", value: workerDetailsData?.state },
+  ];
   return (
-    <DetailsStyle isMobile={isMobile}>
-      <Box className="header">
-        <Box className="left">
-          <Box className="flexBox justifySpaceBetween">
-            <Box className="flexBox">
-              <img className="thumbIcon" src={new_thumb_icon} alt="thumb" />
-              <Typography variant="h5">
-                Shakti Electronics & Appliances (JioMart Digital Partner)
-              </Typography>
-            </Box>
-            {!isMobile && (
-              <IconButton className="bookMark">
-                <BookmarkIconMui />
-              </IconButton>
-            )}
-          </Box>
+    <>
+      {isWorkerDetailsDataLoading ? <Box height={`calc(100vh - ${isMobile ? '95px' : "80px"})`}><Loader type="section" /></Box> :
 
-          <Box className="ratingBox flexBox">
-            <Box className="starRatingBox" width={52}>
-              <Typography className="rating font15" variant="h5">
-                4.2
-              </Typography>
-              <StarMuiIcon className="commonIconStyle" />
-            </Box>
+        <>
+          {workerDetailsData &&
+            <DetailsStyle isMobile={isMobile}>
+              <Box className="header">
+                <Box className="left">
+                  <Box className="flexBox justifySpaceBetween">
+                    <Box className="flexBox">
+                      <img className="thumbIcon" src={new_thumb_icon} alt="thumb" />
+                      <Typography variant="h5">
+                        {workerDetailsData.first_name}  {workerDetailsData.last_name}
+                      </Typography>
+                    </Box>
+                    {!isMobile && (
+                      <IconButton className="bookMark">
+                        <BookmarkIconMui />
+                      </IconButton>
+                    )}
+                  </Box>
 
-            <Typography className="ratings" variant="body1">
-              50 Ratings
-            </Typography>
-            <Tooltip
-              arrow={true}
-              title={"This Profile Information is verified by oneCallWorker."}
-            >
-              <img height={30} src={verified} />
-            </Tooltip>
-          </Box>
-          <Box className="location iconBox flexBox">
-            <BlackNormalLocationIcon />
-            <Typography className="font15" variant="body1">
-              MALAD WEST Malad West, Mumbai
-            </Typography>
-          </Box>
-          <Box className="languages flexBox justifySpaceBetween">
-            <Typography className="font15" variant="body1">
-              Languages Spoken: Gujarati, Tamil
-            </Typography>
-            {!isMobile && (
-              <Typography className="fW500" variant="body1">
-                Click to Rate
-              </Typography>
-            )}
-          </Box>
-          <Box className="flexBox justifySpaceBetween">
-            <Box className="btnGroup">
-              <Button
-                className="btn"
-                variant="contained"
-                startIcon={<CallMuiIcon className="commonIconStyle" />}
-                onClick={(e: React.MouseEvent<HTMLElement>) => {
-                  e.stopPropagation();
-                }}
-              >
-                7039824822
-              </Button>
+                  <Box className="ratingBox flexBox">
+                    <Box className="starRatingBox" width={52}>
+                      <Typography className="rating font15" variant="h5">
+                        4.2
+                      </Typography>
+                      <StarMuiIcon className="commonIconStyle" />
+                    </Box>
 
-              <Button
-                className="btn"
-                variant="outlined"
-                startIcon={<WhatsAppIcon width={15} height={15} />}
-              >
-                WhatsApp
-              </Button>
-              {/* <ToolTip
+                    <Typography className="ratings" variant="body1">
+                      50 Ratings
+                    </Typography>
+                    <Tooltip
+                      arrow={true}
+                      title={"This Profile Information is verified by oneCallWorker."}
+                    >
+                      <img height={30} src={verified} />
+                    </Tooltip>
+                  </Box>
+                  <Box className="location iconBox flexBox">
+                    <BlackNormalLocationIcon />
+                    <Typography className="font15" variant="body1">
+                      MALAD WEST Malad West, Mumbai
+                    </Typography>
+                  </Box>
+                  <Box className="languages flexBox justifySpaceBetween">
+                    <Typography className="font15" variant="body1">
+                      Languages Spoken: {workerDetailsData.languages.join(", ")}
+                    </Typography>
+                    {!isMobile && (
+                      <Typography className="fW500" variant="body1">
+                        Click to Rate
+                      </Typography>
+                    )}
+                  </Box>
+                  <Box className="flexBox justifySpaceBetween">
+                    <Box className="btnGroup">
+                      <Button
+                        className="btn"
+                        variant="contained"
+                        startIcon={<CallMuiIcon className="commonIconStyle" />}
+                        onClick={(e: React.MouseEvent<HTMLElement>) => {
+                          e.stopPropagation();
+                          window.location.href = `tel:${workerDetailsData.mobile_number}`;
+                        }}
+                      >
+                        {workerDetailsData.mobile_number}
+                      </Button>
+
+                      <Button
+                        className="btn"
+                        variant="outlined"
+                        startIcon={<WhatsAppIcon width={15} height={15} />}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          window.open(`https://wa.me/${workerDetailsData.mobile_number}`, "_blank");
+                        }}
+                      >
+                        WhatsApp
+                      </Button>
+                      {/* <ToolTip
      type="custom"
       title={
         <Box className="flexBox">
@@ -414,201 +377,173 @@ const {data}=useGetWorkerDetailsById(id);
         <ShareIcon sx={{ color: "black" }} />
       </IconButton>
     </ToolTip> */}
-            </Box>
+                    </Box>
 
-            {!isMobile && <StarRating onClick={handleRating} size="large" />}
-          </Box>
-        </Box>
-      </Box>
-      {isMobile && <Divider />}
-      <Box className="main" px={isMobile ? 0 : 10}>
-        <Box
-          className="justifySpaceBetween flex"
-          flexDirection={isMobile ? "column" : "row"}
-        >
-          <Box
-            className="imageContainer commonStyle "
-            padding={isMobile ? 10 : 0}
-          >
-            <Typography className="pB10" variant="h4">
-              Photos
-            </Typography>
-            <Box className="imageBox ">
-              <ImageCard
-                name="By Owner"
-                link="https://wallpapers.com/images/hd/link-hd-wallpaper-and-background-image-71mfep3ai8bib1mn.jpg"
-                handleClickImage={() => {
-                  setIsOpenImagePreview(true);
-                }}
-              />
-              <ImageCard
-                name="By User"
-                link="https://wallpapers.com/images/hd/link-hd-wallpaper-and-background-image-71mfep3ai8bib1mn.jpg"
-              />
-            </Box>
-          </Box>
-          {isMobile && <Divider />}
-          <Box className="contact commonStyle" padding={isMobile ? 10 : 0}>
-            <Typography className="pB10" variant="h4">
-              Contact Information
-            </Typography>
-
-            <Box className="contactList">
-              {contactData.map((val, index) => (
-                <Box key={index} className="contactItem">
-                  <Box className="flexBox">
-                    <Box className="iconWrapper">{val.icon}</Box>
-
-                    <Box className="textBox">
-                      <Typography className="label">{val.label}</Typography>
-
-                      <Typography className="value">{val.value}</Typography>
+                    {!isMobile && <StarRating onClick={handleRating} size="large" />}
+                  </Box>
+                </Box>
+              </Box>
+              {isMobile && <Divider />}
+              <Box className="main" px={isMobile ? 0 : 10}>
+                <Box
+                  className="justifySpaceBetween flex"
+                  flexDirection={isMobile ? "column" : "row"}
+                >
+                  <Box
+                    className="imageContainer commonStyle "
+                    padding={isMobile ? 10 : 0}
+                  >
+                    <Typography className="pB10" variant="h4">
+                      Photos
+                    </Typography>
+                    <Box className="imageBox ">
+                      <ImageCard
+                        name="By Owner"
+                        link={workerDetailsData.profile.url}
+                        handleClickImage={() => {
+                          setIsOpenImagePreview(true);
+                        }}
+                      />
+                      <ImageCard
+                        name="By User"
+                        link="https://wallpapers.com/images/hd/link-hd-wallpaper-and-background-image-71mfep3ai8bib1mn.jpg"
+                      />
                     </Box>
                   </Box>
-                  <IconButton
-                    className="copyBtn"
-                    onClick={() => handleCopy(val.value)}
-                  >
-                    {val.copyIcon}
-                  </IconButton>
+                  {isMobile && <Divider />}
+                  <Box className="contact commonStyle" padding={isMobile ? 10 : 0}>
+                    <Typography className="pB10" variant="h4">
+                      Contact Information
+                    </Typography>
+
+                    <Box className="contactList">
+                      {contactData.map((val, index) => (
+                        <Box key={index} className="contactItem">
+                          <Box className="flexBox">
+                            <Box className="iconWrapper">{val.icon}</Box>
+
+                            <Box className="textBox">
+                              <Typography className="label">{val.label}</Typography>
+
+                              <Typography className="value">{val.value}</Typography>
+                            </Box>
+                          </Box>
+                          <IconButton
+                            className="copyBtn"
+                            onClick={() => handleCopy(val.value)}
+                          >
+                            {val.copyIcon}
+                          </IconButton>
+                        </Box>
+                      ))}
+                      {isCopy && (
+                        <Snackbar
+                          open={isCopy}
+                          onClose={() => setIsCopy(false)}
+                          autoHideDuration={2000}
+                          message="Copied to clipboard!"
+                        />
+                      )}
+                    </Box>
+                  </Box>
+                  {isMobile && <Divider />}
                 </Box>
-              ))}
-              {isCopy && (
-                <Snackbar
-                  open={isCopy}
-                  onClose={() => setIsCopy(false)}
-                  autoHideDuration={2000}
-                  message="Copied to clipboard!"
+                <Box
+                  className="justifySpaceBetween flex"
+                  alignItems={"flex-start"}
+                  flexDirection={isMobile ? "column-reverse" : "row"}
+                >
+                  <Box width={isMobile ? "100%" : "60%"}>
+                    {isMobile && <Divider />}
+                    <Box className="availableDays commonStyle leftSection">
+                      <Typography className={`${isMobile ? "" : "pB10"}`} variant="h4">
+                        Available Days
+                      </Typography>
+                      <Box className="flexBox">
+                        {days.map((day: string) => (
+                          <CircleDaySelector
+                            key={day}
+                            name={day}
+                            selectedDays={workerDetailsData.days}
+                            onChange={() => { }}
+                          />
+                        ))}
+                      </Box>
+                    </Box>
+                    {isMobile && <Divider />}
+                    <Box className="reviewAndRatingBox">
+                      <Typography className="pB10" variant="h4">
+                        Reviews & Ratings
+                      </Typography>
+                      <Box className="flexBox" gap={"20px !important"}>
+                        <Box
+                          className="starRatingBox"
+                          width={isMobile ? 50 : 72}
+                          height={isMobile ? 50 : 72}
+                        >
+                          <Typography
+                            className="rating"
+                            variant={isMobile ? "h3" : "h1"}
+                          >
+                            4.2
+                          </Typography>
+                        </Box>
+                        <Box>
+                          <Typography variant="h4">9 Ratings</Typography>
+                          <Typography variant="body1" className="ratings">
+                            Ocw rating index based on 9 ratings across the web
+                          </Typography>
+                        </Box>
+                      </Box>
+                      <Box className="startYourReview">
+                        <Typography className="pB10" variant="h4">
+                          Start your Review
+                        </Typography>
+                        <StarRating
+                          onClick={handleRating}
+                          size={isMobile ? "medium" : "large"}
+                        />
+                      </Box>
+                    </Box>
+                  </Box>
+                  {isMobile && <Divider />}
+                  <Box className="address commonStyle" padding={isMobile ? 10 : 0}>
+                    <Typography className="pB10" variant="h4">
+                      Address
+                    </Typography>
+
+                    <Box className="addressCard flex">
+                      {addressData.map((val) => {
+                        return <>
+                          <Box className="flex gap8">
+                            <Typography className="label">{val.label}:</Typography>
+                            <Typography className="value">
+                              {val.value}
+                            </Typography>
+                          </Box>
+                          <Divider />
+                        </>
+                      })}
+                    </Box>
+                  </Box>
+                </Box>
+              </Box>
+              <Divider />
+              <Box className="userReview" padding={10}>
+                <UserReview />
+              </Box>
+              <Divider />
+
+              {isOpenImagePreview && (
+                <ImagePreview
+                  open={isOpenImagePreview}
+                  close={() => setIsOpenImagePreview(false)}
+                  previewImageUrl={workerDetailsData.images}
+                  index={selectedIndex}
                 />
               )}
-            </Box>
-          </Box>
-          {isMobile && <Divider />}
-        </Box>
-        <Box
-          className="justifySpaceBetween flex"
-          alignItems={"flex-start"}
-          flexDirection={isMobile ? "column-reverse" : "row"}
-        >
-          <Box width={isMobile ? "100%" : "60%"}>
-            {isMobile && <Divider />}
-            <Box className="availableDays commonStyle leftSection">
-              <Typography className={`${isMobile ? "" : "pB10"}`} variant="h4">
-                Available Days
-              </Typography>
-              <Box className="flexBox">
-                {days.map((day: string) => (
-                  <CircleDaySelector
-                    key={day}
-                    name={day}
-                    selectedDays={[]}
-                    onChange={() => {}}
-                  />
-                ))}
-              </Box>
-            </Box>
-            {isMobile && <Divider />}
-            <Box className="reviewAndRatingBox">
-              <Typography className="pB10" variant="h4">
-                Reviews & Ratings
-              </Typography>
-              <Box className="flexBox" gap={"20px !important"}>
-                <Box
-                  className="starRatingBox"
-                  width={isMobile ? 50 : 72}
-                  height={isMobile ? 50 : 72}
-                >
-                  <Typography
-                    className="rating"
-                    variant={isMobile ? "h3" : "h1"}
-                  >
-                    4.2
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography variant="h4">9 Ratings</Typography>
-                  <Typography variant="body1" className="ratings">
-                    Ocw rating index based on 9 ratings across the web
-                  </Typography>
-                </Box>
-              </Box>
-              <Box className="startYourReview">
-                <Typography className="pB10" variant="h4">
-                  Start your Review
-                </Typography>
-                <StarRating
-                  onClick={handleRating}
-                  size={isMobile ? "medium" : "large"}
-                />
-              </Box>
-            </Box>
-          </Box>
-          {isMobile && <Divider />}
-          <Box className="address commonStyle" padding={isMobile ? 10 : 0}>
-            <Typography className="pB10" variant="h4">
-              Address
-            </Typography>
-
-            <Box className="addressCard flex">
-              <Box className="flex gap8">
-                <Typography className="label">Address:</Typography>
-                <Typography className="value">
-                  ganpat patil nagar new link road borivali west
-                </Typography>
-              </Box>
-
-              <Divider />
-
-              <Box className="flex gap8">
-                <Typography className="label">Area:</Typography>
-                <Typography className="value">ganpat patil nagar</Typography>
-              </Box>
-
-              <Divider />
-
-              <Box className="flex gap8">
-                <Typography className="label">Landmark:</Typography>
-                <Typography className="value">Navkar wood mall</Typography>
-              </Box>
-
-              <Divider />
-
-              <Box className="flex gap8">
-                <Typography className="label">Pincode:</Typography>
-                <Typography className="value">400104</Typography>
-              </Box>
-
-              <Divider />
-
-              <Box className="flex gap8">
-                <Typography className="label">State:</Typography>
-                <Typography className="value">Maharashtra</Typography>
-              </Box>
-
-              <Divider />
-
-              <Box className="flex gap8">
-                <Typography className="label">City:</Typography>
-                <Typography className="value">Mumbai</Typography>
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-      </Box>
-      <Divider />
-      <Box className="userReview" padding={10}>
-        <UserReview />
-      </Box>
-      <Divider />
-
-      {isOpenImagePreview && (
-        <ImagePreview
-          open={isOpenImagePreview}
-          close={() => setIsOpenImagePreview(false)}
-          previewImageUrl={images}
-          index={selectedIndex}
-        />
-      )}
-    </DetailsStyle>
+            </DetailsStyle>}
+        </>}
+    </>
   );
 }

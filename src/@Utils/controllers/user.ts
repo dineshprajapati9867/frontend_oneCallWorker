@@ -24,8 +24,3 @@ export const createProfileUser = (data: any) =>
    */
   
 export const getMyProfile  = () => getApi(`${API_SERVER_URL}/my-profile`);
-
- /**
-   *    Get worker details by profile id
-   */
-export const getWorkerProfile  = (id:string) => getApi(`${API_SERVER_URL}/worker-profile/${id}`);

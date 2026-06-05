@@ -1,9 +1,9 @@
 import { createContext, useContext, useState, useCallback } from "react";
-import { getAllSkillsCategory, getPostalCode, searchWorkersBySkills } from "@Utils/controllers/misc";
-import { useQuery, UseQueryResult, keepPreviousData, useInfiniteQuery, UseInfiniteQueryResult } from "@tanstack/react-query";
+import { getAllSkillsCategory, getPostalCode, getWorkerProfile, searchWorkersBySkills } from "@Utils/controllers/misc";
+import { useQuery, UseQueryResult, useInfiniteQuery, UseInfiniteQueryResult } from "@tanstack/react-query";
 import React from "react";
 import { uploadImageToS3 } from "../controllers/misc";
-import { hooks } from "..";
+import { hooks, interfaces } from "..";
 interface MiscI {
   handleUploadImages: (files: File[]) => Promise<string[] | null>;
   isUploadFileLoading: boolean;
@@ -12,6 +12,7 @@ interface MiscI {
   ) => UseQueryResult<{ city: string; state: string }>;
   useGetAllSkillsCategory: (limit: number) => UseQueryResult<any>;
   useSearchWorkersBySkills: (search: string, limit: number) => UseInfiniteQueryResult<any>;
+  useGetWorkerDetailsById: (id:string) => UseInfiniteQueryResult<interfaces.createProfileI>;
 }
 
 interface UploadFileResponse {
@@ -115,6 +116,15 @@ function useMiscProvider() {
       enabled: !!search,
     });
   };
+
+    const useGetWorkerDetailsById = (id: string) => {
+    return useQuery({
+      queryKey: [id],
+      queryFn: () => getWorkerProfile(id),
+      select: (data) => data.data.profile,
+      gcTime: 0,
+    });
+  };
   return {
     /**
      * Public file upload
@@ -124,7 +134,8 @@ function useMiscProvider() {
     useGetPostalCode,
     useGetAllSkillsCategory,
 
-    useSearchWorkersBySkills
+    useSearchWorkersBySkills,
+    useGetWorkerDetailsById
   };
 }
 

@@ -81,3 +81,9 @@ export function deleteImageFromS3(data){
 export function searchWorkersBySkills(search:string,page:number,limit:number){
     return getApi(`${API_SERVER_URL}/search?skills=${search}&page=${page}&limit=${limit}`)
 }
+
+
+ /**
+   *    Get worker details by profile id
+   */
+export const getWorkerProfile  = (id:string) => getApi(`${API_SERVER_URL}/worker-profile/${id}`);

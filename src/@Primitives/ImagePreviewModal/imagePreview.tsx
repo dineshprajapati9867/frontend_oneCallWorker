@@ -15,10 +15,8 @@ import {
 import React from "react";
 import ImageCard from "@Views/WorkerDetails/components/ImageCard";
 interface AttachmentI {
-  attachmentUrl: string;
-  attachments: string;
-  length: number;
-  comment?: string;
+  url: string;
+  file: any;
 }
 interface PropsI {
   index?: number;
@@ -100,12 +98,14 @@ export function ImagePreview({ index, open, close, previewImageUrl }: PropsI) {
     setCurrentImage(prevIndex);
   };
 
-  const downloadImage = (url: string) => {
-    const link = document.createElement("a");
-    link.href = url;
-    link.target = "_blank";
-    link.click();
-  };
+const downloadImage = (url: string) => {
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "image.jpg";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
 
   return (
     <ImagePreviewModal
@@ -122,7 +122,7 @@ export function ImagePreview({ index, open, close, previewImageUrl }: PropsI) {
           <IconButton />
           <IconButton
             onClick={() =>
-              downloadImage(previewImageUrl[currentImage]?.attachmentUrl)
+              downloadImage(previewImageUrl[currentImage]?.url)
             }
           >
             <DownloadWhiteIcon />
@@ -137,7 +137,7 @@ export function ImagePreview({ index, open, close, previewImageUrl }: PropsI) {
       <Box className="preview_content">
         <img
           alt=""
-          src={previewImageUrl[currentImage]?.attachmentUrl}
+          src={previewImageUrl[currentImage]?.url}
           className="selected_image"
           style={{
             width: isMobile ? "100%" : "auto",
@@ -150,7 +150,7 @@ export function ImagePreview({ index, open, close, previewImageUrl }: PropsI) {
           {previewImageUrl.map((val, i) => (
             <ImageCard
               handleClickImage={() => setCurrentImage(i)}
-              link={val.attachmentUrl}
+              link={val.url}
             />
           ))}
         </Box>

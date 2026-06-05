@@ -122,7 +122,7 @@ const WorkerCard = ({ data }: PropsI) => {
           startIcon={<CallMuiIcon className="commonIconStyle" />}
           onClick={(e: React.MouseEvent<HTMLElement>) => {
             e.stopPropagation();
-            window.location.href = "tel:7039824822";
+            window.location.href = `tel:${data.mobile_number}`;
           }}
         >
           {data.mobile_number}
@@ -140,7 +140,7 @@ const WorkerCard = ({ data }: PropsI) => {
           startIcon={<WhatsAppIcon width={15} height={15} />}
           onClick={(e: React.MouseEvent<HTMLElement>) => {
             e.stopPropagation();
-            window.open("https://wa.me/7039824933", "_blank");
+              window.open(`https://wa.me/${data.mobile_number}`, "_blank");
             (e.currentTarget as HTMLButtonElement).blur();
           }}
         >
@@ -194,14 +194,7 @@ const WorkerCard = ({ data }: PropsI) => {
 
 
             <Box className="iconBox flex" pl={4}>
-              <Typography variant="body1"> Languages Spoken:</Typography>
-              {
-                data.languages.map((val) => {
-                  return <Typography className="font15" variant="body1">
-                    {val}
-                  </Typography>
-                })
-              }
+              <Typography variant="body1"> Languages Spoken: {data.languages.join(", ")}</Typography>
             </Box>
             <Box>
 

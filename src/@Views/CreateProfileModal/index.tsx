@@ -41,10 +41,10 @@ const CreateProfileModal = () => {
     handleNextForCreateProfile,
     handleCreateProfile,
     isCreateProfilePending,
-    useGetProfileData,
+    // useGetProfileData,
   } = hooks.useUser();
   const { isUploadFileLoading } = hooks.useMisc();
-  const { data } = useGetProfileData();
+  //const { data } = useGetProfileData();
 
   const onSubmit = (data: interfaces.createProfileI) => {
     handleCreateProfile(data);

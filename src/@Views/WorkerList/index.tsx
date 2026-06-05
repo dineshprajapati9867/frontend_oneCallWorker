@@ -27,9 +27,9 @@ const WorkerListStyle = styled(Box)<{
     gap: !isMobile && theme.spacing(10),
     width:"100%",
   },
-  '.LoadMoreBtn': {
+  '.loadMoreBtn': {
     width: "100%",
-    margin: `${theme.spacing(10)} !important`
+    //margin:isMobile && theme.spacing(7.5) ,
   }
 }));
 const WorkerList = () => {

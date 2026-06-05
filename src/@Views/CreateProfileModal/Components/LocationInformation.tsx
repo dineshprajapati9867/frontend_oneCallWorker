@@ -46,12 +46,12 @@ const LocationInformation = ({ control, watch, setValue }: PropsI) => {
           name="address_one"
           control={control}
           rules={{
-            required: "Address line 1 is required",
+            required: "Address is required",
           }}
           render={({ field, fieldState: { error } }) => (
             <TextInput
               {...field}
-              label="Address Line 1*"
+              label="Address*"
               placeholder="Enter Floor Name,Building Name,Street"
               error={!!error}
               helperText={error ? error.message : null}

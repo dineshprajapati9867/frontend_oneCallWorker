@@ -3,11 +3,10 @@ import { hooks, interfaces } from "..";
 import { useMutation, useQuery, UseQueryResult } from "@tanstack/react-query";
 import {
   createProfileUser,
- // getAllWorkersBasedOnSkill,
   getMyProfile,
-  getWorkerProfile,
 } from "@Utils/controllers/user";
 import { createProfileI } from "@Utils/interfaces";
+import { useNavigate } from "react-router-dom";
 
 interface userI {
   openProfileDrawer: boolean;
@@ -22,13 +21,7 @@ interface userI {
   handleCloseLogin: () => void;
   handleCreateProfile: (data:interfaces.createProfileI) => void;
   isCreateProfilePending: boolean;
-  // useGetAllWorkersBasedOnSkill: (
-  //   skill: string,
-  //   page: number,
-  //   limit: number,
-  // ) => UseQueryResult<any>;
   useGetMyProfileData:()=>UseQueryResult<any>,
-  useGetWorkerDetailsById:(id:string)=>UseQueryResult<any>
 }
 
 const userContext = createContext<userI>({} as userI);
@@ -37,6 +30,7 @@ export const useUser = () => useContext(userContext);
 
 const useUserData = () => {
   const { ShowApiErrorSnackBar, ShowSuccessSnackBar } = hooks.useSnackBar();
+  const navigate=useNavigate()
   const { handleUploadImages } = hooks.useMisc();
   const [openProfileDrawer, setOpenProfileDrawer] = useState(false);
   const createProfileStep = [
@@ -85,8 +79,9 @@ const useUserData = () => {
   const { mutate: mutateCreateProfile, isPending: isCreateProfilePending } =
     useMutation({
       mutationFn: createProfileUser,
-      onSuccess(data) {        
-        ShowSuccessSnackBar("Sucess");
+      onSuccess() {        
+        ShowSuccessSnackBar("Profile created successfully");
+        navigate(-1)
       },
       onError: (err) => {
         ShowApiErrorSnackBar(err);
@@ -114,41 +109,16 @@ const useUserData = () => {
     mutateCreateProfile(result);
   };
 
-  // get All worker based on skill
-
-  // const useGetAllWorkersBasedOnSkill = (
-  //   skill: string,
-  //   page: number,
-  //   limit: number,
-  // ) => {
-  //   return useQuery({
-  //     queryKey: ["getAllWorkersBasedOnSkill", skill, page, limit],
-  //     queryFn: () => getAllWorkersBasedOnSkill(skill, page, limit),
-  //     enabled: !!skill,
-  //     select: (data) => data.data,
-  //   });
-  // };
-  // get All worker based on skill
 
   const useGetMyProfileData = (
   ) => {
     return useQuery({
       queryKey: ["getMyProfileData"],
       queryFn: () => getMyProfile(),
-      // enabled:activeStep===1,
       select: (data) => data.data,
     });
   };
 
-  const useGetWorkerDetailsById = (id:string
-  ) => {
-    return useQuery({
-      queryKey: ["getWorkerDetailsById",id],
-      queryFn: () => getWorkerProfile(id),
-      enabled:!!id,
-      select: (data) => data.data,
-    });
-  };
 
   return {
     openProfileDrawer,
@@ -163,9 +133,7 @@ const useUserData = () => {
     handleCloseLogin,
     handleCreateProfile,
     isCreateProfilePending,
-    // useGetAllWorkersBasedOnSkill,
     useGetMyProfileData,
-    useGetWorkerDetailsById
   };
 };
 

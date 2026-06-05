@@ -24,7 +24,7 @@ export interface createProfileI {
   age: string;
   gender: string;
 
-  languages: optionI[];
+  languages: optionI[] | string[];
 
   skills: optionI[];
   images:{
@@ -37,6 +37,7 @@ export interface createProfileI {
   address_one: string;
  // address_two: string;
   area: string;
+  landmark:string
   city: string;
   state: string;
   pincode: string;
