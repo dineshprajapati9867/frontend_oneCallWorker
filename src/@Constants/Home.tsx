@@ -57,7 +57,6 @@ const skills = [
   { id: 4, label: "AC Repair Technician", value: "AC Repair Technician" },
   { id: 5, label: "Painter", value: "Painter" },
   { id: 6, label: "Plumber", value: "Plumber" },
-  { id: 7, label: "Truck Driver", value: "Truck Driver" },
   { id: 9, label: "Security Guard", value: "Security Guard" },
   { id: 10, label: "Cooks", value: "Cooks" },
   { id: 11, label: "Carpenter", value: "Carpenter" },

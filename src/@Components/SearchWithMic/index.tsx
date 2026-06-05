@@ -167,12 +167,12 @@ export default function SearchWithMic({ onClickOnDropdown, onChange }: PropsI) {
     resetTranscript,
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
- 
+
   const isMobile = useMediaQuery((theme) => theme.breakpoints.only("xs"));
   const [open, setOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const { ShowInfoSnackBar } = hooks.useSnackBar();
-
+  console.log(searchText, "searchText")
   const handleMicClick = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -199,11 +199,11 @@ export default function SearchWithMic({ onClickOnDropdown, onChange }: PropsI) {
     }
     if (!listening && transcript) {
       setOpen(false);
-        const searchValue = transcript
-      .replace(/[.,!?]/g, "")
-      .trim();
+      const searchValue = transcript
+        .replace(/[.,!?]/g, "")
+        .trim();
 
-    onClickOnDropdown(searchValue);
+      onClickOnDropdown(searchValue);
     }
   }, [listening, transcript]);
 
@@ -214,24 +214,24 @@ export default function SearchWithMic({ onClickOnDropdown, onChange }: PropsI) {
     setOpenDropDown(false);
   };
 
-  
-
-useEffect(() => {
-  if (location.pathname === "/search") {
-    setSearchText(searchParams.get("q") || "");
-  } else {
-    setSearchText("");
-  }
-}, [location.pathname, searchParams]);
 
 
-useEffect(() => {
-  if (!browserSupportsSpeechRecognition) {
-    ShowInfoSnackBar(
-      "Browser doesn't support speech recognition."
-    );
-  }
-}, [browserSupportsSpeechRecognition]);
+  useEffect(() => {
+    if (location.pathname === "/search") {
+      setSearchText(searchParams.get("q") || "");
+    } else {
+      setSearchText("");
+    }
+  }, [location.pathname, searchParams]);
+
+
+  useEffect(() => {
+    if (!browserSupportsSpeechRecognition) {
+      ShowInfoSnackBar(
+        "Browser doesn't support speech recognition."
+      );
+    }
+  }, [browserSupportsSpeechRecognition]);
   const renderData = () => {
     return (
       <>
@@ -329,7 +329,7 @@ useEffect(() => {
             <Box className="dropDownBox">
               <Typography className="title">TRENDING SEARCHES</Typography>
 
-              {skills.slice(0, 11).map((item) => (
+              {skills.filter((val) => !searchText || val.value.toLowerCase().includes(searchText.trim().toLowerCase())).slice(0, 11).map((item) => (
                 <Box
                   key={item.id}
                   className="item"
