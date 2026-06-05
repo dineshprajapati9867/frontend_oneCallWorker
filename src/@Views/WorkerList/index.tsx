@@ -1,4 +1,4 @@
-import { EnquiryCard, WorkerCard } from "@Components/Card";
+import { WorkerCard } from "@Components/Card";
 import WorkerCardSkeleton from "@Components/Card/WorkerCardSkelton";
 import { Box, Button, styled, Typography, useMediaQuery } from "@mui/material";
 import { hooks, interfaces } from "@Utils/index";
@@ -10,6 +10,11 @@ const WorkerListStyle = styled(Box)<{
   isMobile: boolean;
 }>(({ theme, hideEnquiry, isMobile }) => ({
   padding: !isMobile && theme.spacing(10),
+  '.popular':{
+    marginBottom:theme.spacing(8),
+    paddingLeft:theme.spacing(7.5),
+    paddingTop:theme.spacing(7.5)
+  },
   ".Card": {
     display: "flex",
     justifyContent: "space-between",
@@ -20,11 +25,11 @@ const WorkerListStyle = styled(Box)<{
     display: "flex",
     flexDirection: "column",
     gap: !isMobile && theme.spacing(10),
-    //width: hideEnquiry ? "calc(100% - 336px)" : "100%",
+    width:"100%",
   },
   '.LoadMoreBtn': {
     width: "100%",
-    margin: theme.spacing(10)
+    margin: `${theme.spacing(10)} !important`
   }
 }));
 const WorkerList = () => {
@@ -48,10 +53,10 @@ const WorkerList = () => {
 
   return (
     <WorkerListStyle hideEnquiry={!isMobile} isMobile={isMobile}>
-      {workers.length > 0 && <Typography mb={8} variant="h4">Popular {searchParams.get("q")}</Typography>
+      {workers.length > 0 && <Typography className="popular" variant="h4">Popular {searchParams.get("q")}</Typography>
       }
       <Box className="Card">
-        <Box className="CardContainer" width={`${!isMobile && workers.length > 0 ? "calc(100% - 336px)" : "100%"}`}>
+        <Box className="CardContainer">
           {isLoading ? Array.from({ length: 10 }).map((_, index) => (
             <WorkerCardSkeleton key={index} />
           )) :
@@ -81,7 +86,7 @@ const WorkerList = () => {
             </Button>
           )}
         </Box>
-        {(!isMobile && workers.length > 0) && <EnquiryCard />}
+        {/* {(!isMobile && workers.length > 0) && <EnquiryCard />} */}
       </Box>
 
     </WorkerListStyle>

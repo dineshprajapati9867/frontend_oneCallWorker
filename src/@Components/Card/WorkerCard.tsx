@@ -6,7 +6,7 @@ import {
   CallMuiIcon,
   TranslateIconMui,
 } from "@Icons/index";
-import { Box, Button, styled, Tooltip, Typography } from "@mui/material";
+import { Box, Button, styled, Tooltip, Typography, useMediaQuery } from "@mui/material";
 import { hooks, interfaces } from "@Utils/index";
 import { useNavigate } from "react-router-dom";
 import verified from "@Assets/Images/verified.gif";
@@ -21,7 +21,7 @@ const WorkerCardStyle = styled(Box)<{ isMobile: boolean }>(
       borderRadius: !isMobile && theme.spacing(5),
       cursor: "pointer",
       width: "100%",
-      maxHeight: isMobile ? theme.spacing(120) : theme.spacing(132.5),
+      //maxHeight: isMobile ? theme.spacing(120) : theme.spacing(132.5),
       height: "100%",
       border: `1px solid ${theme.misc.borderColor}`,
       boxSizing: "border-box",
@@ -49,14 +49,13 @@ const WorkerCardStyle = styled(Box)<{ isMobile: boolean }>(
       display: "flex",
       flexDirection: "column",
       gap: theme.spacing(6),
-      padding: theme.spacing(10),
-      paddingRight: "0px",
+      paddingLeft: theme.spacing(10),
     },
     ".thumbBox": {
       gap: theme.spacing(5),
     },
     ".image": {
-      height: !isMobile && "100%",
+      height: isMobile ? "130px" : "100%",
       width: isMobile ? theme.spacing(50) : theme.spacing(100),
       borderRadius: theme.spacing(4),
       objectFit: "cover",
@@ -112,7 +111,7 @@ const WorkerCardStyle = styled(Box)<{ isMobile: boolean }>(
 );
 
 const WorkerCard = ({ data }: PropsI) => {
-  const { isMobile } = hooks.useResponsive();
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.only('xs'))
   const navigate = useNavigate();
   const ButtonGroups = () => {
     return (
@@ -194,15 +193,16 @@ const WorkerCard = ({ data }: PropsI) => {
             </Box>
 
 
-              <Box className="iconBox flex" pl={4}>
-                Languages Spoken:  {
+            <Box className="iconBox flex" pl={4}>
+              <Typography variant="body1"> Languages Spoken:</Typography>
+              {
                 data.languages.map((val) => {
                   return <Typography className="font15" variant="body1">
                     {val}
                   </Typography>
                 })
               }
-              </Box>
+            </Box>
             <Box>
 
 
