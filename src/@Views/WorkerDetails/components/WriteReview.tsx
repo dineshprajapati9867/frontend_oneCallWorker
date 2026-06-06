@@ -128,7 +128,7 @@ function WriteReview() {
     control:control,
     name:"images"
   })
-  console.log(img,"images")
+  // console.log(images,"images")
   const onSubmit = (data) => {
     console.log(data,"data")
   }
@@ -231,7 +231,7 @@ function WriteReview() {
 
 
               <Box display={"flex"} flexWrap={"wrap"} gap={5}>
-                {images.map((val: { url: string }) => {
+                {images?.map((val: { url: string }) => {
                   return (
                     <ImageCard
                       key={val.url}
