@@ -232,13 +232,14 @@ export default function WorkerDetails() {
   const navigate = useNavigate();
   const [isCopy, setIsCopy] = useState(false);
   const [isOpenImagePreview, setIsOpenImagePreview] = useState(false);
-  const handleRating = () => {
-    navigate("/worker/write-review/9876567", { state: { modal: true } });
-  };
+
   const { useGetWorkerDetailsById } = hooks.useMisc();
   const { data: workerDetailsData, isLoading: isWorkerDetailsDataLoading } = useGetWorkerDetailsById(id);
 
-
+  const handleRating = (rating) => { 
+    const fullName = `${workerDetailsData?.first_name} ${workerDetailsData?.last_name}`;   
+    navigate(`/worker/write-review/${id}?rating=${rating}&name=${fullName}&area=${workerDetailsData?.area}&url=${encodeURIComponent(workerDetailsData?.profile?.url)}`, { state: { modal: true } });
+  };
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
     setIsCopy(true);
@@ -379,7 +380,7 @@ export default function WorkerDetails() {
     </ToolTip> */}
                     </Box>
 
-                    {!isMobile && <StarRating onClick={handleRating} size="large" />}
+                    {!isMobile && <StarRating onChange={(event, value) => handleRating(value)} size="large" />}
                   </Box>
                 </Box>
               </Box>
@@ -500,7 +501,7 @@ export default function WorkerDetails() {
                           Start your Review
                         </Typography>
                         <StarRating
-                          onClick={handleRating}
+                          onChange={(event, value) => handleRating(value)}
                           size={isMobile ? "medium" : "large"}
                         />
                       </Box>

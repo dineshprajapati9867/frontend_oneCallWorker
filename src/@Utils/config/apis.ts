@@ -2,7 +2,7 @@ import axios from 'axios';
 const API_SERVER_URL=""
 const API=""
 
-axios.defaults.headers.common.Authorization = `Bearer ${ localStorage.getItem("token")}`;
+//axios.defaults.headers.common.Authorization = `Bearer ${ localStorage.getItem("token")}`;
 
 /**
  * Gets the API data from the server.

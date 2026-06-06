@@ -87,3 +87,6 @@ export function searchWorkersBySkills(search:string,page:number,limit:number){
    *    Get worker details by profile id
    */
 export const getWorkerProfile  = (id:string) => getApi(`${API_SERVER_URL}/worker-profile/${id}`);
+
+
+export const createReview=(data)=>postApi(`${API_SERVER_URL}/review`,data)

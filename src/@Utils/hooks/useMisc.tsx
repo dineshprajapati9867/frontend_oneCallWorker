@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useCallback } from "react";
-import { getAllSkillsCategory, getPostalCode, getWorkerProfile, searchWorkersBySkills } from "@Utils/controllers/misc";
-import { useQuery, UseQueryResult, useInfiniteQuery, UseInfiniteQueryResult } from "@tanstack/react-query";
+import { createReview, getAllSkillsCategory, getPostalCode, getWorkerProfile, searchWorkersBySkills } from "@Utils/controllers/misc";
+import { useQuery, UseQueryResult, useInfiniteQuery, UseInfiniteQueryResult, useMutation } from "@tanstack/react-query";
 import React from "react";
 import { uploadImageToS3 } from "../controllers/misc";
 import { hooks, interfaces } from "..";
@@ -12,7 +12,9 @@ interface MiscI {
   ) => UseQueryResult<{ city: string; state: string }>;
   useGetAllSkillsCategory: (limit: number) => UseQueryResult<any>;
   useSearchWorkersBySkills: (search: string, limit: number) => UseInfiniteQueryResult<any>;
-  useGetWorkerDetailsById: (id:string) => UseInfiniteQueryResult<interfaces.createProfileI>;
+  useGetWorkerDetailsById: (id: string) => UseInfiniteQueryResult<interfaces.createProfileI>;
+  handleCreateReview: (data: interfaces.CreateReviewI) => void,
+  isCreateReviewLoading: boolean
 }
 
 interface UploadFileResponse {
@@ -26,7 +28,7 @@ export const useMisc = () => useContext(MiscContext);
 function useMiscProvider() {
   const { ShowErrorSnackBar } = hooks.useSnackBar();
   const [isUploadFileLoading, setIsUploadFileLoading] = useState(false);
-
+  const { ShowSuccessSnackBar, ShowApiErrorSnackBar } = hooks.useSnackBar()
   /**
    * Generic function to upload files in public bucket
    */
@@ -117,7 +119,7 @@ function useMiscProvider() {
     });
   };
 
-    const useGetWorkerDetailsById = (id: string) => {
+  const useGetWorkerDetailsById = (id: string) => {
     return useQuery({
       queryKey: [id],
       queryFn: () => getWorkerProfile(id),
@@ -125,6 +127,24 @@ function useMiscProvider() {
       gcTime: 0,
     });
   };
+
+  /**
+   *  Create Review
+   */
+  const { mutate: mutateCreateReview, isPending: isCreateReviewLoading } =
+    useMutation({
+      mutationFn: createReview,
+      onSuccess() {
+        ShowSuccessSnackBar(" Created successfully");
+      },
+      onError: (err) => {
+        ShowApiErrorSnackBar(err);
+      },
+    });
+
+  const handleCreateReview = (data: interfaces.CreateReviewI) => {
+    mutateCreateReview(data)
+  }
   return {
     /**
      * Public file upload
@@ -135,7 +155,9 @@ function useMiscProvider() {
     useGetAllSkillsCategory,
 
     useSearchWorkersBySkills,
-    useGetWorkerDetailsById
+    useGetWorkerDetailsById,
+    handleCreateReview,
+    isCreateReviewLoading
   };
 }
 

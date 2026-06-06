@@ -44,7 +44,7 @@ const MainBox = styled(Box)(({ theme }) => ({
     padding: theme.spacing(5, 6),
     boxSizing: "border-box",
     overflowY: "auto",
-    height: "50vh",
+    maxHeight: "50vh",
     "&::-webkit-scrollbar": {
       width: "6px",
     },
@@ -172,7 +172,7 @@ export default function SearchWithMic({ onClickOnDropdown, onChange }: PropsI) {
   const [open, setOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const { ShowInfoSnackBar } = hooks.useSnackBar();
-  console.log(searchText, "searchText")
+
   const handleMicClick = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });

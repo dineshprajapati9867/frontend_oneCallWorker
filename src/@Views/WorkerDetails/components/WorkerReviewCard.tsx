@@ -27,7 +27,7 @@ const CardWrapper = styled(Box)<{ isMobile: boolean; isThreeDot: boolean }>(
     padding: !isMobile && theme.spacing(8),
     width: isMobile ? "100%" : !isThreeDot ? theme.spacing(240) : "100%",
     minWidth: isMobile ? "100%" : theme.spacing(240),
-    minHeight: !isMobile && theme.spacing(105),
+    maxHeight: !isMobile && theme.spacing(105),
     boxSizing: "border-box",
     backgroundColor:!isMobile&& theme.misc.cardBG,
     paddingTop: isMobile && theme.spacing(1),

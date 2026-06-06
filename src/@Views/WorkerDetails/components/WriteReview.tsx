@@ -13,8 +13,10 @@ import {
 } from "@mui/material";
 import { Address } from "@Primitives/Address";
 import React, { useCallback, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import ImageCard from "./ImageCard";
+import { hooks } from "@Utils/index";
+import { Controller, useForm,useWatch } from "react-hook-form";
 const ratingLabels = {
   1: { text: "Terrible", emoji: "😡" },
   2: { text: "Bad", emoji: "😕" },
@@ -22,7 +24,7 @@ const ratingLabels = {
   4: { text: "Good", emoji: "🙂" },
   5: { text: "Excellent", emoji: "😍" },
 };
-const StyleWrite = styled(Box)<{ isMobile: boolean }>(
+const StyleWrite = styled("form")<{ isMobile: boolean }>(
   ({ theme, isMobile }) => ({
     // padding: isMobile && theme.spacing(0, 10),
     ".fW500": {
@@ -40,7 +42,7 @@ const StyleWrite = styled(Box)<{ isMobile: boolean }>(
       }),
       ...(!isMobile && {
         padding: theme.spacing(10, 10, 0, 10),
-        paddingLeft:0
+        paddingLeft: 0
       }),
     },
     ".contentData": {
@@ -106,10 +108,10 @@ const StyleWrite = styled(Box)<{ isMobile: boolean }>(
   }),
 );
 function WriteReview() {
-  const [images, setImages] = React.useState([]);
-
+  const [params] = useSearchParams()
+  const { isCreateReviewLoading, handleCreateReview } = hooks.useMisc()
   const isMobile = useMediaQuery((theme) => theme.breakpoints.only("xs"));
-  const [rating, setRating] = useState(1);
+  const [rating, setRating] = useState(Number(params.get("rating")));
   const location = useLocation();
   const navigate = useNavigate();
   const isModal = location.state?.modal;
@@ -118,12 +120,21 @@ function WriteReview() {
     navigate(-1);
   };
 
-  const handleUploadImage = useCallback((file: any) => {
-    setImages((prev) => [...prev, ...file]);
-  }, []);
+
+  const { handleSubmit, control } = useForm({
+    mode: "onChange"
+  })
+  const images=useWatch({
+    control:control,
+    name:"images"
+  })
+  console.log(img,"images")
+  const onSubmit = (data) => {
+    console.log(data,"data")
+  }
   const content = () => {
     return (
-      <StyleWrite isMobile={isMobile}>
+      <StyleWrite onSubmit={handleSubmit(onSubmit)} isMobile={isMobile}>
         <Box className="main">
           <Box className="content">
             <Box>
@@ -147,24 +158,35 @@ function WriteReview() {
               <Box className="header">
                 <img
                   className="image"
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiNcCdGom-PPruozY501VScVdQTMfQFlAVQQ&s"
+                  src={params.get("url")}
                 />
                 <Box>
                   <Typography variant="h5" className="fS20">
-                    Kulkarni Guruji Dharmik Vidhi Kendra
+                    {params.get('name')}
                   </Typography>
                   <Typography variant="body1" className="subHeadingText">
-                    Borivali West
+                    {params.get("area")}
                   </Typography>
                 </Box>
               </Box>
               <Typography variant="h5" className="fW500">
                 How would you rate your experience?
               </Typography>
-              <StarRating
-                value={rating}
-                onChange={(e, newValue) => setRating(newValue)}
+              <Controller
+                name="rating"
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({ field }) => (
+                  <StarRating
+                    {...field}
+                    value={rating}
+                    onChange={(e, newValue) => setRating(newValue)}
+                  />
+                )}
               />
+
               <Box className="ratingBox">
                 <Typography variant="h5" className=" fW500">
                   {ratingLabels[rating]?.text}
@@ -176,15 +198,37 @@ function WriteReview() {
                   Tell us about your experience
                 </Typography>
 
-                <Address
-                  minRows={5}
-                  placeholder="Tell us about your experience"
+
+                <Controller
+                  name="description"
+                  control={control}
+                  rules={{
+                    required: true,
+                  }}
+                  render={({ field, fieldState: { error } }) => (
+                    <Address
+                      {...field}
+                      minRows={5}
+                      placeholder="Tell us about your experience"
+                      error={error}
+                    />
+                  )}
                 />
               </Box>
               <Typography variant="body1" className="fS20 fW500">
                 Upload Photos
               </Typography>
-              <UploadImage onChange={handleUploadImage} />
+              <Controller
+                name="images"
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({ field }) => (
+                  <UploadImage {...field}  />
+                )}
+              />
+
 
               <Box display={"flex"} flexWrap={"wrap"} gap={5}>
                 {images.map((val: { url: string }) => {
@@ -193,20 +237,15 @@ function WriteReview() {
                       key={val.url}
                       link={val.url}
                       handleCrossIcon={() => {
-                        setImages((prev) => {
-                          return prev.filter(
-                            (img: { preview: string }) =>
-                              img.preview !== val.url,
-                          );
-                        });
+                        
                       }}
                     />
                   );
                 })}
               </Box>
               <Box className="submitBox">
-                <Button className="submitBtn" variant="contained">
-                  Submit Review
+                <Button type="submit" disabled={isCreateReviewLoading} className="submitBtn" variant="contained">
+                  Submit Review{isCreateReviewLoading && "..."}
                 </Button>
               </Box>
             </Box>
