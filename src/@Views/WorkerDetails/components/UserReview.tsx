@@ -157,9 +157,9 @@ const UserReview = ({ isBorder = true,isLoading,data }: PropsI) => {
                 <Button
                   className="action-btn"
                   startIcon={<ChatBubbleOutlineOutlinedIcon />}
-                  onClick={() => {
-                    navigate(`/ocwSocial/post/${data._id}`);
-                  }}
+                  // onClick={() => {
+                  //   navigate(`/ocwSocial/post/${data._id}`);
+                  // }}
                 >
                   Comment (2)
                 </Button>
