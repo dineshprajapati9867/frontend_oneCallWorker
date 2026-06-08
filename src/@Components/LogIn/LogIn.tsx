@@ -1,30 +1,23 @@
-import {
-  CrossBigIcon,
-  EditBlueIcon,
-  ErrorIcon,
-  GoogleIcon,
-} from "@Icons/index";
+import { CrossBigIcon, GoogleIcon } from "@Icons/index";
 import {
   Box,
   Dialog,
   styled,
   Typography,
-  TextField,
-  InputAdornment,
-  Checkbox,
   Button,
   Divider,
   IconButton,
   Slide,
   Drawer,
 } from "@mui/material";
-import { hooks, validationPatterns } from "@Utils/index";
-import { useGoogleLogin, useGoogleOneTapLogin } from "@react-oauth/google";
-import React, { useRef, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { hooks } from "@Utils/index";
+import React, { useState, Activity } from "react";
+import { useForm } from "react-hook-form";
 import ocw_logo from "@Assets/Images/ocw_logo.png";
-import axios from "axios";
-import OtpInput from "react-otp-input";
+import { SignUp } from "./Components/SignUp";
+import { SignIn } from "./Components/SignIn";
+import { ForgotPassword } from "./Components/ForgotPassword";
+import { OtpVerification } from "./Components/OtpVerification";
 
 interface PropsI {
   open: boolean;
@@ -66,46 +59,7 @@ const LoginStyle = styled(Box)<{ isMobile: boolean }>(
       gap: theme.spacing(10),
       flexDirection: "column",
     },
-    ".mobileInput": {
-      marginTop: theme.spacing(10),
-      "& .MuiOutlinedInput-root": {
-        "& fieldset": {
-          border: `1.2pt solid ${theme.palette.secondary.dark}`,
-        },
-      },
-      ".MuiOutlinedInput-root": {
-        // border: `1.2pt solid ${theme.palette.secondary.dark}`,
-        maxHeight: theme.spacing(26),
-        borderRadius: theme.spacing(3.5),
-      },
-      ".MuiInputBase-input": {
-        fontSize: theme.spacing(9),
-        fontWeight: 500,
-      },
-    },
-    ".inputStart": {
-      ".MuiTypography-body1": {
-        fontSize: `${theme.spacing(9)} !important`,
-        fontWeight: 500,
-      },
-    },
-    ".tnc": {
-      display: "flex",
-      flexDirection: "column",
-      ".checkbox": {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      },
-      ".privacy": {
-        textAlign: "center",
-      },
-    },
-    ".loginBtn": {
-      fontWeight: 600,
-      border: "none",
-      borderRadius: theme.spacing(3.5),
-    },
+
     ".orLogin": {
       ".MuiDivider-wrapper": {
         fontSize: theme.spacing(6),
@@ -121,83 +75,56 @@ const LoginStyle = styled(Box)<{ isMobile: boolean }>(
   }),
 );
 
-const LoginOtp = styled(Box)<{ isMobile }>(({ theme, isMobile }) => ({
-  ".headerText": {
-    display: "flex",
-    alignItems: "center",
-    padding: theme.spacing(0, 5, 0, 2),
-    justifyContent: "space-between",
-    gap: theme.spacing(10),
-
-    ".enterText": {
-      fontSize: theme.spacing(9),
-      fontWeight: 400,
-    },
-    ".number": {
-      fontSize: theme.spacing(9),
-      fontWeight: 600,
-    },
-  },
-  // ".otp": {
-  //   display: "flex",
-  //   alignItems: "center",
-  //   gap: theme.spacing(6),
-  //   marginTop: theme.spacing(7.5),
-  // },
-  ".otpBox": {
-    width: `${theme.spacing(isMobile ? 20 : 28)} !important`,
-    height: theme.spacing(isMobile ? 25 : 34.5),
-    textAlign: "center",
-    border: `1px solid ${theme.text.darkGrey}`,
-    borderRadius: theme.spacing(4),
-    fontSize: theme.spacing(9),
-    fontWeight: 600,
-    marginRight: theme.spacing(5),
-    "&:focus": {
-      border: `2px solid ${theme.palette.primary.main}`,
-      outline: "none",
-    },
-  },
-
-  ".bottomText": {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    margin: theme.spacing(15, 0),
-    ".receiveOtp": {
-      fontSize: theme.spacing(6),
-      fontWeight: 500,
-      color: theme.text.darkGrey,
-    },
-
-    ".resendBtn": {
-      fontSize: theme.spacing(6),
-      fontWeight: 500,
-      color: theme.text.lightBlue,
-    },
-  },
-  ".continueBtn": {
-    borderRadius: theme.spacing(3.5),
-    maxHeight: theme.spacing(20),
-  },
-  ".editBox": {
-    display: "flex",
-    alignItems: "center",
-    gap: theme.spacing(2),
-  },
-}));
-
 function LogIn({ open, onClose }: PropsI) {
-  const [isOtpSend, setIsOtpSend] = useState(false);
-  const { control, setValue, handleSubmit } = useForm({
+  const { control, handleSubmit, trigger, getValues } = useForm({
     mode: "onChange",
   });
   const { isMobile } = hooks.useResponsive();
-  const { handleLoginWithGoogle } = hooks.useAuth();
+  const {
+    handleLoginWithGoogle,
+    handleSignUp,
+    handleSendOtp,
+    handleSignIn,
+    handleUpdatePassword,
+    authScreen,
+    setAuthScreen,
+    isLogoutLoading,
+    isSendOtpLoading,
+    isSignInAuthLoading,
+    isSignUpLoading,
+    isUpdatePasswordLoading,
+  } = hooks.useAuth();
   const onSubmit = (data) => {
-    setIsOtpSend(true);
+
+    switch (authScreen) {
+      case "signup":
+        handleSignUp(data);
+        break;
+
+      case "signin":
+        handleSignIn(data);
+        break;
+
+      case "sendOtp":
+        handleSendOtp(data);
+
+        break;
+
+      case "updatePassword":
+        handleUpdatePassword(data);
+        break;
+
+      default:
+        break;
+    }
   };
 
+  const isLoading =
+    isLogoutLoading ||
+    isSendOtpLoading ||
+    isSignInAuthLoading ||
+    isSignUpLoading ||
+    isUpdatePasswordLoading;
   const ContentData = () => {
     return (
       <LoginStyle isMobile={isMobile}>
@@ -218,157 +145,66 @@ function LogIn({ open, onClose }: PropsI) {
             </Typography>
           </Box>
         </Box>
-        {!isOtpSend && (
-          <Box className="main">
-            <Controller
-              name="mobile_otp"
+
+        <form onSubmit={handleSubmit(onSubmit)} className="main">
+          {authScreen === "signin" && (
+            <SignIn
               control={control}
-              rules={{
-                validate: (val) => {
-                  if (
-                    !validationPatterns.pattern.mobile.test(val) &&
-                    val.length === 10
-                  ) {
-                    return "Please enter valid mobile number";
-                  }
-                  return undefined;
-                },
-              }}
-              render={({
-                field: { onChange, value },
-                fieldState: { error },
-              }) => (
-                <TextField
-                  type="number"
-                  fullWidth
-                  value={value}
-                  placeholder="Enter Mobile Number"
-                  className="mobileInput"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment className="inputStart" position="start">
-                        +91
-                      </InputAdornment>
-                    ),
-                  }}
-                  onChange={(e) => {
-                    const val = e.target.value;
-                    if (val.length <= 10) {
-                      onChange(e);
-                    }
-                  }}
-                  error={!!error}
-                  helperText={
-                    error ? (
-                      <span
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 4,
-                        }}
-                      >
-                        <ErrorIcon />
-                        {error.message}
-                      </span>
-                    ) : null
-                  }
-                />
-              )}
+              onSignup={() => setAuthScreen("signup")}
+              onForgotPassword={() => setAuthScreen("sendOtp")}
+              isLoading={isLoading}
             />
+          )}
 
-            {/* Terms & Conditions */}
-            <Box className="tnc">
-              <Box className="checkbox">
-                <Checkbox disabled size="small" defaultChecked />
-                <Typography variant="body2">
-                  I Agree to Terms and Conditions{" "}
-                </Typography>
-              </Box>
-              <Typography className="privacy">
-                T&amp;C's Privacy Policy
-              </Typography>
-            </Box>
+          {authScreen === "signup" && (
+            <SignUp
+              onSignin={() => setAuthScreen("signin")}
+              control={control}
+              isLoading={isLoading}
+            />
+          )}
 
-            {/* Login Button */}
-            <Button
-              onClick={handleSubmit(onSubmit)}
-              variant="contained"
-              fullWidth
-              className="loginBtn"
-            >
-              Login with OTP
-            </Button>
+          {authScreen === "sendOtp" && (
+            <ForgotPassword
+              control={control}
+              onSignIn={() => setAuthScreen("signin")}
+              onSignUp={() => setAuthScreen("signup")}
+              onOtpSent={() => setAuthScreen("sendOtp")}
+              isLoading={isLoading}
+            />
+          )}
 
-            <Divider className="orLogin">Or Login Using</Divider>
+          {authScreen === "updatePassword" && (
+            <OtpVerification
+              control={control}
+              onBack={() => setAuthScreen("signin")}
+              trigger={trigger}
+              isLoading={isLoading}
+              handleSendOtp={() => {
+                const email = getValues("email");
+                handleSendOtp({ email });
+              }}
+              getValues={getValues}
+            />
+          )}
 
-            {/* Google Button */}
-            <Button
-              variant="outlined"
-              startIcon={<GoogleIcon />}
-              fullWidth
-              className="googleBtn"
-              onClick={handleLoginWithGoogle}
-            >
-              Google
-            </Button>
-          </Box>
-        )}
-        {/* after otp  */}
-        {isOtpSend && (
-          <LoginOtp isMobile={isMobile}>
-            <Box className="headerText">
-              <Typography className="enterText">
-                Enter the code sent to{" "}
-              </Typography>
-              <Box className="editBox">
-                <Typography className="number">+ 91 - 7949747494</Typography>
-                <IconButton onClick={() => setIsOtpSend(false)}>
-                  <EditBlueIcon />
-                </IconButton>
-              </Box>
-            </Box>
-            <Box className="otp">
-              <Controller
-                name={`otp`}
-                control={control}
-                defaultValue=""
-                rules={{
-                  required: true,
-                }}
-                render={({
-                  field: { onChange, value, ref, ...rest },
-                  fieldState: { error },
-                }) => (
-                  <OtpInput
-                    inputType="number"
-                    value={value}
-                    onChange={onChange}
-                    numInputs={6}
-                    renderInput={(props, i) => (
-                      <input
-                        type="number"
-                        autoFocus={i === 0}
-                        {...props}
-                        className="otpBox"
-                      />
-                    )}
-                  />
-                )}
-              />
-            </Box>
-            <Box className="bottomText">
-              <Typography className="receiveOtp">
-                Didn’t Receive the OTP?
-              </Typography>
-              <Button className="resendBtn" variant="text">
-                Resend OTP
+          {(authScreen === "signin" || authScreen === "signup") && (
+            <>
+              <Divider className="orLogin">Or Login Using</Divider>
+
+              <Button
+                disabled={isLoading}
+                variant="outlined"
+                startIcon={<GoogleIcon />}
+                fullWidth
+                className="googleBtn"
+                onClick={handleLoginWithGoogle}
+              >
+                Google
               </Button>
-            </Box>
-            <Button className="continueBtn" fullWidth variant="contained">
-              Continue
-            </Button>
-          </LoginOtp>
-        )}
+            </>
+          )}
+        </form>
       </LoginStyle>
     );
   };
@@ -392,8 +228,8 @@ function LogIn({ open, onClose }: PropsI) {
           open={open}
           sx={(theme) => ({
             ".MuiPaper-root": {
-              maxWidth: theme.spacing(240),
-              width: "100%",
+              minWidth: theme.spacing(240),
+              //width: "100%",
               borderRadius: theme.spacing(7.5),
               margin: "0",
               overflow: "hidden",

@@ -59,3 +59,9 @@ export interface CreateReviewI {
     file: any
   }[]
 }
+
+export interface SignUpFormData {
+  name: string;
+  email: string;
+  password: string;
+}

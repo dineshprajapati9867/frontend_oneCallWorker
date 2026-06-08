@@ -20,15 +20,16 @@ const UploadContainer = styled(Box)(({ theme }) => ({
 }));
 
 interface PropsI {
+    value?: any[];
   onChange?: (files: any[]) => void;
 }
-const maxSize = 5242880;
+const maxSize = 10 * 1024 * 1024;
 
-function UploadImage({ onChange}: PropsI) {
+function UploadImage({ onChange,value}: PropsI) {
   const { ShowCautionSnackBar } = hooks.useSnackBar();
 
   const { getRootProps, getInputProps } = useDropzone({
-    accept: `.png, .jpg`,
+    accept: ".png, .jpg, .jpeg",
     multiple: true,
     maxSize,
     onDrop: (acceptedFiles) => {
@@ -37,15 +38,15 @@ function UploadImage({ onChange}: PropsI) {
         url: URL.createObjectURL(file),
       }));
 
-       onChange?.(newFiles);
+       onChange?.([...(value || []), ...newFiles]);
     },
     onDropRejected: (err) => {
       if (err[0].errors[0].code === "file-too-large") {
-        ShowCautionSnackBar("File should not exceed more than 5mb!");
+        ShowCautionSnackBar("File should not exceed more than 10mb!");
       }
       if (err[0].errors[0].code === "file-invalid-type") {
         ShowCautionSnackBar(
-          "Could not read the selected file. Please upload only JPG or PNG format file!",
+          "Could not read the selected file. Please upload only JPG or PNG or JPEG format file!",
         );
       }
     },

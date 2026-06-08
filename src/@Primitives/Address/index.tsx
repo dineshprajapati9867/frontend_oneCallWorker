@@ -58,7 +58,7 @@ export function Address({ error, value, onChange, minRows, label, placeholder }:
         value={value}
         onChange={onChange}
       />
-      {error ? <FormHelperTextC>Address is required</FormHelperTextC> : ''}
+      {error ? <FormHelperTextC>{error}</FormHelperTextC> : ''}
     </>
   );
 }

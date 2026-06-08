@@ -63,7 +63,7 @@ const WorkerList = () => {
             workers.length ?
               workers?.map((val: interfaces.createProfileI) => (
                 <WorkerCard data={val} key={val._id} />
-              )) : <Box textAlign={'center'}>
+              )) : <Box textAlign={'center'} padding={10}>
 
                 <img src={noSearchResult} alt="Search not found" />
                 <Typography variant="h3" fontWeight={500} mt={10} mb={5}>Sorry, no results found!</Typography>

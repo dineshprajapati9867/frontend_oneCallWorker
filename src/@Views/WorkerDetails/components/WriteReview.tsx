@@ -1,6 +1,6 @@
 import StarRating from "@Components/StarRating";
 import UploadImage from "@Components/UploadImage";
-import { ChevronLeftIconDarkBlack, } from "@Icons/LeftArrow";
+import { ChevronLeftIconDarkBlack } from "@Icons/LeftArrow";
 import {
   Box,
   Button,
@@ -13,10 +13,16 @@ import {
 } from "@mui/material";
 import { Address } from "@Primitives/Address";
 import React, { useCallback, useState } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import ImageCard from "./ImageCard";
 import { hooks } from "@Utils/index";
-import { Controller, useForm,useWatch } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
+import { pattern } from "@Utils/pattern";
 const ratingLabels = {
   1: { text: "Terrible", emoji: "😡" },
   2: { text: "Bad", emoji: "😕" },
@@ -42,20 +48,22 @@ const StyleWrite = styled("form")<{ isMobile: boolean }>(
       }),
       ...(!isMobile && {
         padding: theme.spacing(10, 10, 0, 10),
-        paddingLeft: 0
+        paddingLeft: 0,
       }),
     },
-    ".contentData": {
-      ...(isMobile && {
-        height: "calc(100vh - 60px)",
-        overflowY: "auto",
-        marginBottom: theme.spacing(10),
-      }),
-    },
+    // ".contentData": {
+    //   ...(isMobile && {
+    //    // height: "calc(100vh - 60px)",
+    //    // overflowY: "auto",
+    //     marginBottom: theme.spacing(10),
+    //   }),
+    // },
     ".main": {
-      display: "flex",
-
-      justifyContent: "center",
+      ...(!isMobile&&{
+      display:"flex",
+      justifyContent:"center"
+      })
+  
     },
     ".content": {
       display: "flex",
@@ -99,7 +107,7 @@ const StyleWrite = styled("form")<{ isMobile: boolean }>(
         bottom: 0,
         left: 0,
         width: "100%",
-        zIndex: 1,
+        zIndex: 4,
         backgroundColor: theme.misc.lightGrayBG,
         padding: theme.spacing(5, 10),
         boxSizing: "border-box",
@@ -108,8 +116,10 @@ const StyleWrite = styled("form")<{ isMobile: boolean }>(
   }),
 );
 function WriteReview() {
-  const [params] = useSearchParams()
-  const { isCreateReviewLoading, handleCreateReview } = hooks.useMisc()
+  const [params] = useSearchParams();
+
+  const { id } = useParams();
+  const { isCreateReviewLoading, handleCreateReview } = hooks.useMisc();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.only("xs"));
   const [rating, setRating] = useState(Number(params.get("rating")));
   const location = useLocation();
@@ -120,18 +130,37 @@ function WriteReview() {
     navigate(-1);
   };
 
+  const {
+    handleSubmit,
+    control,
+    setValue,
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      rating: Number(params.get("rating")) || 0,
+      description: "",
+      images: [],
+    },
+  });
+  const images = useWatch({
+    control: control,
+    name: "images",
+  });
 
-  const { handleSubmit, control } = useForm({
-    mode: "onChange"
-  })
-  const images=useWatch({
-    control:control,
-    name:"images"
-  })
-  // console.log(images,"images")
+
   const onSubmit = (data) => {
-    console.log(data,"data")
-  }
+    handleCreateReview({ ...data, workerId: id });
+  };
+
+  const handleRemoveImage = (url: string) => {
+  const updatedImages = images.filter(
+    (image) => image.url !== url
+  );
+
+  setValue("images", updatedImages, {
+    shouldValidate: true,
+  });
+};
   const content = () => {
     return (
       <StyleWrite onSubmit={handleSubmit(onSubmit)} isMobile={isMobile}>
@@ -156,13 +185,10 @@ function WriteReview() {
               paddingTop={0}
             >
               <Box className="header">
-                <img
-                  className="image"
-                  src={params.get("url")}
-                />
+                <img className="image" src={params.get("url")} />
                 <Box>
                   <Typography variant="h5" className="fS20">
-                    {params.get('name')}
+                    {params.get("name")}
                   </Typography>
                   <Typography variant="body1" className="subHeadingText">
                     {params.get("area")}
@@ -181,8 +207,11 @@ function WriteReview() {
                 render={({ field }) => (
                   <StarRating
                     {...field}
-                    value={rating}
-                    onChange={(e, newValue) => setRating(newValue)}
+                    value={field.value ?? rating}
+                    onChange={(e, newValue) => {
+                      setRating(newValue);
+                      field.onChange(newValue);
+                    }}
                   />
                 )}
               />
@@ -198,19 +227,27 @@ function WriteReview() {
                   Tell us about your experience
                 </Typography>
 
-
                 <Controller
                   name="description"
                   control={control}
                   rules={{
-                    required: true,
+                    required: "Address is required",
+                    minLength: {
+                      value: 20,
+                      message: "Review must be at least 20 characters",
+                    },
+                    pattern: {
+                      value: pattern.noSpace,
+                      message: "Space not allowed",
+                    },
                   }}
                   render={({ field, fieldState: { error } }) => (
                     <Address
+                      label=""
                       {...field}
                       minRows={5}
                       placeholder="Tell us about your experience"
-                      error={error}
+                      error={error ? error.message : null}
                     />
                   )}
                 />
@@ -221,36 +258,33 @@ function WriteReview() {
               <Controller
                 name="images"
                 control={control}
-                rules={{
-                  required: true,
-                }}
-                render={({ field }) => (
-                  <UploadImage {...field}  />
-                )}
+                render={({ field }) => <UploadImage {...field} />}
               />
 
-
-              <Box display={"flex"} flexWrap={"wrap"} gap={5}>
+              <Box display={"flex"} flexWrap={"wrap"} gap={5} pb={isMobile?15:0}>
                 {images?.map((val: { url: string }) => {
                   return (
                     <ImageCard
                       key={val.url}
                       link={val.url}
-                      handleCrossIcon={() => {
-                        
-                      }}
+                      handleCrossIcon={handleRemoveImage}
                     />
                   );
                 })}
               </Box>
               <Box className="submitBox">
-                <Button type="submit" disabled={isCreateReviewLoading} className="submitBtn" variant="contained">
+                <Button
+                  type="submit"
+                  disabled={isCreateReviewLoading}
+                  className="submitBtn"
+                  variant="contained"
+                >
                   Submit Review{isCreateReviewLoading && "..."}
                 </Button>
               </Box>
             </Box>
           </Box>
-        </Box>
+    </Box>
       </StyleWrite>
     );
   };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   FormControl,
   InputAdornment,
@@ -9,15 +9,15 @@ import {
   Theme,
   TextField,
   Box,
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { ErrorIcon } from '@Assets/@Icons/ErrorIcon';
-import { SmallInfoIcon } from '@Icons/SmallInfoIcon';
-import { ToolTip } from '@Primitives/Tooltip';
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { ErrorIcon } from "@Assets/@Icons/ErrorIcon";
+import { SmallInfoIcon } from "@Icons/SmallInfoIcon";
+import { ToolTip } from "@Primitives/Tooltip";
 
 export interface TextInputI {
   type?: string;
-  size?: 'small' | 'medium';
+  size?: "small" | "medium";
   label?: string;
   placeholder?: string;
   name?: string;
@@ -35,7 +35,7 @@ export interface TextInputI {
   wrapperClassName?: string;
   labelClassName?: string;
   className?: string;
-  variant?: 'outlined' | 'standard' | 'filled' | 'labeledAdornment';
+  variant?: "outlined" | "standard" | "filled";
   onChange?: (e: React.ChangeEvent<HTMLInputElement> | any) => void;
   preContent?: string | React.ReactNode;
   postContent?: string | React.ReactNode;
@@ -52,8 +52,8 @@ export interface TextInputI {
   onKeyDown?: (e: any) => void;
   onPaste?: (e: any) => void;
   labelAdornment?: string | React.ReactNode;
-  isTooltipIcon?:boolean,
-  toolTipText?:string,
+  isTooltipIcon?: boolean;
+  toolTipText?: string;
 }
 
 const FormControlComponent = styled(FormControl)(({ theme }) => ({
@@ -64,102 +64,95 @@ const InputLabelComponent = styled(InputLabel)(({ theme }) => ({
   ...theme.typography.subtitle2,
   fontWeight: 400,
   color: theme.palette.secondary.dark,
-  position: 'unset',
-  transform: 'none',
+  position: "unset",
+  transform: "none",
   marginBottom: theme.spacing(2),
-  '&.Mui-error': {
+  "&.Mui-error": {
     color: `${theme.palette.secondary.dark} !important`,
   },
-  '&.Mui-disabled': {
+  "&.Mui-disabled": {
     color: theme.palette.text.primary,
     opacity: 1,
   },
 }));
 
 const TextFieldComponent = styled(TextField)(({ theme }) => ({
-  '.MuiInputBase-root': {
+  ".MuiInputBase-root": {
     ...theme.typography.inputValue,
     backgroundColor: theme.misc.lightAsSilver,
     padding: 0,
-    'fieldset > legend': {
-      width: '0',
+    "fieldset > legend": {
+      width: "0",
     },
-    '.MuiOutlinedInput-input': {
+    ".MuiOutlinedInput-input": {
       ...theme.typography.inputValue,
       padding: theme.spacing(5, 4),
       color: theme.palette.primary.main,
-      '&:disabled': {
+      "&:disabled": {
         background: theme.misc.lightAsSilver,
-        cursor: 'not-allowed',
+        cursor: "not-allowed",
       },
-      '&.Mui-disabled': {
+      "&.Mui-disabled": {
         color: theme.misc.lightAsSilver,
         WebkitTextFillColor: theme.palette.text.primary,
       },
     },
-    '.MuiInput-input': {
+    ".MuiInput-input": {
       ...theme.typography.inputValue,
       padding: theme.spacing(5, 4),
     },
-    '&.Mui-disabled': {
-      '.MuiOutlinedInput-notchedOutline': {
-        border: 'none',
+    "&.Mui-disabled": {
+      ".MuiOutlinedInput-notchedOutline": {
+        border: "none",
       },
     },
     fieldset: {
       borderColor: theme.misc.naturalLight,
     },
-    '&.labeledAdornment': {
-      '&.MuiOutlinedInput-root.Mui-disabled': {
+    "&.labeledAdornment": {
+      "&.MuiOutlinedInput-root.Mui-disabled": {
         border: `1px solid ${theme.text.frostGray}`,
       },
-      '&.MuiInputBase-root': {
-        backgroundColor: 'transparent',
+      "&.MuiInputBase-root": {
+        backgroundColor: "transparent",
         borderRadius: theme.spacing(6),
         height: theme.spacing(32),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
         padding: theme.spacing(6.5, 7),
-        '& fieldset': {
+        "& fieldset": {
           borderWidth: theme.spacing(0.5),
         },
-        '& .MuiOutlinedInput-input': {
-          padding: '10px 0 0 4px !important',
+        "& .MuiOutlinedInput-input": {
+          padding: "10px 0 0 4px !important",
           paddingLeft: theme.spacing(0),
-          width: '100%',
-          '&:disabled': {
-            background: 'transparent',
-            cursor: 'not-allowed',
+          width: "100%",
+          "&:disabled": {
+            background: "transparent",
+            cursor: "not-allowed",
           },
         },
-        '& .MuiInputAdornment-positionStart': {
-          width: '100%',
+        "& .MuiInputAdornment-positionStart": {
+          width: "100%",
           marginBottom: theme.spacing(2),
         },
       },
     },
   },
-  '.MuiFormHelperText-root': {
+  ".MuiFormHelperText-root": {
     ...theme.typography.body2,
-    marginLeft: '0',
+    marginLeft: "0",
     marginTop: theme.spacing(1),
-    display: 'none',
+    display: "none",
   },
-  '.Mui-error:after': {
+  ".Mui-error:after": {
     borderColor: theme.misc.darkRed,
-    borderWidth: '2px',
+    borderWidth: "2px",
   },
 }));
 
-const LabelAdornment = styled(Typography)(({ theme }) => ({
-  fontWeight: 500,
-  fontSize: '12px',
-  color: theme.text.primary,
-  width: '100%',
-  marginTop: '10px',
-  paddingLeft: '4px',
-}));
+
 
 function TextInput(props: TextInputI) {
   const {
@@ -196,46 +189,24 @@ function TextInput(props: TextInputI) {
     onPaste,
     labelAdornment,
     isTooltipIcon,
-    toolTipText
+    toolTipText,
   } = props;
-
-  /**
-   * Custom onBlur handler that trims trailing spaces right before losing focus.
-   * This ensures the final value never has unwanted trailing spaces in your DB.
-   */
-  // const handleCustomBlur = (
-  //   e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>,
-  // ) => {
-  //   const trimmedValue = e.target.value.trimEnd();
-
-  //   if (onChange) {
-  //     onChange({
-  //       ...e,
-  //       target: {
-  //         ...e.target,
-  //         value: trimmedValue,
-  //       },
-  //     });
-  //   }
-
-  //   if (onBlur) {
-  //     onBlur(e);
-  //   }
-  // };
 
   /**
    * Controlled pasted for number type component
    */
   const handlePaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
     const clipboardData = e.clipboardData || window.Clipboard;
-    const pastedText = clipboardData.getData('text');
+    const pastedText = clipboardData.getData("text");
 
-    if (type === 'number') {
+    if (type === "number") {
       e.preventDefault();
-      const cleanedNumber = pastedText.replace(/\D/g, '');
+      const cleanedNumber = pastedText.replace(/\D/g, "");
 
-      document.execCommand('insertText', false, cleanedNumber);
-      const inputElement = e.currentTarget.querySelector('input') as HTMLInputElement;
+      document.execCommand("insertText", false, cleanedNumber);
+      const inputElement = e.currentTarget.querySelector(
+        "input",
+      ) as HTMLInputElement;
       if (inputElement && onChange) {
         onChange({
           target: {
@@ -251,28 +222,18 @@ function TextInput(props: TextInputI) {
       onPaste(e);
     }
   };
-  const isLabeledAdornmentVariant = variant === 'labeledAdornment';
 
   return (
     <FormControlComponent
-      sx={{ width: '100%', ...formControlSx, position: 'relative' }}
+      sx={{ width: "100%", ...formControlSx, position: "relative" }}
       error={error}
       disabled={disabled}
       className={className}
     >
-      {/* {label && !isLabeledAdornmentVariant && (
-        <InputLabelComponent
-          htmlFor={`text-input-${name || 'box'}`}
-          required={required}
-          sx={labelsx}
-        >
-          {label}
-        </InputLabelComponent>
-      )} */}
-            {label && !isLabeledAdornmentVariant && (
-        <Box display='flex' alignItems="center">
+      {label && (
+        <Box display="flex" alignItems="center">
           <InputLabelComponent
-            htmlFor={`text-input-${name || 'box'}`}
+            htmlFor={`text-input-${name || "box"}`}
             required={required}
             sx={labelsx}
           >
@@ -294,20 +255,14 @@ function TextInput(props: TextInputI) {
         autoComplete={autoComplete}
         sx={{
           ...sx,
-          // width: isLabeledAdornmentVariant ? '399px' : undefined,
         }}
         fullWidth
         hiddenLabel
-        label=''
-        id={`text-input-${name || 'box'}`}
-        type={type || 'text'}
-        size={size || 'small'}
-        // variant={
-        //   isLabeledAdornmentVariant ? 'outlined' : variant || 'outlined' || 'labeledAdornment'
-        // }
-        variant={
-          isLabeledAdornmentVariant ? 'outlined' : variant || 'outlined'
-        }
+        label=""
+        id={`text-input-${name || "box"}`}
+        type={type || "text"}
+        size={size || "small"}
+        variant={variant}
         placeholder={placeholder}
         name={name}
         value={value}
@@ -325,23 +280,16 @@ function TextInput(props: TextInputI) {
         autoFocus={autoFocus}
         onPaste={handlePaste}
         InputProps={{
-          startAdornment: isLabeledAdornmentVariant ? (
-            <InputAdornment position='start' sx={{ width: '100%' }}>
-              <LabelAdornment>{labelAdornment || label}</LabelAdornment>
-            </InputAdornment>
-          ) : preContent ? (
-            <InputAdornment position='start' sx={preContentSx}>
+          startAdornment: preContent ? (
+            <InputAdornment position="start" sx={preContentSx}>
               {preContent}
             </InputAdornment>
           ) : null,
           endAdornment: postContent ? (
-            <InputAdornment position='end' sx={postContentSx}>
+            <InputAdornment position="end" sx={postContentSx}>
               {postContent}
             </InputAdornment>
           ) : null,
-          classes: {
-            root: isLabeledAdornmentVariant ? 'labeledAdornment' : '',
-          },
         }}
         inputRef={inputRef}
       />
@@ -349,16 +297,16 @@ function TextInput(props: TextInputI) {
       {error && helperText ? (
         <FormHelperText
           sx={() => ({
-            display: 'flex',
+            display: "flex",
             marginLeft: 0,
-            position: 'absolute',
-            top: isLabeledAdornmentVariant ? 64 : 61,
+            position: "absolute",
+            top: 61,
           })}
         >
-          <ErrorIcon />{' '}
+          <ErrorIcon />{" "}
           <Typography
-            variant='body2'
-            component='span'
+            variant="body2"
+            component="span"
             sx={(theme) => ({
               marginLeft: theme.spacing(1.25),
               color: theme.palette.error.main,

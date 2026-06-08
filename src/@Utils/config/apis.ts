@@ -9,7 +9,7 @@ const API=""
  * @param {string} url - the url to get the data from.
  * @returns {Promise<AxiosResponse<any>>} - the data from the server.
  */
-export const getApi = (url: any) => axios.get(API_SERVER_URL + url);
+export const getApi = (url: any) => axios.get(API_SERVER_URL + url,{withCredentials:true});
 
 /**
  * Posts data to the API server.
@@ -19,7 +19,9 @@ export const getApi = (url: any) => axios.get(API_SERVER_URL + url);
  * @returns None
  */
 export const postApi = (url: any, data: any, shortUrl: boolean = true) =>
-  axios.post((shortUrl ? API_SERVER_URL : '') + url, data);
+  axios.post((shortUrl ? API_SERVER_URL : '') + url, data,{
+      withCredentials: true,
+    });
 
 /**
  * Sends a PUT request to the API server.
@@ -29,11 +31,15 @@ export const postApi = (url: any, data: any, shortUrl: boolean = true) =>
  * @returns None
  */
 export const putApi = (url: any, data?: any, shortUrl: boolean = true) =>
-  axios.put((shortUrl ? API_SERVER_URL : '') + url, data);
+  axios.put((shortUrl ? API_SERVER_URL : '') + url, data,{
+      withCredentials: true,
+    });
 
 /**
  * Deletes the given url from the API server.
  * @param {string} url - the url to delete from the API server.
  * @returns None
  */
-export const deleteApi = (url: any) => axios.delete(API_SERVER_URL + url);
+export const deleteApi = (url: any) => axios.delete(API_SERVER_URL + url,{
+      withCredentials: true,
+    });
