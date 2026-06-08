@@ -149,7 +149,7 @@ export default function Navbar() {
                 </Button>
               </Box>
             )} */}
-            {(user && token) || isMobile ? (
+            {(user) || isMobile ? (
               <Avatar
                 sx={{ cursor: "pointer" }}
                 onClick={handleOpenProfileDrawer}

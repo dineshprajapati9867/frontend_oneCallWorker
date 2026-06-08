@@ -5,6 +5,7 @@ import {
   getPostalCode,
   getWorkerProfile,
   searchWorkersBySkills,
+  getAllReviews
 } from "@Utils/controllers/misc";
 import {
   useQuery,
@@ -12,6 +13,7 @@ import {
   useInfiniteQuery,
   UseInfiniteQueryResult,
   useMutation,
+  useQueryClient,
 } from "@tanstack/react-query";
 import React from "react";
 import { uploadImageToS3 } from "../controllers/misc";
@@ -33,6 +35,7 @@ interface MiscI {
   ) => UseInfiniteQueryResult<interfaces.createProfileI>;
   handleCreateReview: (data: interfaces.CreateReviewI) => void;
   isCreateReviewLoading: boolean;
+  useGetAllWorkerReviews:(id:string)=>UseInfiniteQueryResult<any>
 }
 
 interface UploadFileResponse {
@@ -44,6 +47,8 @@ const MiscContext = createContext<MiscI>({} as MiscI);
 export const useMisc = () => useContext(MiscContext);
 
 function useMiscProvider() {
+  const queryClient = useQueryClient();
+
   const navigate=useNavigate()
   const { ShowErrorSnackBar } = hooks.useSnackBar();
   const [isUploadFileLoading, setIsUploadFileLoading] = useState(false);
@@ -150,6 +155,9 @@ function useMiscProvider() {
       mutationFn: createReview,
       onSuccess() {
         ShowSuccessSnackBar("Review submitted successfully");
+          queryClient.invalidateQueries({
+            queryKey:["reviews"]
+          })
         navigate(-1)
       },
       onError: (err) => {
@@ -170,6 +178,34 @@ function useMiscProvider() {
     };
     mutateCreateReview(payload);
   };
+
+  /**
+   *  get all reviews by worker id
+   */
+  
+ const useGetAllWorkerReviews = (id: string) => {
+  return useInfiniteQuery({
+    queryKey: ["reviews", id],
+
+    queryFn: ({ pageParam = 1 }) =>
+      getAllReviews(id, pageParam),
+
+    initialPageParam: 1,
+
+    getNextPageParam: (lastPage:any) =>
+      lastPage.hasMore
+        ? lastPage.currentPage + 1
+        : undefined,
+        enabled:!!id,
+      select: (data) => ({
+  ...data,
+  reviews: data.pages.flatMap(
+    (page) => page.data.reviews
+  ),
+}),
+
+  });
+};
   return {
     /**
      * Public file upload
@@ -183,6 +219,7 @@ function useMiscProvider() {
     useGetWorkerDetailsById,
     handleCreateReview,
     isCreateReviewLoading,
+    useGetAllWorkerReviews
   };
 }
 

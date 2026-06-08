@@ -11,11 +11,7 @@ import {
   UpdatePasswordpAuth,
 } from "@Utils/controllers/auth";
 import { useMutation } from "@tanstack/react-query";
-type AuthScreen =
-  | "signin"
-  | "signup"
-  | "sendOtp"
-  | "updatePassword";
+type AuthScreen = "signin" | "signup" | "sendOtp" | "updatePassword";
 interface AuthContextI {
   handleLoginWithGoogle: () => void;
   authScreen: AuthScreen;
@@ -41,9 +37,8 @@ const authContext = createContext<AuthContextI>({} as AuthContextI);
 export const useAuth = () => useContext(authContext);
 
 function useProvideAuth() {
-const [authScreen, setAuthScreen] =
-  useState<AuthScreen>("signin");
-  const { setToken, setUser } = hooks.useToken();
+  const [authScreen, setAuthScreen] = useState<AuthScreen>("signin");
+  const { setUser } = hooks.useToken();
 
   const { ShowApiErrorSnackBar, ShowSuccessSnackBar } = hooks.useSnackBar();
   const { handleCloseLogin } = hooks.useUser();
@@ -51,7 +46,6 @@ const [authScreen, setAuthScreen] =
     onSuccess: async (res) => {
       const userInfo = await googleLogin(res.access_token);
       const savedUser = await saveGoogleUser(userInfo.data);
-      //  setToken(savedUser.data.jwtToken)
       setUser(savedUser.data.user);
       handleCloseLogin();
     },
@@ -64,8 +58,11 @@ const [authScreen, setAuthScreen] =
   const { mutate: mutateSignInAuth, isPending: isSignInAuthLoading } =
     useMutation({
       mutationFn: SignInAuth,
-      onSuccess() {
+      onSuccess(data) {
+        setUser(data.data.user);
+
         ShowSuccessSnackBar("Login successful");
+
         handleCloseLogin();
       },
       onError: (err) => {
@@ -80,9 +77,11 @@ const [authScreen, setAuthScreen] =
   // Sign Up
   const { mutate: mutateSignUpAuth, isPending: isSignUpLoading } = useMutation({
     mutationFn: SignUpAuth,
-    onSuccess: () => {
+    onSuccess: (data) => {
       ShowSuccessSnackBar("Account created successfully");
-      handleCloseLogin()
+      setUser(data.data), 
+      // setToken(data.data.jwtToken), 
+      handleCloseLogin();
     },
     onError: (err) => {
       ShowApiErrorSnackBar(err);
@@ -99,7 +98,7 @@ const [authScreen, setAuthScreen] =
       mutationFn: SendOtpAuth,
       onSuccess: () => {
         ShowSuccessSnackBar("OTP sent successfully");
-        setAuthScreen("updatePassword")
+        setAuthScreen("updatePassword");
       },
       onError: (err) => {
         ShowApiErrorSnackBar(err);
@@ -118,7 +117,7 @@ const [authScreen, setAuthScreen] =
     mutationFn: UpdatePasswordpAuth,
     onSuccess: () => {
       ShowSuccessSnackBar("Password updated successfully");
-      handleCloseLogin()
+      handleCloseLogin();
     },
     onError: (err) => {
       ShowApiErrorSnackBar(err);
@@ -126,21 +125,20 @@ const [authScreen, setAuthScreen] =
   });
 
   const handleUpdatePassword = (data) => {
-    const payload={
-      email:data.email,
-       password:data.new_password,
-       otp:data.otp
-    }
+    const payload = {
+      email: data.email,
+      password: data.new_password,
+      otp: data.otp,
+    };
     mutateUpdatePasswordAuth(payload);
   };
 
-  // Logout
+  //Logout
   const { mutate: mutateLogoutAuth, isPending: isLogoutLoading } = useMutation({
     mutationFn: LogoutpAuth,
     onSuccess: () => {
-      setUser(null);
-
       ShowSuccessSnackBar("Logged out successfully");
+      localStorage.clear();
     },
     onError: (err) => {
       ShowApiErrorSnackBar(err);

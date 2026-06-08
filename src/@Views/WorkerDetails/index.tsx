@@ -233,9 +233,10 @@ export default function WorkerDetails() {
   const [isCopy, setIsCopy] = useState(false);
   const [isOpenImagePreview, setIsOpenImagePreview] = useState(false);
 
-  const { useGetWorkerDetailsById } = hooks.useMisc();
+  const { useGetWorkerDetailsById,useGetAllWorkerReviews } = hooks.useMisc();
   const { data: workerDetailsData, isLoading: isWorkerDetailsDataLoading } = useGetWorkerDetailsById(id);
-
+ const {data:reviewData,isLoading:isReviewLoading}=useGetAllWorkerReviews(id)
+ 
   const handleRating = (rating) => { 
     const fullName = `${workerDetailsData?.first_name} ${workerDetailsData?.last_name}`;   
     navigate(`/worker/write-review/${id}?rating=${rating}&name=${fullName}&area=${workerDetailsData?.area}&url=${encodeURIComponent(workerDetailsData?.profile?.url)}`, { state: { modal: true } });
@@ -531,7 +532,10 @@ export default function WorkerDetails() {
               </Box>
               <Divider />
               <Box className="userReview" padding={10}>
-                <UserReview />
+            
+                {reviewData?.reviews&&reviewData.reviews.map((val)=>{
+                  return <UserReview isLoading={isReviewLoading} data={val} key={val._id} />
+                })}
               </Box>
               <Divider />
 

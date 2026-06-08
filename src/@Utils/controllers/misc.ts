@@ -1,4 +1,5 @@
 import { getApi, postApi } from "@Utils/config/apis";
+import axios from "axios";
 
 const API_SERVER_URL=process.env.REACT_APP_API_SERVER_URL
 // get the address
@@ -37,7 +38,7 @@ export function getAllSkillsCategory(limit:number){
  * Request user info from Google
  */
 export function  googleLogin(access_token:string){
-  return getApi(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${access_token}`
+  return axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${access_token}`
   )
 }
 /**
@@ -90,3 +91,8 @@ export const getWorkerProfile  = (id:string) => getApi(`${API_SERVER_URL}/worker
 
 
 export const createReview=(data)=>postApi(`${API_SERVER_URL}/review`,data)
+
+
+export const getAllReviews=(id:string,page:number)=>{
+   return getApi(`${API_SERVER_URL}/review/all/${id}?page=${page}&limit=10`)
+}

@@ -65,3 +65,27 @@ export interface SignUpFormData {
   email: string;
   password: string;
 }
+
+
+export interface Reviewer {
+  _id: string;
+  name: string;
+  picture: string;
+}
+
+export interface ReviewImage {
+  url: string;
+  fileName?: string;
+}
+
+export interface Review {
+  _id: string;
+  workerId: string;
+  reviewerId: Reviewer;
+  rating: number;
+  description: string;
+  images: ReviewImage[];
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}

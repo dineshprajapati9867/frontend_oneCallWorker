@@ -111,6 +111,7 @@ const ProfileDrawer = ({ open, onClose }: PrposI) => {
   } = hooks.useUser();
   const navigate = useNavigate();
   const { ShowInfoSnackBar } = hooks.useSnackBar();
+   const {handleLogout}=hooks.useAuth()
   const isMobile = useMediaQuery((theme) => theme.breakpoints.only("xs"));
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -135,10 +136,7 @@ const ProfileDrawer = ({ open, onClose }: PrposI) => {
     setNotificationPermission(permission);
   };
 
-  const handleLogout = () => {
-    localStorage.clear();
-    onClose();
-  };
+
   const menuItems = [
     {
       id: 1,
@@ -169,7 +167,11 @@ const ProfileDrawer = ({ open, onClose }: PrposI) => {
       id: 4,
       label: "Logout",
       icon: <LogoutIconMui />,
-      onClick: handleLogout,
+      onClick: ()=>{
+        handleLogout()
+        onClose();
+        localStorage.clear()
+      },
     },
   ];
 
@@ -191,7 +193,7 @@ const ProfileDrawer = ({ open, onClose }: PrposI) => {
         {user ? (
           <Box className="right">
             <Typography variant="h3">
-              {capitalizedFirstLetter(user.family_name)}
+              {capitalizedFirstLetter(user.name)}
             </Typography>
             <Typography variant="body1">{user.email}</Typography>
           </Box>
