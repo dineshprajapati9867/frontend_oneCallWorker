@@ -5,7 +5,9 @@ import {
   getPostalCode,
   getWorkerProfile,
   searchWorkersBySkills,
-  getAllReviews
+  getAllReviews,
+  getReviewDetails,
+  commentOnReview,
 } from "@Utils/controllers/misc";
 import {
   useQuery,
@@ -35,7 +37,11 @@ interface MiscI {
   ) => UseInfiniteQueryResult<interfaces.createProfileI>;
   handleCreateReview: (data: interfaces.CreateReviewI) => void;
   isCreateReviewLoading: boolean;
-  useGetAllWorkerReviews:(id:string)=>UseInfiniteQueryResult<any>
+  useGetAllWorkerReviews: (id: string) => UseInfiniteQueryResult<any>;
+  useGetReviewDetailsById: (id: string) => UseQueryResult<any>;
+
+  handleCommentOnReview: (data) => void;
+  isCommentOnReviewLoading: boolean;
 }
 
 interface UploadFileResponse {
@@ -49,7 +55,7 @@ export const useMisc = () => useContext(MiscContext);
 function useMiscProvider() {
   const queryClient = useQueryClient();
 
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const { ShowErrorSnackBar } = hooks.useSnackBar();
   const [isUploadFileLoading, setIsUploadFileLoading] = useState(false);
   const { ShowSuccessSnackBar, ShowApiErrorSnackBar } = hooks.useSnackBar();
@@ -155,10 +161,11 @@ function useMiscProvider() {
       mutationFn: createReview,
       onSuccess() {
         ShowSuccessSnackBar("Review submitted successfully");
-          queryClient.invalidateQueries({
-            queryKey:["reviews"]
-          })
-        navigate(-1)
+        queryClient.invalidateQueries({
+          queryKey: ["allReviews"],
+          exact: false,
+        });
+        navigate(-1);
       },
       onError: (err) => {
         ShowApiErrorSnackBar(err);
@@ -166,12 +173,12 @@ function useMiscProvider() {
     });
 
   const handleCreateReview = async (data: interfaces.CreateReviewI) => {
-   let uploadedImages = [];
+    let uploadedImages = [];
 
-  if (data.images?.length > 0) {
-    const files = data.images.map((img) => img.file);
-    uploadedImages = await handleUploadImages(files);
-  }
+    if (data.images?.length > 0) {
+      const files = data.images.map((img) => img.file);
+      uploadedImages = await handleUploadImages(files);
+    }
     const payload = {
       ...data,
       images: uploadedImages,
@@ -182,30 +189,56 @@ function useMiscProvider() {
   /**
    *  get all reviews by worker id
    */
-  
- const useGetAllWorkerReviews = (id: string) => {
-  return useInfiniteQuery({
-    queryKey: ["reviews", id],
 
-    queryFn: ({ pageParam = 1 }) =>
-      getAllReviews(id, pageParam),
+  const useGetAllWorkerReviews = (id: string) => {
+    return useInfiniteQuery({
+      queryKey: ["allReviews", id],
 
-    initialPageParam: 1,
+      queryFn: ({ pageParam = 1 }) => getAllReviews(id, pageParam),
 
-    getNextPageParam: (lastPage:any) =>
-      lastPage.hasMore
-        ? lastPage.currentPage + 1
-        : undefined,
-        enabled:!!id,
+      initialPageParam: 1,
+
+      getNextPageParam: (lastPage: any) =>
+        lastPage.hasMore ? lastPage.currentPage + 1 : undefined,
+
       select: (data) => ({
-  ...data,
-  reviews: data.pages.flatMap(
-    (page) => page.data.reviews
-  ),
-}),
+        ...data,
+        reviews: data.pages.flatMap((page) => page.data.reviews),
+      }),
+      enabled: !!id,
+    });
+  };
 
-  });
-};
+  // get the review details by review id
+
+  const useGetReviewDetailsById = (id: string) => {
+    return useQuery({
+      queryKey: [id],
+      queryFn: () => getReviewDetails(id),
+      select: (data) => data.data.review,
+      gcTime: 0,
+    });
+  };
+
+  // comment on review
+  const { mutate: mutateCommentOnReview, isPending: isCommentOnReviewLoading } =
+    useMutation({
+      mutationFn: commentOnReview,
+      onSuccess() {
+        ShowSuccessSnackBar("Comment submitted successfully");
+        // queryClient.invalidateQueries({
+        //   queryKey: ["allReviews"],
+        //   exact:false
+        // });
+        //navigate(-1);
+      },
+      onError: (err) => {
+        ShowApiErrorSnackBar(err);
+      },
+    });
+  const handleCommentOnReview = (data) => {    
+   mutateCommentOnReview(data);
+  };
   return {
     /**
      * Public file upload
@@ -219,7 +252,10 @@ function useMiscProvider() {
     useGetWorkerDetailsById,
     handleCreateReview,
     isCreateReviewLoading,
-    useGetAllWorkerReviews
+    useGetAllWorkerReviews,
+    useGetReviewDetailsById,
+    handleCommentOnReview,
+    isCommentOnReviewLoading,
   };
 }
 

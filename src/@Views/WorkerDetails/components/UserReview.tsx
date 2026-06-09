@@ -20,7 +20,8 @@ import dayjs from "dayjs";
 
 interface PropsI {
   isBorder?: boolean;
-  data:interfaces.Review,isLoading:boolean
+  data: interfaces.Review;
+  isLoading: boolean;
 }
 const ReviewCard = styled(Box)<{ isBorder: boolean; isMobile: boolean }>(
   ({ theme, isBorder, isMobile }) => ({
@@ -98,80 +99,76 @@ const ReviewCard = styled(Box)<{ isBorder: boolean; isMobile: boolean }>(
   }),
 );
 
-const UserReview = ({ isBorder = true,isLoading,data }: PropsI) => {
+const UserReview = ({ isBorder = true, isLoading, data }: PropsI) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.only("xs"));
   const navigate = useNavigate();
 
- 
+  
   return (
     <>
       {isLoading ? (
         <Loader type="table" />
       ) : (
-        data &&
-   
-        
-            <ReviewCard  isBorder={isBorder} isMobile={isMobile}>
-              <Box className="headers">
-                <Box className="user-info">
-                  <Avatar
-                    src={data.reviewerId.picture}
-                    alt="Neha Sharma"
-                    variant="rounded"
-                    
-                  >
-                    {data.reviewerId.name.charAt(0).toUpperCase()}
-                  </Avatar>
-                  <Typography variant="h5">{data.reviewerId.name}</Typography>
-                </Box>
-                <Box className="user-info">
-                  <Typography variant="body1" color="text.secondary">
-                    
-                    {dayjs(data.createdAt).format('DD-MMM-YYYY')}
-                  </Typography>
-                  {/* <IconButton size="small">
+        data && (
+          <ReviewCard isBorder={isBorder} isMobile={isMobile}>
+            <Box className="headers">
+              <Box className="user-info">
+                <Avatar
+                  src={data.reviewerId.picture}
+                  variant="rounded"
+                >
+                  {data.reviewerId.name.charAt(0).toUpperCase()}
+                </Avatar>
+                <Typography variant="h5">{data.reviewerId.name}</Typography>
+              </Box>
+              <Box className="user-info">
+                <Typography variant="body1" color="text.secondary">
+                  {dayjs(data.createdAt).format("DD-MMM-YYYY")}
+                </Typography>
+                {/* <IconButton size="small">
             <MoreVertIcon />
           </IconButton> */}
-                </Box>
               </Box>
+            </Box>
 
-              <Rating value={data.rating} readOnly size="small" />
+            <Rating value={data.rating} readOnly size="small" />
 
-              <Typography variant="body1" className="review-text">
-                {data.description}
-              </Typography>
+            <Typography variant="body1" className="review-text">
+              {data.description}
+            </Typography>
 
-              {data.images.length>0&& data.images.map((data) => (
+            {data.images.length > 0 &&
+              data.images.map((data) => (
                 <Box className="image-box">
                   <img className="review-img" src={data.url} />
                 </Box>
               ))}
 
-              <Box className="action-bar">
-                <Button
-                  className="action-btn"
-                  startIcon={<ThumbUpOutlinedIcon />}
-                >
-                  Helpful (2)
-                </Button>
-                <Button
-                  className="action-btn"
-                  startIcon={<ChatBubbleOutlineOutlinedIcon />}
-                  // onClick={() => {
-                  //   navigate(`/ocwSocial/post/${data._id}`);
-                  // }}
-                >
-                  Comment (2)
-                </Button>
-                {/* <Button
+            <Box className="action-bar">
+              <Button
+                className="action-btn"
+                startIcon={<ThumbUpOutlinedIcon />}
+              >
+                Helpful (2)
+              </Button>
+              <Button
+                className="action-btn"
+                startIcon={<ChatBubbleOutlineOutlinedIcon />}
+                onClick={() => {
+                  navigate(`/ocwSocial/post/${data._id}`);
+                }}
+              >
+                Comment (2)
+              </Button>
+              {/* <Button
           className="action-btn"
           startIcon={<ReplyOutlinedIcon sx={{ transform: "scaleX(-1)" }} />}
         >
           Share
         </Button> */}
-              </Box>
-            </ReviewCard>
-        
+            </Box>
+          </ReviewCard>
+        )
       )}
     </>
   );

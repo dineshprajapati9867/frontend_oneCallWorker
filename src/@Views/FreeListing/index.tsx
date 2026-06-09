@@ -241,9 +241,9 @@ const FreeListingStyled = styled(Box)<{ isMobile: boolean }>(
 function FreeListing() {
   const navigate = useNavigate();
   const {
-    openCreateProfileModal,
-    handleCloseCreateProfileModal,
-    handleOpenCreateProfileModal,
+    // openCreateProfileModal,
+    // handleCloseCreateProfileModal,
+    // handleOpenCreateProfileModal,
   } = hooks.useUser();
   const { isMobile } = hooks.useResponsive();
   const {

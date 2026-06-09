@@ -79,7 +79,7 @@ function useProvideAuth() {
     mutationFn: SignUpAuth,
     onSuccess: (data) => {
       ShowSuccessSnackBar("Account created successfully");
-      setUser(data.data), 
+      setUser(data.data.user), 
       // setToken(data.data.jwtToken), 
       handleCloseLogin();
     },

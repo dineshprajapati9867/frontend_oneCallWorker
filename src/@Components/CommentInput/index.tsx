@@ -58,6 +58,7 @@ export interface TextInputI {
   toolTipText?: string;
   inputHeight?:number
   avatarSrc?:string
+  isAvatar?:boolean
 }
 
 const FormControlComponent = styled(FormControl)(({ theme }) => ({
@@ -172,7 +173,8 @@ function CommentInput(props: TextInputI) {
     isTooltipIcon,
     toolTipText,
     inputHeight=50,
-    avatarSrc
+    avatarSrc,
+    isAvatar
   } = props;
 
   /**
@@ -265,7 +267,7 @@ function CommentInput(props: TextInputI) {
         onPaste={handlePaste}
         inputHeight={inputHeight}
         InputProps={{
-          startAdornment: avatarSrc ? (
+          startAdornment: isAvatar ? (
             <InputAdornment position="start" sx={preContentSx}>
               <Avatar variant="rounded" src={avatarSrc}/>
             </InputAdornment>

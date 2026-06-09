@@ -89,10 +89,21 @@ export function searchWorkersBySkills(search:string,page:number,limit:number){
    */
 export const getWorkerProfile  = (id:string) => getApi(`${API_SERVER_URL}/worker-profile/${id}`);
 
-
+// create review
 export const createReview=(data)=>postApi(`${API_SERVER_URL}/review`,data)
 
-
+// getting all review by worker id
 export const getAllReviews=(id:string,page:number)=>{
    return getApi(`${API_SERVER_URL}/review/all/${id}?page=${page}&limit=10`)
 }
+
+
+// get the review details by review id
+
+export const getReviewDetails=(id:string)=>{
+   return getApi(`${API_SERVER_URL}/review/details/${id}`)
+}
+
+ export const commentOnReview=(data)=>{
+  return postApi(`${API_SERVER_URL}/review-comment`,data)
+ } 
