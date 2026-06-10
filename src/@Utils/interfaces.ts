@@ -41,6 +41,8 @@ export interface createProfileI {
   city: string;
   state: string;
   pincode: string;
+  averageRating:number,
+  totalReviews:number
 }
 
 export interface serviceCategoryI {
@@ -82,6 +84,7 @@ export interface Review {
   _id: string;
   workerId: string;
   reviewerId: Reviewer;
+  userId:Reviewer,
   rating: number;
   description: string;
   images: ReviewImage[];

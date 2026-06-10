@@ -8,6 +8,9 @@ import {
   getAllReviews,
   getReviewDetails,
   commentOnReview,
+  getCommentOfReview,
+  deleteReviewComment,
+  updateReviewComment,
 } from "@Utils/controllers/misc";
 import {
   useQuery,
@@ -42,6 +45,13 @@ interface MiscI {
 
   handleCommentOnReview: (data) => void;
   isCommentOnReviewLoading: boolean;
+  useGetAllCommentsOfReview: (id: string) => UseQueryResult<any>;
+  handleUpdateReviewComment: (data: {
+    commentId: string;
+    description: string;
+  }) => void;
+  isUpdateReviewCommentLoading: boolean;
+  handleDeleteReviewComment: (id: string) => void;
 }
 
 interface UploadFileResponse {
@@ -146,7 +156,7 @@ function useMiscProvider() {
 
   const useGetWorkerDetailsById = (id: string) => {
     return useQuery({
-      queryKey: [id],
+      queryKey: ["getWorkerDetailsById", id],
       queryFn: () => getWorkerProfile(id),
       select: (data) => data.data.profile,
       gcTime: 0,
@@ -160,11 +170,11 @@ function useMiscProvider() {
     useMutation({
       mutationFn: createReview,
       onSuccess() {
-        ShowSuccessSnackBar("Review submitted successfully");
         queryClient.invalidateQueries({
-          queryKey: ["allReviews"],
+          queryKey: ["getWorkerDetailsById"],
           exact: false,
         });
+        ShowSuccessSnackBar("Review submitted successfully");
         navigate(-1);
       },
       onError: (err) => {
@@ -226,18 +236,84 @@ function useMiscProvider() {
       mutationFn: commentOnReview,
       onSuccess() {
         ShowSuccessSnackBar("Comment submitted successfully");
-        // queryClient.invalidateQueries({
-        //   queryKey: ["allReviews"],
-        //   exact:false
-        // });
+        queryClient.invalidateQueries({
+          queryKey: ["getAllCommentsOfReview"],
+          exact: false,
+        });
         //navigate(-1);
       },
       onError: (err) => {
         ShowApiErrorSnackBar(err);
       },
     });
-  const handleCommentOnReview = (data) => {    
-   mutateCommentOnReview(data);
+  const handleCommentOnReview = (data) => {
+    mutateCommentOnReview(data);
+  };
+
+  /**
+    get the comments of review by review Id
+   */
+  const useGetAllCommentsOfReview = (id: string) => {
+    return useQuery({
+      queryKey: ["getAllCommentsOfReview", id],
+      queryFn: () => getCommentOfReview(id),
+      select: (data) => data.data,
+      gcTime: 0,
+      enabled: !!id,
+    });
+  };
+
+  /**
+   *   update the review  commnt
+   */
+  const {
+    mutate: mutateUpdateReviewComment,
+    isPending: isUpdateReviewCommentLoading,
+  } = useMutation({
+    mutationFn: updateReviewComment,
+
+    onSuccess() {
+      queryClient.invalidateQueries({
+        queryKey: ["getAllCommentsOfReview"],
+        exact: false,
+      });
+
+      ShowSuccessSnackBar("Comment updated successfully");
+    },
+
+    onError: (err) => {
+      ShowApiErrorSnackBar(err);
+    },
+  });
+
+  const handleUpdateReviewComment = (data: {
+    commentId: string;
+    description: string;
+  }) => {
+    mutateUpdateReviewComment(data);
+  };
+
+  /**
+   *  delete the comment by commnt id
+   */
+  const {
+    mutate: mutateDeleteReviewComment,
+  } = useMutation({
+    mutationFn: deleteReviewComment,
+    onSuccess() {
+      queryClient.invalidateQueries({
+        queryKey: ["getAllCommentsOfReview"],
+        exact: false,
+      });
+      ShowSuccessSnackBar("Comment deleted successfully");
+    },
+    onError: (err) => {
+      ShowApiErrorSnackBar(err);
+    },
+  });
+
+  const handleDeleteReviewComment = (commentId: string) => {
+    mutateDeleteReviewComment(commentId);
   };
   return {
     /**
@@ -256,6 +332,10 @@ function useMiscProvider() {
     useGetReviewDetailsById,
     handleCommentOnReview,
     isCommentOnReviewLoading,
+    useGetAllCommentsOfReview,
+    handleUpdateReviewComment,
+    isUpdateReviewCommentLoading,
+    handleDeleteReviewComment,
   };
 }
 

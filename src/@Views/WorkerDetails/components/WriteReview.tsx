@@ -84,7 +84,7 @@ const StyleWrite = styled("form")<{ isMobile: boolean }>(
     ".image": {
       widht: theme.spacing(50),
       borderRadius: theme.spacing(5),
-      height: theme.spacing(50),
+      minHeight: theme.spacing(50),
     },
     ".ratingBox": {
       display: "inline-flex",

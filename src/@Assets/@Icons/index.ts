@@ -18,8 +18,6 @@ import { BulkFileUploadIcon } from './BulkFileUploadIcon/index';
 import { SmallInfoIcon, InfoIconSmall } from './SmallInfoIcon/index';
 import { RefreshIcon } from './RefreshIcon/index';
 import {
-  EditUnderLineIcon,
-  EditInvIcon as EditIcon,
   EditNormalIcon,
   EditBlueIcon,
 } from './EditIcon/index';
@@ -311,7 +309,6 @@ export {
   PercentIcon,
   ArrowRight,
   Visiting,
-  EditIcon,
   EditNormalIcon,
   ThreeDots,
   WhiteThreeDots,
@@ -340,7 +337,6 @@ export {
   Setting,
   DeactiveIcon,
   ReactiveIcon,
-  EditUnderLineIcon,
   RefreshIcon,
   SmallInfoIcon,
   InfoIconSmall,

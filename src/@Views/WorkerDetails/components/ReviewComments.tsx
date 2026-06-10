@@ -39,17 +39,46 @@ const ReviewComments = () => {
     useGetReviewDetailsById,
     handleCommentOnReview,
     isCommentOnReviewLoading,
+    useGetAllCommentsOfReview,
+    handleDeleteReviewComment,
+    handleUpdateReviewComment,
+    isUpdateReviewCommentLoading,
   } = hooks.useMisc();
   const { data, isLoading } = useGetReviewDetailsById(id);
+  const {
+    data: getAllCommentsOfReview,
+    isLoading: isGetAllCommentsOfReviewLoading,
+  } = useGetAllCommentsOfReview(id);
+
   const user = JSON.parse(localStorage.getItem("user"));
 
   const [comment, setComment] = useState("");
+  const [editingCommentId, setEditingCommentId] = useState("");
+  const [isEdit, setIsEdit] = useState(false);
 
   const handleSubmitComment = () => {
-    if (!comment.trim()) return;
-    handleCommentOnReview({ reviewId: id,comment }); 
-    setComment(""); 
+    if (!comment) return;
+
+    if (isEdit) {
+      handleUpdateReviewComment({
+        commentId: editingCommentId,
+        description: comment,
+      });
+
+      setIsEdit(false);
+      setEditingCommentId("");
+      setComment("");
+      return;
+    }
+
+    handleCommentOnReview({
+      reviewId: id,
+      description: comment,
+    });
+
+    setComment("");
   };
+
   return (
     <>
       {isLoading ? (
@@ -59,27 +88,59 @@ const ReviewComments = () => {
           <ReviewCommentsStyle isMobile={isMobile}>
             <Box className="left">
               <Box padding={10}>
-                <UserReview
-                  data={data}
-                  isLoading={isLoading}
-                  isBorder={false}
-                />
+                <UserReview data={data} isBorder={false} />
               </Box>
-              <Box className="CommentInputBox">
-                <Box paddingX={isMobile ? 5 : 10} py={4}>
-                  <CommentInput
-                    avatarSrc={user?.picture}
-                    isAvatar={true}
-                    postButtonText={
-                      <span onClick={handleSubmitComment}>Post</span>
-                    }
-                    placeholder="Add a Comment"
-                    disabled={isCommentOnReviewLoading}
-                    value={comment}
-                    onChange={(val) => setComment(val.target.value)}
-                  />
+              <>
+                <Box className="CommentInputBox">
+                  <Box paddingX={isMobile ? 5 : 10} py={4}>
+                    <CommentInput
+                      avatarSrc={user?.picture}
+                      isAvatar={true}
+                      postButtonText={
+                        <span onClick={
+    isCommentOnReviewLoading ||
+    isUpdateReviewCommentLoading
+      ? undefined
+      : handleSubmitComment
+  }>
+                          {isEdit ? "Update" : "Post"}
+                        </span>
+                      }
+                      placeholder="Add a Comment"
+                      disabled={isCommentOnReviewLoading}
+                      value={comment}
+                      onChange={(val) => setComment(val.target.value)}
+                    />
+                  </Box>
                 </Box>
-              </Box>
+
+                <>
+                  {isGetAllCommentsOfReviewLoading ? (
+                    <Loader type="table" />
+                  ) : (
+                    getAllCommentsOfReview &&
+                    getAllCommentsOfReview.comments.map((val) => (
+                      <Box padding={10} key={val._id}>
+                        <UserReview
+                          data={val}
+                          isBorder={false}
+                          isThreeDot={val.userId?._id === user?._id}
+                          isComment={false}
+                          handleThreeDotsValue={(data) => {
+                            if (data.description === "Delete Comment") {
+                              handleDeleteReviewComment(data.commentId);
+                            } else {
+                              setComment(data.description);
+                              setEditingCommentId(data.commentId);
+                              setIsEdit(true);
+                            }
+                          }}
+                        />
+                      </Box>
+                    ))
+                  )}
+                </>
+              </>
             </Box>
             <WorkerReviewCard data={data.workerId} />
           </ReviewCommentsStyle>

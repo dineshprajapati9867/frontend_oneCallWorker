@@ -13,7 +13,7 @@ const WorkerListStyle = styled(Box)<{
   '.popular':{
     marginBottom:theme.spacing(8),
     paddingLeft:theme.spacing(7.5),
-    paddingTop:theme.spacing(7.5)
+    paddingTop:isMobile?theme.spacing(7.5):0
   },
   ".Card": {
     display: "flex",

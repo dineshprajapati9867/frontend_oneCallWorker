@@ -1,4 +1,4 @@
-import { getApi, postApi } from "@Utils/config/apis";
+import { deleteApi, getApi, postApi, putApi } from "@Utils/config/apis";
 import axios from "axios";
 
 const API_SERVER_URL=process.env.REACT_APP_API_SERVER_URL
@@ -104,6 +104,33 @@ export const getReviewDetails=(id:string)=>{
    return getApi(`${API_SERVER_URL}/review/details/${id}`)
 }
 
+// comment on review
  export const commentOnReview=(data)=>{
   return postApi(`${API_SERVER_URL}/review-comment`,data)
  } 
+
+ // get the comments by review id
+
+export const getCommentOfReview=(id:string)=>{
+   return getApi(`${API_SERVER_URL}/review-comment/${id}`)
+}
+ // update the comments by commnt id
+
+export const updateReviewComment = ({
+  commentId,
+  description,
+}: {
+  commentId: string;
+  description: string;
+}) => {
+  return putApi(
+    `${API_SERVER_URL}/review-comment/${commentId}`,
+    { description }
+  );
+};
+ // delete the comments by comemnt id
+
+export const deleteReviewComment=(commntId:string)=>{
+   return deleteApi(`${API_SERVER_URL}/review-comment/${commntId}`)
+}
+

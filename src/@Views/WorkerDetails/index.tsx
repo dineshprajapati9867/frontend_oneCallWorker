@@ -31,7 +31,6 @@ import { ImagePreview } from "@Primitives/ImagePreviewModal/imagePreview";
 import { hooks } from "@Utils/index";
 import { Loader } from "@Primitives/Loader";
 
-
 const DetailsStyle = styled(Box)<{ isMobile: boolean }>(
   ({ theme, isMobile }) => ({
     overflowX: "hidden",
@@ -233,13 +232,18 @@ export default function WorkerDetails() {
   const [isCopy, setIsCopy] = useState(false);
   const [isOpenImagePreview, setIsOpenImagePreview] = useState(false);
 
-  const { useGetWorkerDetailsById,useGetAllWorkerReviews } = hooks.useMisc();
-  const { data: workerDetailsData, isLoading: isWorkerDetailsDataLoading } = useGetWorkerDetailsById(id);
- const {data:reviewData,isLoading:isReviewLoading}=useGetAllWorkerReviews(id)
- 
-  const handleRating = (rating) => { 
-    const fullName = `${workerDetailsData?.first_name} ${workerDetailsData?.last_name}`;   
-    navigate(`/worker/write-review/${id}?rating=${rating}&name=${fullName}&area=${workerDetailsData?.area}&url=${encodeURIComponent(workerDetailsData?.profile?.url)}`, { state: { modal: true } });
+  const { useGetWorkerDetailsById, useGetAllWorkerReviews } = hooks.useMisc();
+  const { data: workerDetailsData, isLoading: isWorkerDetailsDataLoading } =
+    useGetWorkerDetailsById(id);
+  const { data: reviewData, isLoading: isReviewLoading } =
+    useGetAllWorkerReviews(id);
+
+  const handleRating = (rating) => {
+    const fullName = `${workerDetailsData?.first_name} ${workerDetailsData?.last_name}`;
+    navigate(
+      `/worker/write-review/${id}?rating=${rating}&name=${fullName}&area=${workerDetailsData?.area}&url=${encodeURIComponent(workerDetailsData?.profile?.url)}`,
+      { state: { modal: true } },
+    );
   };
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -247,7 +251,6 @@ export default function WorkerDetails() {
   };
 
   const [selectedIndex, setSelectedIndex] = useState(0);
-
 
   const contactData = [
     {
@@ -266,26 +269,35 @@ export default function WorkerDetails() {
   const addressData = [
     { label: "Address", value: workerDetailsData?.address_one },
     { label: "Area", value: workerDetailsData?.area },
-...(workerDetailsData?.landmark
-    ? [{ label: "Landmark", value: workerDetailsData.landmark }]
-    : []),    { label: "Pincode", value: workerDetailsData?.pincode },
+    ...(workerDetailsData?.landmark
+      ? [{ label: "Landmark", value: workerDetailsData.landmark }]
+      : []),
+    { label: "Pincode", value: workerDetailsData?.pincode },
     { label: "City", value: workerDetailsData?.city },
     { label: "State", value: workerDetailsData?.state },
   ];
   return (
     <>
-      {isWorkerDetailsDataLoading ? <Box height={`calc(100vh - ${isMobile ? '95px' : "80px"})`}><Loader type="section" /></Box> :
-
+      {isWorkerDetailsDataLoading ? (
+        <Box height={`calc(100vh - ${isMobile ? "95px" : "80px"})`}>
+          <Loader type="section" />
+        </Box>
+      ) : (
         <>
-          {workerDetailsData &&
+          {workerDetailsData && (
             <DetailsStyle isMobile={isMobile}>
               <Box className="header">
                 <Box className="left">
                   <Box className="flexBox justifySpaceBetween">
                     <Box className="flexBox">
-                      <img className="thumbIcon" src={new_thumb_icon} alt="thumb" />
+                      <img
+                        className="thumbIcon"
+                        src={new_thumb_icon}
+                        alt="thumb"
+                      />
                       <Typography variant="h5">
-                        {workerDetailsData.first_name}  {workerDetailsData.last_name}
+                        {workerDetailsData.first_name}{" "}
+                        {workerDetailsData.last_name}
                       </Typography>
                     </Box>
                     {!isMobile && (
@@ -308,7 +320,9 @@ export default function WorkerDetails() {
                     </Typography>
                     <Tooltip
                       arrow={true}
-                      title={"This Profile Information is verified by oneCallWorker."}
+                      title={
+                        "This Profile Information is verified by oneCallWorker."
+                      }
                     >
                       <img height={30} src={verified} />
                     </Tooltip>
@@ -349,7 +363,10 @@ export default function WorkerDetails() {
                         startIcon={<WhatsAppIcon width={15} height={15} />}
                         onClick={(e) => {
                           e.stopPropagation();
-                          window.open(`https://wa.me/${workerDetailsData.mobile_number}`, "_blank");
+                          window.open(
+                            `https://wa.me/${workerDetailsData.mobile_number}`,
+                            "_blank",
+                          );
                         }}
                       >
                         WhatsApp
@@ -381,7 +398,12 @@ export default function WorkerDetails() {
     </ToolTip> */}
                     </Box>
 
-                    {!isMobile && <StarRating onChange={(event, value) => handleRating(value)} size="large" />}
+                    {!isMobile && (
+                      <StarRating
+                        onChange={(event, value) => handleRating(value)}
+                        size="large"
+                      />
+                    )}
                   </Box>
                 </Box>
               </Box>
@@ -413,7 +435,10 @@ export default function WorkerDetails() {
                     </Box>
                   </Box>
                   {isMobile && <Divider />}
-                  <Box className="contact commonStyle" padding={isMobile ? 10 : 0}>
+                  <Box
+                    className="contact commonStyle"
+                    padding={isMobile ? 10 : 0}
+                  >
                     <Typography className="pB10" variant="h4">
                       Contact Information
                     </Typography>
@@ -425,9 +450,13 @@ export default function WorkerDetails() {
                             <Box className="iconWrapper">{val.icon}</Box>
 
                             <Box className="textBox">
-                              <Typography className="label">{val.label}</Typography>
+                              <Typography className="label">
+                                {val.label}
+                              </Typography>
 
-                              <Typography className="value">{val.value}</Typography>
+                              <Typography className="value">
+                                {val.value}
+                              </Typography>
                             </Box>
                           </Box>
                           <IconButton
@@ -458,7 +487,10 @@ export default function WorkerDetails() {
                   <Box width={isMobile ? "100%" : "60%"}>
                     {isMobile && <Divider />}
                     <Box className="availableDays commonStyle leftSection">
-                      <Typography className={`${isMobile ? "" : "pB10"}`} variant="h4">
+                      <Typography
+                        className={`${isMobile ? "" : "pB10"}`}
+                        variant="h4"
+                      >
                         Available Days
                       </Typography>
                       <Box className="flexBox">
@@ -467,7 +499,7 @@ export default function WorkerDetails() {
                             key={day}
                             name={day}
                             selectedDays={workerDetailsData.days}
-                            onChange={() => { }}
+                            onChange={() => {}}
                           />
                         ))}
                       </Box>
@@ -487,13 +519,15 @@ export default function WorkerDetails() {
                             className="rating"
                             variant={isMobile ? "h3" : "h1"}
                           >
-                            4.2
+                            {workerDetailsData.averageRating}
                           </Typography>
                         </Box>
                         <Box>
-                          <Typography variant="h4">9 Ratings</Typography>
+                          <Typography variant="h4">
+                            {workerDetailsData.totalReviews} Ratings
+                          </Typography>
                           <Typography variant="body1" className="ratings">
-                            Ocw rating index based on 9 ratings across the web
+                            Ocw rating index based on {workerDetailsData.totalReviews} ratings across the web
                           </Typography>
                         </Box>
                       </Box>
@@ -509,22 +543,29 @@ export default function WorkerDetails() {
                     </Box>
                   </Box>
                   {isMobile && <Divider />}
-                  <Box className="address commonStyle" padding={isMobile ? 10 : 0}>
+                  <Box
+                    className="address commonStyle"
+                    padding={isMobile ? 10 : 0}
+                  >
                     <Typography className="pB10" variant="h4">
                       Address
                     </Typography>
 
                     <Box className="addressCard flex">
                       {addressData.map((val) => {
-                        return <>
-                          <Box className="flex gap8">
-                            <Typography className="label">{val.label}:</Typography>
-                            <Typography className="value">
-                              {val.value}
-                            </Typography>
-                          </Box>
-                          <Divider />
-                        </>
+                        return (
+                          <>
+                            <Box className="flex gap8">
+                              <Typography className="label">
+                                {val.label}:
+                              </Typography>
+                              <Typography className="value">
+                                {val.value}
+                              </Typography>
+                            </Box>
+                            <Divider />
+                          </>
+                        );
                       })}
                     </Box>
                   </Box>
@@ -532,10 +573,16 @@ export default function WorkerDetails() {
               </Box>
               <Divider />
               <Box className="userReview" padding={10}>
-            
-                {reviewData?.reviews&&reviewData.reviews.map((val)=>{
-                  return <UserReview isLoading={isReviewLoading} data={val} key={val._id} />
-                })}
+                {isReviewLoading ? (
+                  <Loader type="table" />
+                ) : (
+                  reviewData?.reviews?.map((val) => (
+                    <>
+                    <UserReview data={val} key={val._id} />
+                    {/* <Divider/> */}
+                    </>
+                  ))
+                )}
               </Box>
               <Divider />
 
@@ -547,8 +594,10 @@ export default function WorkerDetails() {
                   index={selectedIndex}
                 />
               )}
-            </DetailsStyle>}
-        </>}
+            </DetailsStyle>
+          )}
+        </>
+      )}
     </>
   );
 }

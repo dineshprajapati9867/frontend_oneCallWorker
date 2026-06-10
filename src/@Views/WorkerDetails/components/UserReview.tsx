@@ -9,19 +9,26 @@ import {
   Button,
   useMediaQuery,
 } from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
-import ReplyOutlinedIcon from "@mui/icons-material/ReplyOutlined";
-import { useNavigate, useParams } from "react-router-dom";
-import { hooks, interfaces } from "@Utils/index";
+import { useNavigate } from "react-router-dom";
+import { interfaces } from "@Utils/index";
 import { Loader } from "@Primitives/Loader";
 import dayjs from "dayjs";
+import { ThreeDots } from "@Icons/ThreeDots";
+import MenuDropdown from "@Primitives/MenuDropdown";
+import { EditNormalIcon } from "@Icons/EditIcon";
+import { DeleteIcon } from "@Icons/DeleteIcon";
 
 interface PropsI {
   isBorder?: boolean;
   data: interfaces.Review;
-  isLoading: boolean;
+  isComment?: boolean;
+  isThreeDot?: boolean;
+  handleThreeDotsValue?: (data: {
+    commentId: string;
+    description: string;
+  }) => void;
 }
 const ReviewCard = styled(Box)<{ isBorder: boolean; isMobile: boolean }>(
   ({ theme, isBorder, isMobile }) => ({
@@ -99,51 +106,81 @@ const ReviewCard = styled(Box)<{ isBorder: boolean; isMobile: boolean }>(
   }),
 );
 
-const UserReview = ({ isBorder = true, isLoading, data }: PropsI) => {
+const optionThreeDot = [
+  {
+    id: 1,
+    label: "Edit Comment",
+    icon: <EditNormalIcon width={20} height={20} />,
+  },
+  {
+    id: 2,
+    label: "Delete Comment",
+    icon: <DeleteIcon />,
+  },
+];
+const UserReview = ({
+  isBorder = true,
+  data,
+  isComment = true,
+  isThreeDot,
+  handleThreeDotsValue,
+}: PropsI) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.only("xs"));
   const navigate = useNavigate();
 
-  
   return (
     <>
-      {isLoading ? (
-        <Loader type="table" />
-      ) : (
-        data && (
-          <ReviewCard isBorder={isBorder} isMobile={isMobile}>
-            <Box className="headers">
-              <Box className="user-info">
-                <Avatar
-                  src={data.reviewerId.picture}
-                  variant="rounded"
-                >
-                  {data.reviewerId.name.charAt(0).toUpperCase()}
-                </Avatar>
-                <Typography variant="h5">{data.reviewerId.name}</Typography>
-              </Box>
-              <Box className="user-info">
-                <Typography variant="body1" color="text.secondary">
-                  {dayjs(data.createdAt).format("DD-MMM-YYYY")}
-                </Typography>
-                {/* <IconButton size="small">
-            <MoreVertIcon />
-          </IconButton> */}
-              </Box>
+      {data && (
+        <ReviewCard isBorder={isBorder} isMobile={isMobile}>
+          <Box className="headers">
+            <Box className="user-info">
+              <Avatar src={data?.reviewerId?.picture} variant="rounded">
+                {data?.reviewerId?.name &&
+                  data?.reviewerId?.name.charAt(0).toUpperCase()}
+              </Avatar>
+              <Typography variant="h5">
+                {data?.reviewerId?.name || data?.userId?.name}
+              </Typography>
             </Box>
+            <Box className="user-info">
+              <Typography variant="body1" color="text.secondary">
+                {dayjs(data.createdAt).format("DD-MMM-YYYY hh:mm A")}
+              </Typography>
+              {isThreeDot && (
+                <MenuDropdown
+                  handleClickOnMenu={(val) => {
+                    if (val === "Edit Comment") {
+                      handleThreeDotsValue({
+                        commentId: data._id,
+                        description: data.description,
+                      });
+                    } else {
+                      handleThreeDotsValue({
+                        commentId: data._id,
+                        description: val,
+                      });
+                    }
+                  }}
+                  options={optionThreeDot}
+                />
+              )}
+            </Box>
+          </Box>
 
-            <Rating value={data.rating} readOnly size="small" />
+          {isComment && <Rating value={data.rating} readOnly size="small" />}
 
-            <Typography variant="body1" className="review-text">
-              {data.description}
-            </Typography>
+          <Typography variant="body1" className="review-text">
+            {data.description}
+          </Typography>
 
-            {data.images.length > 0 &&
-              data.images.map((data) => (
-                <Box className="image-box">
-                  <img className="review-img" src={data.url} />
-                </Box>
-              ))}
+          {data?.images?.length > 0 &&
+            data.images.map((data) => (
+              <Box className="image-box">
+                <img className="review-img" src={data.url} />
+              </Box>
+            ))}
 
+          {isComment && (
             <Box className="action-bar">
               <Button
                 className="action-btn"
@@ -167,8 +204,8 @@ const UserReview = ({ isBorder = true, isLoading, data }: PropsI) => {
           Share
         </Button> */}
             </Box>
-          </ReviewCard>
-        )
+          )}
+        </ReviewCard>
       )}
     </>
   );
