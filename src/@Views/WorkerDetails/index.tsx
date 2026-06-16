@@ -251,7 +251,9 @@ export default function WorkerDetails() {
     handleToggleReviewLike,
     isToggleReviewLikeLoading,
     handleDeleteReview,
-    isDeleteReviewLoading
+    isDeleteReviewLoading,
+    handleBookmark,
+    isBookmarkLoading
   } = hooks.useMisc();
   const { data: workerDetailsData, isLoading: isWorkerDetailsDataLoading } =
     useGetWorkerDetailsById(id);
@@ -302,6 +304,10 @@ export default function WorkerDetails() {
       handleDeleteReview(data.commentId);
     } 
   };
+
+  // const handleBookMarkBtn=()=>{
+  //      handleBookmark(id)
+  // }
   return (
     <>
       {isWorkerDetailsDataLoading ? (
@@ -327,8 +333,10 @@ export default function WorkerDetails() {
                       </Typography>
                     </Box>
                     {!isMobile && (
-                      <IconButton className="bookMark">
-                        <BookmarkIconMui />
+                      <IconButton  sx={{backgroundColor:"black"}}  disabled={isBookmarkLoading}  className="bookMark">
+                        <BookmarkIconMui sx={{
+                          fill:"white"
+                        }} color="action" />
                       </IconButton>
                     )}
                   </Box>
@@ -457,10 +465,10 @@ export default function WorkerDetails() {
                           setIsOpenImagePreview(true);
                         }}
                       />
-                      <ImageCard
+                      {/* <ImageCard
                         name="By User"
                         link="https://wallpapers.com/images/hd/link-hd-wallpaper-and-background-image-71mfep3ai8bib1mn.jpg"
-                      />
+                      /> */}
                     </Box>
                   </Box>
                   {isMobile && <Divider />}

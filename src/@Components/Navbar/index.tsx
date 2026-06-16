@@ -88,11 +88,12 @@ export default function Navbar() {
   const navigate = useNavigate();
   // const [openLogin, setOpenLogin] = useState(false);
   const {
-    handleOpenProfileDrawer,
+    
     openLogin,
     handleCloseLogin,
     handleOpenLogin,
-  } = hooks.useUser();
+  } = hooks.useAuth();
+  const {handleOpenProfileDrawer,}=hooks.useUser()
   const { isMobile } = hooks.useResponsive();
   // Current language display
   // const handleGetCurrentLanguage = () => {

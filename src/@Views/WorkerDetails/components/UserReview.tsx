@@ -12,7 +12,7 @@ import {
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import { useNavigate } from "react-router-dom";
-import { interfaces } from "@Utils/index";
+import { hooks, interfaces } from "@Utils/index";
 import dayjs from "dayjs";
 import MenuDropdown from "@Primitives/MenuDropdown";
 import { EditNormalIcon } from "@Icons/EditIcon";
@@ -132,10 +132,16 @@ const UserReview = ({
   optionThreeDot,
   isDeleteLoading,
 }: PropsI) => {
+  const {checkIsUserLogin}=hooks.useAuth()
   const isMobile = useMediaQuery((theme) => theme.breakpoints.only("xs"));
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
 
+ 
+  const isOwner =
+  user?._id &&
+  (user._id === data.reviewerId?._id ||
+   user._id === data.userId?._id);
   return (
     <>
       {data && (
@@ -155,8 +161,7 @@ const UserReview = ({
                 {dayjs(data.createdAt).format("DD-MMM-YYYY hh:mm A")}
               </Typography>
               {isThreeDot &&
-                (user?._id === data.reviewerId?._id ||
-                  user?._id === data.userId?._id) && (
+                isOwner && (
                   <MenuDropdown
                     disabled={isDeleteLoading}
                     handleClickOnMenu={(val) => {
@@ -196,7 +201,9 @@ const UserReview = ({
               <Button
                 disabled={isLikeLoading}
                 className={`btnBox ${isLikeLoading ? "disable" : ""}`}
-                onClick={() => handleLike(data._id)}
+                onClick={() => {
+                   if (!checkIsUserLogin()) return;
+                  handleLike(data._id)}}
               >
                 <ThumbUpOutlinedIcon
                   color={data.likes.includes(user?._id) ? "info" : "primary"}

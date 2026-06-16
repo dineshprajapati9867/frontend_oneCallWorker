@@ -16,9 +16,6 @@ interface userI {
   activeStep: number;
   handleBackForCreateProfile: () => void;
   handleNextForCreateProfile: () => void;
-  openLogin: boolean;
-  handleOpenLogin: () => void;
-  handleCloseLogin: () => void;
   handleCreateProfile: (data:interfaces.createProfileI) => void;
   isCreateProfilePending: boolean;
   useGetMyProfileData:()=>UseQueryResult<any>,
@@ -39,17 +36,8 @@ const useUserData = () => {
     "Location Information",
   ];
   const [activeStep, setActiveStep] = useState(1);
-  const [openLogin, setOpenLogin] = useState(false);
 
-  /*
-   *  open and close Login
-   */
-  const handleOpenLogin = () => {
-    setOpenLogin(true);
-  };
-  const handleCloseLogin = () => {
-    setOpenLogin(false);
-  };
+
   /*
    *  open and close profile drawer
    */
@@ -128,9 +116,6 @@ const useUserData = () => {
     activeStep,
     handleNextForCreateProfile,
     handleBackForCreateProfile,
-    openLogin,
-    handleOpenLogin,
-    handleCloseLogin,
     handleCreateProfile,
     isCreateProfilePending,
     useGetMyProfileData,

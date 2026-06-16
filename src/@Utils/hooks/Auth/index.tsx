@@ -30,6 +30,10 @@ interface AuthContextI {
 
   handleLogout: () => void;
   isLogoutLoading: boolean;
+    openLogin: boolean;
+  handleOpenLogin: () => void;
+  handleCloseLogin: () => void;
+  checkIsUserLogin:()=>boolean
 }
 
 const authContext = createContext<AuthContextI>({} as AuthContextI);
@@ -38,15 +42,37 @@ export const useAuth = () => useContext(authContext);
 
 function useProvideAuth() {
   const [authScreen, setAuthScreen] = useState<AuthScreen>("signin");
-  const { setUser } = hooks.useToken();
+    const [openLogin, setOpenLogin] = useState(false);
+  const { setUser, setIsUserLogin } = hooks.useToken();
 
   const { ShowApiErrorSnackBar, ShowSuccessSnackBar } = hooks.useSnackBar();
-  const { handleCloseLogin } = hooks.useUser();
+    /*
+   *  open and close Login
+   */
+  const handleOpenLogin = () => {
+    setOpenLogin(true);
+  };
+  const handleCloseLogin = () => {
+    setOpenLogin(false);
+  };
+
+
+ const checkIsUserLogin = () => {
+  const isUserLogin = JSON.parse(localStorage.getItem("isUserLogin") || "false");
+
+  if (!isUserLogin) {
+    handleOpenLogin();
+    return false;
+  }
+
+  return true;
+};
   const handleLoginWithGoogle = useGoogleLogin({
     onSuccess: async (res) => {
       const userInfo = await googleLogin(res.access_token);
       const savedUser = await saveGoogleUser(userInfo.data);
       setUser(savedUser.data.user);
+      setIsUserLogin(true);
       handleCloseLogin();
     },
     onError: (err) => {
@@ -60,11 +86,11 @@ function useProvideAuth() {
       mutationFn: SignInAuth,
       onSuccess(data) {
         setUser(data.data.user);
-
+        setIsUserLogin(true);
         ShowSuccessSnackBar("Login successful");
 
         handleCloseLogin();
-        window.location.reload()
+        window.location.reload();
       },
       onError: (err) => {
         ShowApiErrorSnackBar(err);
@@ -80,8 +106,7 @@ function useProvideAuth() {
     mutationFn: SignUpAuth,
     onSuccess: (data) => {
       ShowSuccessSnackBar("Account created successfully");
-      setUser(data.data.user), 
-      // setToken(data.data.jwtToken), 
+      (setUser(data.data.user), setIsUserLogin(true));
       handleCloseLogin();
     },
     onError: (err) => {
@@ -139,7 +164,7 @@ function useProvideAuth() {
     mutationFn: LogoutpAuth,
     onSuccess: () => {
       ShowSuccessSnackBar("Logged out successfully");
-      window.location.reload()
+      window.location.reload();
       localStorage.clear();
     },
     onError: (err) => {
@@ -167,6 +192,10 @@ function useProvideAuth() {
 
     handleLogout,
     isLogoutLoading,
+        openLogin,
+    handleOpenLogin,
+    handleCloseLogin,
+    checkIsUserLogin
   };
 }
 

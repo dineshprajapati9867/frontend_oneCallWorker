@@ -49,6 +49,7 @@ const ReviewCommentsStyle = styled(Box)<{ isMobile: boolean }>(
 const ReviewComments = () => {
   const { id } = useParams();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.only("xs"));
+  const { checkIsUserLogin } = hooks.useAuth();
   const {
     useGetReviewDetailsById,
     handleCommentOnReview,
@@ -104,10 +105,14 @@ const ReviewComments = () => {
           <ReviewCommentsStyle isMobile={isMobile}>
             <Box className="left">
               <Box padding={10}>
-                <UserReview                           isLikeLoading={isToggleReviewLikeLoading}
-                          handleLike={(val) => {
-                            handleToggleReviewLike(val);
-                          }} data={data} isBorder={false} />
+                <UserReview
+                  isLikeLoading={isToggleReviewLikeLoading}
+                  handleLike={(val) => {
+                    handleToggleReviewLike(val);
+                  }}
+                  data={data}
+                  isBorder={false}
+                />
               </Box>
               <>
                 <Box className="CommentInputBox">
@@ -130,7 +135,15 @@ const ReviewComments = () => {
                       placeholder="Add a Comment"
                       disabled={isCommentOnReviewLoading}
                       value={comment}
-                      onChange={(val) => setComment(val.target.value)}
+                      onFocus={(e) => {
+                        if (!checkIsUserLogin()) {
+                          e.target.blur();
+                          return;
+                        }
+                      }}
+                      onChange={(val) => {
+                        setComment(val.target.value);
+                      }}
                     />
                   </Box>
                 </Box>

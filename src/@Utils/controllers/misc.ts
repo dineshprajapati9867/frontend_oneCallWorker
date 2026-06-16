@@ -146,3 +146,14 @@ export const  toggleReviewLike =(reviewId:string)=>{
 export const deleteReview=(id:string)=>{
   return deleteApi(`${API_SERVER_URL}/review/delete/${id}`)
 }
+
+// bookmark 
+
+export const bookmarkWorker=(workerId:string)=>{
+  return postApi(`${API_SERVER_URL}/bookmark`,{
+    workerId
+  })
+}
+export const getBookmarks=(page:number)=>{
+  return getApi(`${API_SERVER_URL}/bookmark?page=${page}`)
+}

@@ -18,7 +18,11 @@ const TokenStorage = {
   },
   setUser(user:any){
     localStorage.setItem("user",JSON.stringify(user))
+  },
+  isUserLogin(user:boolean){
+    localStorage.setItem("isUserLogin",JSON.stringify(user))
   }
+
 };
 
 /**
@@ -50,6 +54,7 @@ export default function useToken() {
     token,
     setToken: saveToken,
     removeToken,
-    setUser:TokenStorage.setUser
+    setUser:TokenStorage.setUser,
+    setIsUserLogin:TokenStorage.isUserLogin
   };
 }

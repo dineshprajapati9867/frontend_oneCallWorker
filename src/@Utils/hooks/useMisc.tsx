@@ -13,6 +13,8 @@ import {
   updateReviewComment,
   toggleReviewLike,
   deleteReview,
+  bookmarkWorker,
+  getBookmarks
 } from "@Utils/controllers/misc";
 import {
   useQuery,
@@ -57,7 +59,10 @@ interface MiscI {
   isToggleReviewLikeLoading: boolean;
   handleToggleReviewLike: (reviewId: string) => void;
       handleDeleteReview:(id:string)=>void,
-    isDeleteReviewLoading:boolean
+    isDeleteReviewLoading:boolean,
+    handleBookmark:(workerId:string)=>void,
+    isBookmarkLoading:boolean,
+    useGetBookmarks:()=>UseInfiniteQueryResult<any>
 }
 
 interface UploadFileResponse {
@@ -401,6 +406,47 @@ function useMiscProvider() {
   const handleToggleReviewLike = (reviewId: string) => {
     mutateToggleReviewLike(reviewId);
   };
+
+  /**
+   *  bookmark by workerId
+   */
+  const { mutate: mutateBookmark, isPending: isBookmarkLoading } =
+  useMutation({
+    mutationFn: bookmarkWorker,
+    onSuccess: (data) => {
+      ShowSuccessSnackBar(data.data?.message);
+    },
+    onError: (err) => {
+      ShowApiErrorSnackBar(err);
+    },
+  });
+
+  const handleBookmark = (workerId: string) => {
+  mutateBookmark(workerId);
+};
+
+ const useGetBookmarks = () => {
+  return useInfiniteQuery({
+    queryKey: ["bookmarks"],
+
+    queryFn: ({ pageParam = 1 }) =>
+      getBookmarks(pageParam),
+
+    initialPageParam: 1,
+
+    getNextPageParam: (lastPage: any) =>
+      lastPage.hasMore
+        ? lastPage.currentPage + 1
+        : undefined,
+
+    select: (data) => ({
+      ...data,
+      bookmarks: data.pages.flatMap(
+        (page) => page.data.bookmarks
+      ),
+    }),
+  });
+};
   return {
     /**
      * Public file upload
@@ -425,7 +471,10 @@ function useMiscProvider() {
     isToggleReviewLikeLoading,
     handleToggleReviewLike,
     handleDeleteReview,
-    isDeleteReviewLoading
+    isDeleteReviewLoading,
+    handleBookmark,
+    isBookmarkLoading,
+    useGetBookmarks
   };
 }
 
