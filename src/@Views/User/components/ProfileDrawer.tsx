@@ -102,39 +102,39 @@ const ProfileDrawerStyle = styled(Drawer)<{ isMobile: boolean }>(
   }),
 );
 const ProfileDrawer = ({ open, onClose }: PrposI) => {
-  const [notificationPermission, setNotificationPermission] =
-    useState<NotificationPermission>(Notification.permission);
+  // const [notificationPermission, setNotificationPermission] =
+  //   useState<NotificationPermission>(Notification.permission);
   const {
     handleOpenLogin,
 
     handleCloseProfileDrawer,
   } = hooks.useUser();
   const navigate = useNavigate();
-  const { ShowInfoSnackBar } = hooks.useSnackBar();
+  // const { ShowInfoSnackBar } = hooks.useSnackBar();
    const {handleLogout}=hooks.useAuth()
   const isMobile = useMediaQuery((theme) => theme.breakpoints.only("xs"));
   const user = JSON.parse(localStorage.getItem("user"));
 
-  const handleNotification = async () => {
-    if (!("Notification" in window)) {
-      return ShowInfoSnackBar("This browser does not support notifications");
-    }
+  // const handleNotification = async () => {
+  //   if (!("Notification" in window)) {
+  //     return ShowInfoSnackBar("This browser does not support notifications");
+  //   }
 
-    if (notificationPermission === "granted") {
-      return ShowInfoSnackBar(
-        "To disable notifications, please update browser settings manually.",
-      );
-    }
+  //   if (notificationPermission === "granted") {
+  //     return ShowInfoSnackBar(
+  //       "To disable notifications, please update browser settings manually.",
+  //     );
+  //   }
 
-    if (Notification.permission === "denied") {
-      return ShowInfoSnackBar(
-        "Permission denied. Please enable notifications from browser settings.",
-      );
-    }
+  //   if (Notification.permission === "denied") {
+  //     return ShowInfoSnackBar(
+  //       "Permission denied. Please enable notifications from browser settings.",
+  //     );
+  //   }
 
-    const permission = await Notification.requestPermission();
-    setNotificationPermission(permission);
-  };
+  //   const permission = await Notification.requestPermission();
+  //   setNotificationPermission(permission);
+  // };
 
 
   const menuItems = [
@@ -156,13 +156,13 @@ const ProfileDrawer = ({ open, onClose }: PrposI) => {
         handleCloseProfileDrawer();
       },
     },
-    {
-      id: 3,
-      label: "Notifications",
-      icon: <NotificationsIconMui />,
-      onClick: handleNotification,
-      isSwitch: true,
-    },
+    // {
+    //   id: 3,
+    //   label: "Notifications",
+    //   icon: <NotificationsIconMui />,
+    //   onClick: handleNotification,
+    //   isSwitch: true,
+    // },
     {
       id: 4,
       label: "Logout",
@@ -213,7 +213,8 @@ const ProfileDrawer = ({ open, onClose }: PrposI) => {
           return (
             <Box
               key={item.id}
-              className={item.isSwitch ? "commonStyle" : "flexBox"}
+              // className={item.isSwitch ? "commonStyle" : "flexBox"}
+              className={"flexBox"}
               onClick={item.onClick}
             >
               <Box
@@ -225,12 +226,12 @@ const ProfileDrawer = ({ open, onClose }: PrposI) => {
                   {item.label}
                 </Typography>
               </Box>
-              {item.isSwitch && (
+              {/* {item.isSwitch && (
                 <IOSSwitch
                   checked={notificationPermission === "granted"}
                   onClick={item.onClick}
                 />
-              )}
+              )} */}
             </Box>
           );
         })}

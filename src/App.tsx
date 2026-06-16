@@ -13,6 +13,15 @@ import { HomeLayouts, PublicRoute } from "./routes";
 import NotFoundPage from "@Components/404Page";
 import './index.css'
 
+function ScrollToTop({children}) {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return children;
+}
 function AppLayout() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -66,6 +75,7 @@ function App() {
   return (
     <BrowserRouter>
       <ContextContainer>
+        <ScrollToTop>
         <Routes>
           <Route path="/" element={<AppLayout />}>
             {HomeLayouts.map((route) => (
@@ -91,6 +101,7 @@ function App() {
             <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>
+        </ScrollToTop>
       </ContextContainer>
     </BrowserRouter>
   );
