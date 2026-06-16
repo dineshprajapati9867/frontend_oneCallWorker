@@ -1,12 +1,26 @@
 import React, { useState } from "react";
-import { Box, Button, styled, useMediaQuery } from "@mui/material";
+import { Box, styled, useMediaQuery } from "@mui/material";
 import UserReview from "./UserReview";
 import WorkerReviewCard from "./WorkerReviewCard";
-import { Loader, TextInput } from "@Primitives/index";
+import { Loader } from "@Primitives/index";
 import CommentInput from "@Components/CommentInput";
 import { hooks } from "@Utils/index";
 import { useParams } from "react-router-dom";
+import { EditNormalIcon } from "@Icons/EditIcon";
+import { DeleteIcon } from "@Icons/DeleteIcon";
 
+const optionThreeDot = [
+  {
+    id: 1,
+    label: "Edit Comment",
+    icon: <EditNormalIcon width={20} height={20} />,
+  },
+  {
+    id: 2,
+    label: "Delete Comment",
+    icon: <DeleteIcon />,
+  },
+];
 const ReviewCommentsStyle = styled(Box)<{ isMobile: boolean }>(
   ({ theme, isMobile }) => ({
     display: "flex",
@@ -43,6 +57,8 @@ const ReviewComments = () => {
     handleDeleteReviewComment,
     handleUpdateReviewComment,
     isUpdateReviewCommentLoading,
+    handleToggleReviewLike,
+    isToggleReviewLikeLoading,
   } = hooks.useMisc();
   const { data, isLoading } = useGetReviewDetailsById(id);
   const {
@@ -88,7 +104,10 @@ const ReviewComments = () => {
           <ReviewCommentsStyle isMobile={isMobile}>
             <Box className="left">
               <Box padding={10}>
-                <UserReview data={data} isBorder={false} />
+                <UserReview                           isLikeLoading={isToggleReviewLikeLoading}
+                          handleLike={(val) => {
+                            handleToggleReviewLike(val);
+                          }} data={data} isBorder={false} />
               </Box>
               <>
                 <Box className="CommentInputBox">
@@ -97,12 +116,14 @@ const ReviewComments = () => {
                       avatarSrc={user?.picture}
                       isAvatar={true}
                       postButtonText={
-                        <span onClick={
-    isCommentOnReviewLoading ||
-    isUpdateReviewCommentLoading
-      ? undefined
-      : handleSubmitComment
-  }>
+                        <span
+                          onClick={
+                            isCommentOnReviewLoading ||
+                            isUpdateReviewCommentLoading
+                              ? undefined
+                              : handleSubmitComment
+                          }
+                        >
                           {isEdit ? "Update" : "Post"}
                         </span>
                       }
@@ -135,6 +156,7 @@ const ReviewComments = () => {
                               setIsEdit(true);
                             }
                           }}
+                          optionThreeDot={optionThreeDot}
                         />
                       </Box>
                     ))

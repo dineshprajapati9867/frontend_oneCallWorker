@@ -220,15 +220,23 @@ export function removeExtension(filename: any) {
     return filename.substring(0, filename.lastIndexOf('.')) || filename;
   }
   
-  // To download doc and view
-  export const handleDownloadDoc = async (key: string) => {
-    const response = await key /** getAccessForDocument(key); */ 
-    const link = document.createElement('a');
-    link.href = response.data.uploadUrl;
-    link.target = '_blank';
+  // To download  image
+export const handleDownloadImage = async (url: string) => {
+  try {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "image.jpg";
     link.click();
-  };
-  
+    
+    URL.revokeObjectURL(link.href);
+  } catch {
+    window.open(url, "_blank");
+  }
+};
+
 
 
   
@@ -397,23 +405,7 @@ function appendWordsBasedOnValue(value: number, wordsString: string, words: stri
   }
 
 
-  /**
- * Takes in a string of code and adds the correct amount of spaces to the beginning of each line.
- * @param {string} docName - the name of the document to format
- * @returns {string} the formatted document name
- */
-export const getDocumentName = (docName?: string | File): string => {
-    if (docName instanceof File) {
-      const [name] = docName.name.split('.');
-      return name;
-    }
-  
-    if (!docName || typeof docName !== 'string') {
-      return '';
-    }
-    const parts = docName.split('.');
-    return parts.length > 1 ? parts.slice(0, -1).join('.') : docName;
-  };
+
 
 
   /**

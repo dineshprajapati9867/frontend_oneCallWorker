@@ -19,6 +19,8 @@ import {
   StarMuiIcon,
   WhatsAppIcon,
   BookmarkIconMui,
+  EditNormalIcon,
+  DeleteIcon,
 } from "@Icons/index";
 import verified from "@Assets/Images/verified.gif";
 import ImageCard from "./components/ImageCard";
@@ -31,6 +33,18 @@ import { ImagePreview } from "@Primitives/ImagePreviewModal/imagePreview";
 import { hooks } from "@Utils/index";
 import { Loader } from "@Primitives/Loader";
 
+const optionThreeDot = [
+  {
+    id: 1,
+    label: "Edit Review",
+    icon: <EditNormalIcon width={20} height={20} />,
+  },
+  {
+    id: 2,
+    label: "Delete Review",
+    icon: <DeleteIcon />,
+  },
+];
 const DetailsStyle = styled(Box)<{ isMobile: boolean }>(
   ({ theme, isMobile }) => ({
     overflowX: "hidden",
@@ -231,8 +245,14 @@ export default function WorkerDetails() {
   const navigate = useNavigate();
   const [isCopy, setIsCopy] = useState(false);
   const [isOpenImagePreview, setIsOpenImagePreview] = useState(false);
-
-  const { useGetWorkerDetailsById, useGetAllWorkerReviews } = hooks.useMisc();
+  const {
+    useGetWorkerDetailsById,
+    useGetAllWorkerReviews,
+    handleToggleReviewLike,
+    isToggleReviewLikeLoading,
+    handleDeleteReview,
+    isDeleteReviewLoading
+  } = hooks.useMisc();
   const { data: workerDetailsData, isLoading: isWorkerDetailsDataLoading } =
     useGetWorkerDetailsById(id);
   const { data: reviewData, isLoading: isReviewLoading } =
@@ -276,6 +296,12 @@ export default function WorkerDetails() {
     { label: "City", value: workerDetailsData?.city },
     { label: "State", value: workerDetailsData?.state },
   ];
+
+  const handleThreeDots = (data) => {
+    if (data.description === "Delete Review") {
+      handleDeleteReview(data.commentId);
+    } 
+  };
   return (
     <>
       {isWorkerDetailsDataLoading ? (
@@ -310,13 +336,13 @@ export default function WorkerDetails() {
                   <Box className="ratingBox flexBox">
                     <Box className="starRatingBox" width={52}>
                       <Typography className="rating font15" variant="h5">
-                        4.2
+                        {workerDetailsData.averageRating}
                       </Typography>
                       <StarMuiIcon className="commonIconStyle" />
                     </Box>
 
                     <Typography className="ratings" variant="body1">
-                      50 Ratings
+                      {workerDetailsData.totalReviews} Ratings
                     </Typography>
                     <Tooltip
                       arrow={true}
@@ -330,7 +356,10 @@ export default function WorkerDetails() {
                   <Box className="location iconBox flexBox">
                     <BlackNormalLocationIcon />
                     <Typography className="font15" variant="body1">
-                      MALAD WEST Malad West, Mumbai
+                      {workerDetailsData?.landmark
+                        ? workerDetailsData.landmark
+                        : ""}{" "}
+                      {workerDetailsData.area}
                     </Typography>
                   </Box>
                   <Box className="languages flexBox justifySpaceBetween">
@@ -527,7 +556,9 @@ export default function WorkerDetails() {
                             {workerDetailsData.totalReviews} Ratings
                           </Typography>
                           <Typography variant="body1" className="ratings">
-                            Ocw rating index based on {workerDetailsData.totalReviews} ratings across the web
+                            Ocw rating index based on{" "}
+                            {workerDetailsData.totalReviews} ratings across the
+                            web
                           </Typography>
                         </Box>
                       </Box>
@@ -578,8 +609,18 @@ export default function WorkerDetails() {
                 ) : (
                   reviewData?.reviews?.map((val) => (
                     <>
-                    <UserReview data={val} key={val._id} />
-                    {/* <Divider/> */}
+                      <UserReview
+                      optionThreeDot={optionThreeDot}
+                        isThreeDot={true}
+                        handleLike={(val) => {
+                          handleToggleReviewLike(val);
+                        }}
+                        data={val}
+                        key={val._id}
+                        isLikeLoading={isToggleReviewLikeLoading}
+                        handleThreeDotsValue={handleThreeDots}
+                        isDeleteLoading={isDeleteReviewLoading}
+                      />
                     </>
                   ))
                 )}

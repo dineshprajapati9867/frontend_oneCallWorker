@@ -85,10 +85,12 @@ export interface Review {
   workerId: string;
   reviewerId: Reviewer;
   userId:Reviewer,
+  likes:[string]
   rating: number;
   description: string;
   images: ReviewImage[];
   createdAt: string;
   updatedAt: string;
   __v: number;
+  total_comments:number
 }

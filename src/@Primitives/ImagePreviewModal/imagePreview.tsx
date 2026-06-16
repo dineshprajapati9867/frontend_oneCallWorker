@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import ImageCard from "@Views/WorkerDetails/components/ImageCard";
+import { handleDownloadImage } from "@Utils/helpers";
 interface AttachmentI {
   url: string;
   file: any;
@@ -98,14 +99,6 @@ export function ImagePreview({ index, open, close, previewImageUrl }: PropsI) {
     setCurrentImage(prevIndex);
   };
 
-const downloadImage = (url: string) => {
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "image.jpg";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-};
 
   return (
     <ImagePreviewModal
@@ -122,7 +115,7 @@ const downloadImage = (url: string) => {
           <IconButton />
           <IconButton
             onClick={() =>
-              downloadImage(previewImageUrl[currentImage]?.url)
+              handleDownloadImage(previewImageUrl[currentImage]?.url)
             }
           >
             <DownloadWhiteIcon />

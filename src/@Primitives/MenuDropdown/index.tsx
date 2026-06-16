@@ -15,12 +15,15 @@ export interface MenuDropdownI {
   options: option[];
   selected?: boolean;
   handleClickOnMenu?: (val: string) => void;
+              disabled:boolean
+
 }
 
 export default function MenuDropdown({
   options,
   selected,
   handleClickOnMenu,
+  disabled
 }: MenuDropdownI) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -76,10 +79,13 @@ export default function MenuDropdown({
             key={option.id}
             selected={selected}
             onClick={() => handleClose(option.label)}
+            disabled={disabled}
           >
             <Box sx={{ display: "flex", alignItems: "center", gap: 10 }}>
               {option.icon}
-              <Typography variant="body1">{option.label}</Typography>
+              <Typography sx={{
+                opacity:disabled?0.5:1
+              }} variant="body1">{option.label}</Typography>
             </Box>
           </MenuItem>
         ))}

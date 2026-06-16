@@ -234,7 +234,7 @@ function WriteReview() {
                     required: "Address is required",
                     minLength: {
                       value: 20,
-                      message: "Review must be at least 20 characters",
+                      message: "Address must be at least 20 characters",
                     },
                     pattern: {
                       value: pattern.noSpace,

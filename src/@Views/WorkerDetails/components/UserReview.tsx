@@ -13,13 +13,11 @@ import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import { useNavigate } from "react-router-dom";
 import { interfaces } from "@Utils/index";
-import { Loader } from "@Primitives/Loader";
 import dayjs from "dayjs";
-import { ThreeDots } from "@Icons/ThreeDots";
 import MenuDropdown from "@Primitives/MenuDropdown";
 import { EditNormalIcon } from "@Icons/EditIcon";
 import { DeleteIcon } from "@Icons/DeleteIcon";
-
+import { ThreeDots } from "@Icons/ThreeDots";
 interface PropsI {
   isBorder?: boolean;
   data: interfaces.Review;
@@ -29,6 +27,14 @@ interface PropsI {
     commentId: string;
     description: string;
   }) => void;
+  handleLike?: (val: string) => void;
+  isLikeLoading?: boolean;
+  optionThreeDot?: {
+    id: number;
+    label: string;
+    icon: React.ReactNode;
+  }[];
+  isDeleteLoading?: boolean;
 }
 const ReviewCard = styled(Box)<{ isBorder: boolean; isMobile: boolean }>(
   ({ theme, isBorder, isMobile }) => ({
@@ -92,41 +98,43 @@ const ReviewCard = styled(Box)<{ isBorder: boolean; isMobile: boolean }>(
       ...(isMobile && {
         justifyContent: "space-between",
       }),
-    },
-
-    ".action-btn": {
-      textTransform: "none",
-      color: "#000",
-      fontWeight: 500,
-      "& .MuiSvgIcon-root": {
-        fontSize: "1.2rem",
-        marginRight: theme.spacing(1),
+      ".disable": {
+        opacity: "0.5",
+      },
+      ".btnBox": {
+        display: "flex",
+        alignItems: "center",
+        gap: theme.spacing(3),
+        cursor: "pointer",
       },
     },
+
+    // ".action-btn": {
+    //   textTransform: "none",
+    //   color: "#000",
+    //   fontWeight: 500,
+    //   "& .MuiSvgIcon-root": {
+    //     fontSize: "1.2rem",
+    //     marginRight: theme.spacing(1),
+    //   },
+    // },
   }),
 );
 
-const optionThreeDot = [
-  {
-    id: 1,
-    label: "Edit Comment",
-    icon: <EditNormalIcon width={20} height={20} />,
-  },
-  {
-    id: 2,
-    label: "Delete Comment",
-    icon: <DeleteIcon />,
-  },
-];
 const UserReview = ({
   isBorder = true,
   data,
   isComment = true,
   isThreeDot,
+  handleLike,
   handleThreeDotsValue,
+  isLikeLoading,
+  optionThreeDot,
+  isDeleteLoading,
 }: PropsI) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.only("xs"));
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
 
   return (
     <>
@@ -146,24 +154,27 @@ const UserReview = ({
               <Typography variant="body1" color="text.secondary">
                 {dayjs(data.createdAt).format("DD-MMM-YYYY hh:mm A")}
               </Typography>
-              {isThreeDot && (
-                <MenuDropdown
-                  handleClickOnMenu={(val) => {
-                    if (val === "Edit Comment") {
-                      handleThreeDotsValue({
-                        commentId: data._id,
-                        description: data.description,
-                      });
-                    } else {
-                      handleThreeDotsValue({
-                        commentId: data._id,
-                        description: val,
-                      });
-                    }
-                  }}
-                  options={optionThreeDot}
-                />
-              )}
+              {isThreeDot &&
+                (user?._id === data.reviewerId?._id ||
+                  user?._id === data.userId?._id) && (
+                  <MenuDropdown
+                    disabled={isDeleteLoading}
+                    handleClickOnMenu={(val) => {
+                      if (val === "Edit Comment") {
+                        handleThreeDotsValue({
+                          commentId: data._id,
+                          description: data.description,
+                        });
+                      } else {
+                        handleThreeDotsValue({
+                          commentId: data._id,
+                          description: val,
+                        });
+                      }
+                    }}
+                    options={optionThreeDot}
+                  />
+                )}
             </Box>
           </Box>
 
@@ -183,26 +194,33 @@ const UserReview = ({
           {isComment && (
             <Box className="action-bar">
               <Button
-                className="action-btn"
-                startIcon={<ThumbUpOutlinedIcon />}
+                disabled={isLikeLoading}
+                className={`btnBox ${isLikeLoading ? "disable" : ""}`}
+                onClick={() => handleLike(data._id)}
               >
-                Helpful (2)
+                <ThumbUpOutlinedIcon
+                  color={data.likes.includes(user?._id) ? "info" : "primary"}
+                />
+
+                <Typography variant="subtitle1">
+                  {" "}
+                  Helpful {data.likes.length > 0 && data.likes.length}
+                </Typography>
               </Button>
+
               <Button
-                className="action-btn"
-                startIcon={<ChatBubbleOutlineOutlinedIcon />}
+                disabled={isLikeLoading}
+                className={`btnBox ${isLikeLoading ? "disable" : ""}`}
                 onClick={() => {
                   navigate(`/ocwSocial/post/${data._id}`);
                 }}
               >
-                Comment (2)
+                <ChatBubbleOutlineOutlinedIcon color="primary" />
+
+                <Typography variant="subtitle1">
+                  Comment {data.total_comments > 0 && data.total_comments}
+                </Typography>
               </Button>
-              {/* <Button
-          className="action-btn"
-          startIcon={<ReplyOutlinedIcon sx={{ transform: "scaleX(-1)" }} />}
-        >
-          Share
-        </Button> */}
             </Box>
           )}
         </ReviewCard>

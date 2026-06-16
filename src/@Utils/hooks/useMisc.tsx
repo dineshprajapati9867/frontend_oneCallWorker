@@ -11,6 +11,8 @@ import {
   getCommentOfReview,
   deleteReviewComment,
   updateReviewComment,
+  toggleReviewLike,
+  deleteReview,
 } from "@Utils/controllers/misc";
 import {
   useQuery,
@@ -52,6 +54,10 @@ interface MiscI {
   }) => void;
   isUpdateReviewCommentLoading: boolean;
   handleDeleteReviewComment: (id: string) => void;
+  isToggleReviewLikeLoading: boolean;
+  handleToggleReviewLike: (reviewId: string) => void;
+      handleDeleteReview:(id:string)=>void,
+    isDeleteReviewLoading:boolean
 }
 
 interface UploadFileResponse {
@@ -159,6 +165,7 @@ function useMiscProvider() {
       queryKey: ["getWorkerDetailsById", id],
       queryFn: () => getWorkerProfile(id),
       select: (data) => data.data.profile,
+      enabled:!!id,
       gcTime: 0,
     });
   };
@@ -169,10 +176,15 @@ function useMiscProvider() {
   const { mutate: mutateCreateReview, isPending: isCreateReviewLoading } =
     useMutation({
       mutationFn: createReview,
-      onSuccess() {
+      onSuccess:()=> {
         queryClient.invalidateQueries({
           queryKey: ["getWorkerDetailsById"],
           exact: false,
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["allReviews"],
+          exact: false,
+          refetchType:"all"
         });
         ShowSuccessSnackBar("Review submitted successfully");
         navigate(-1);
@@ -223,7 +235,7 @@ function useMiscProvider() {
 
   const useGetReviewDetailsById = (id: string) => {
     return useQuery({
-      queryKey: [id],
+      queryKey: ["getReviewDetailsById", id],
       queryFn: () => getReviewDetails(id),
       select: (data) => data.data.review,
       gcTime: 0,
@@ -240,6 +252,16 @@ function useMiscProvider() {
           queryKey: ["getAllCommentsOfReview"],
           exact: false,
         });
+        queryClient.invalidateQueries({
+          queryKey: ["getReviewDetailsById"],
+          exact: false,
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["allReviews"],
+          exact: false,
+          refetchType:"all"
+        });
+
         //navigate(-1);
       },
       onError: (err) => {
@@ -250,6 +272,30 @@ function useMiscProvider() {
     mutateCommentOnReview(data);
   };
 
+    /**
+      delete the review by reviewId
+   */
+  const { mutate: mutateDeleteReview, isPending: isDeleteReviewLoading } =
+    useMutation({
+      mutationFn: deleteReview,
+      onSuccess: () => {
+        ShowSuccessSnackBar("Review deleted successfully");
+        queryClient.invalidateQueries({
+          queryKey: ["allReviews"],
+          exact: false,
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["getWorkerDetailsById"],
+          exact: false,
+        });
+      },
+      onError: (err) => {
+        ShowApiErrorSnackBar(err);
+      },
+    });
+  const handleDeleteReview=(id:string)=>{
+        mutateDeleteReview(id)
+  }
   /**
     get the comments of review by review Id
    */
@@ -296,15 +342,23 @@ function useMiscProvider() {
   /**
    *  delete the comment by commnt id
    */
-  const {
-    mutate: mutateDeleteReviewComment,
-  } = useMutation({
+  const { mutate: mutateDeleteReviewComment } = useMutation({
     mutationFn: deleteReviewComment,
     onSuccess() {
       queryClient.invalidateQueries({
         queryKey: ["getAllCommentsOfReview"],
         exact: false,
       });
+      queryClient.invalidateQueries({
+        queryKey: ["getReviewDetailsById"],
+        exact: false,
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["allReviews"],
+        exact: false,
+        refetchType:"all"
+      });
+
       ShowSuccessSnackBar("Comment deleted successfully");
     },
     onError: (err) => {
@@ -314,6 +368,38 @@ function useMiscProvider() {
 
   const handleDeleteReviewComment = (commentId: string) => {
     mutateDeleteReviewComment(commentId);
+  };
+
+  /**
+   *  toggle review Like
+   */
+  const {
+    mutate: mutateToggleReviewLike,
+    isPending: isToggleReviewLikeLoading,
+  } = useMutation({
+    mutationFn: toggleReviewLike,
+
+    onSuccess() {
+      queryClient.invalidateQueries({
+        queryKey: ["allReviews"],
+        exact: false,
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["getReviewDetailsById"],
+        exact: false,
+      });
+
+      // ShowSuccessSnackBar("Review updated");
+    },
+
+    onError: (err) => {
+      ShowApiErrorSnackBar(err);
+    },
+  });
+
+  const handleToggleReviewLike = (reviewId: string) => {
+    mutateToggleReviewLike(reviewId);
   };
   return {
     /**
@@ -336,6 +422,10 @@ function useMiscProvider() {
     handleUpdateReviewComment,
     isUpdateReviewCommentLoading,
     handleDeleteReviewComment,
+    isToggleReviewLikeLoading,
+    handleToggleReviewLike,
+    handleDeleteReview,
+    isDeleteReviewLoading
   };
 }
 

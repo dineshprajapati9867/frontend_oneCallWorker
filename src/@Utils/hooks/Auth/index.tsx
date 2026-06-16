@@ -64,6 +64,7 @@ function useProvideAuth() {
         ShowSuccessSnackBar("Login successful");
 
         handleCloseLogin();
+        window.location.reload()
       },
       onError: (err) => {
         ShowApiErrorSnackBar(err);
@@ -138,6 +139,7 @@ function useProvideAuth() {
     mutationFn: LogoutpAuth,
     onSuccess: () => {
       ShowSuccessSnackBar("Logged out successfully");
+      window.location.reload()
       localStorage.clear();
     },
     onError: (err) => {

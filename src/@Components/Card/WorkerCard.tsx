@@ -170,13 +170,13 @@ const WorkerCard = ({ data }: PropsI) => {
             <Box className="ratingBox flex">
               <Box className="starRatingBox">
                 <Typography className="rating font15" variant="h5">
-                  4.2
+                  {data.averageRating}
                 </Typography>
                 <StarMuiIcon className="commonIconStyle" />
               </Box>
 
               <Typography className="ratings" variant="body1">
-                50 Ratings
+                {data.totalReviews} Ratings
               </Typography>
               <Tooltip
                 arrow={true}

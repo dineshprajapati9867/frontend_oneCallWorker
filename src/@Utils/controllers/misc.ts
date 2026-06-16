@@ -134,3 +134,15 @@ export const deleteReviewComment=(commntId:string)=>{
    return deleteApi(`${API_SERVER_URL}/review-comment/${commntId}`)
 }
 
+
+// click the likes of review 
+
+export const  toggleReviewLike =(reviewId:string)=>{
+  return postApi(`${API_SERVER_URL}/review/${reviewId}/like`,{})
+}
+
+// delete the review by reviewId
+
+export const deleteReview=(id:string)=>{
+  return deleteApi(`${API_SERVER_URL}/review/delete/${id}`)
+}
