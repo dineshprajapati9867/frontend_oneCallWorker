@@ -105,10 +105,9 @@ const ProfileDrawer = ({ open, onClose }: PrposI) => {
   // const [notificationPermission, setNotificationPermission] =
   //   useState<NotificationPermission>(Notification.permission);
   const {
-    handleOpenLogin,
-
     handleCloseProfileDrawer,
   } = hooks.useUser();
+  const {handleOpenLogin}=hooks.useAuth()
   const navigate = useNavigate();
   // const { ShowInfoSnackBar } = hooks.useSnackBar();
    const {handleLogout}=hooks.useAuth()

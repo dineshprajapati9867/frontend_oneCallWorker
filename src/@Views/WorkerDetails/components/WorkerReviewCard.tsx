@@ -116,16 +116,12 @@ function WorkerReviewCard({ isThreeDot, handleThreeDot, data }: PropsI) {
 
           <Box className="ratingRow flex">
             <Typography variant="h5" className="ratingBox">
-              {
-data.averageRating
-}
+              {data.averageRating}
             </Typography>
 
             <Rating
               name="half-rating-read"
-              defaultValue={data.
-averageRating
-}
+              defaultValue={data.averageRating}
               precision={0.5}
               readOnly
               size={isMobile ? "small" : "medium"}

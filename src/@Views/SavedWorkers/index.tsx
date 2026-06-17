@@ -48,6 +48,20 @@ export default function SavedWorkers() {
   const handleClose = () => {
     navigate(-1);
   };
+
+  const dummyWorkers = 
+  {
+    _id: "2",
+    first_name: "Rahul",
+    last_name: "Sharma",
+    area: "Navi Mumbai",
+    mobile_number: "9876543211",
+    averageRating: 3.8,
+    totalReviews: 12,
+    profile: {
+      url: "https://static.vecteezy.com/system/resources/thumbnails/005/346/410/small/close-up-portrait-of-smiling-handsome-young-caucasian-man-face-looking-at-camera-on-isolated-light-gray-studio-background-photo.jpg",
+    },
+  }
   const content = () => {
     return (
       <SavedWorkersStyle isMobile={isMobile}>
@@ -64,7 +78,7 @@ export default function SavedWorkers() {
             {isMobile && <span />}
           </Box>
           <Box className="cardBox" my={5}>
-            <WorkerReviewCard isThreeDot={true} handleThreeDot={()=>{
+            <WorkerReviewCard data={dummyWorkers} isThreeDot={true} handleThreeDot={()=>{
 setOpenBottomDrawer(true)
             }} />
           </Box>
